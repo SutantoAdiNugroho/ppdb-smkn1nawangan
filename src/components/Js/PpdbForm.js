@@ -116,8 +116,8 @@ export default function AddressForm() {
           <MenuItem value={10}>Akutansi (AKL)</MenuItem>
           <MenuItem value={20}>Tata Busana (TB)</MenuItem>
           <MenuItem value={30}>Otomotif (TKRO)</MenuItem>
-          <MenuItem value={30}>Pertanian (ATPH)</MenuItem>
-          <MenuItem value={30}>Kria Kayu (KKKR)</MenuItem>
+          <MenuItem value={40}>Pertanian (ATPH)</MenuItem>
+          <MenuItem value={50}>Kria Kayu (KKKR)</MenuItem>
         </Select>
       </FormControl>           
       </Grid>      
