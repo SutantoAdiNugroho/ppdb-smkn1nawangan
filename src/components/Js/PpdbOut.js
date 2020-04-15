@@ -80,7 +80,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Checkout() {
   const classes = useStyles();  
-  let urlLoginLive = process.env.REACT_APP_API_LOGIN_LIVE;
+  let urlLoginLive = "https://ppdb-smkn1nawangan-back.herokuapp.com/";
   const disableBtnProps = {};
   const DatePickerField = ({ field, form, ...other }) => {
     const currentError = form.errors[field.name];
@@ -183,7 +183,7 @@ export default function Checkout() {
           title: 'Silahkan centang pernyataan di form tentang data diri anda'
         })
       } else {
-        disableBtnProps.disabled = true;                 
+                       
         axios
           .post(`${urlLoginLive}ppdb`, {idRegister:myId, fullName:values.fullName, nisn:values.nisn, bornPlace:values.bornPlace, dateBorn:dateBorn, fromSchool:values.fromSchool, facultyFirst:facultyFirst, facultySecond:facultySecond, checkVerifyBiodata:checkVerify})
           .then(response => {
