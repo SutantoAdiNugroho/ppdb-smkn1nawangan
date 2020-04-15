@@ -1,8 +1,6 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
 import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
 import Link from '@material-ui/core/Link';
@@ -37,10 +35,7 @@ function Copyright() {
   );
 }
 
-const useStyles = makeStyles((theme) => ({
-  appBar: {
-    position: 'relative',
-  },
+const useStyles = makeStyles((theme) => ({  
   layout: {
     width: 'auto',
     marginLeft: theme.spacing(2),
@@ -72,11 +67,21 @@ const useStyles = makeStyles((theme) => ({
     marginTop: theme.spacing(3),
     marginLeft: theme.spacing(1),
   },
+  root: {
+    flexGrow: 1,
+  },
+  menuButton: {
+    marginRight: theme.spacing(2),
+  },
+  title: {
+    flexGrow: 1,
+  },
 }));
 
 export default function Checkout() {
-  const classes = useStyles();
-
+  const classes = useStyles();  
+  let urlLoginLive = process.env.REACT_APP_API_LOGIN_LIVE;
+  const disableBtnProps = {};
   const DatePickerField = ({ field, form, ...other }) => {
     const currentError = form.errors[field.name];
   
@@ -85,16 +90,14 @@ export default function Checkout() {
         clearable      
         name={field.name}
         value={field.value}
-        format="dd/MM/yyyy"
+        format="dd/MM/yyyy"   
         helperText={currentError}
         error={Boolean(currentError)}
-        onError={error => {
-          // handle as a side effect
+        onError={error => {          
           if (error !== currentError) {
             form.setFieldError(field.name, error);
           }
-        }}
-        // if you are using custom validation schema you probably want to pass `true` as third argument
+        }}        
         onChange={date => form.setFieldValue(field.name, date, false)}
         {...other}
       />
@@ -103,7 +106,7 @@ export default function Checkout() {
 
   return (
     <Formik
-    initialValues={{
+    initialValues={{      
       fullName: "",
       nisn: "",
       bornPlace: "",
@@ -113,15 +116,90 @@ export default function Checkout() {
       facultySecond: "",
       checkVerifyBiodata: ""
     }} 
-    onSubmit={values => {      
-      console.log(values.fullName)
-      console.log(values.nisn)
-      console.log(values.bornPlace)
-      console.log(values.date)
-      console.log(values.fromSchool)
-      console.log(values.facultyFirst)
-      console.log(values.facultySecond)
-      console.log(values.checkVerifyBiodata)
+    onSubmit={values => {         
+      let nisn = values.nisn.toString().substr(2, 6)
+      let myName = values.fullName.substr(0, 2).toUpperCase();
+      let myId = `PPDB${myName}${nisn}`      
+
+      let facultyFirst
+      let facultySecond
+
+      switch (values.facultyFirst) {
+        case 10:
+          facultyFirst = "Akuntansi (AKL)"
+          break;
+        case 20:
+          facultyFirst = "Tata Busana (TB)"
+          break;      
+        case 30:
+          facultyFirst = "Otomotif (TKRO)"
+          break;
+        case 40:
+          facultyFirst = "Pertanian (ATPH)"
+          break;
+        case 50:
+          facultyFirst = "Kria Kayu (KKKR)"
+          break;
+        default:
+          break;
+      }
+
+      switch (values.facultySecond) {
+        case 60:
+          facultySecond = "Akuntansi (AKL)"
+          break;
+        case 70:
+          facultySecond = "Tata Busana (TB)"
+          break;      
+        case 80:
+          facultySecond = "Otomotif (TKRO)"
+          break;
+        case 90:
+          facultySecond = "Pertanian (ATPH)"
+          break;
+        case 100:
+          facultySecond = "Kria Kayu (KKKR)"
+          break;
+        default:
+          break;
+      }
+
+      let dateBorn      
+      let getFullYear = new Date(values.date).getFullYear()  
+      let getMonth = new Date(values.date).getMonth()+1
+      let getDay = new Date(values.date).getDate()
+      dateBorn = `${getDay}/${getMonth}/${getFullYear}`
+
+      let checkVerify = values.checkVerifyBiodata.toString()
+
+      if (values.fullName == "" || values.nisn == "" || values.bornPlace == "" || values.date == "" || values.fromSchool == "" || facultyFirst == "" || facultySecond == "") {
+        Swal.fire({
+          icon: 'error',
+          title: 'Mohon isikan data diri anda dengan benar'
+        })
+      } else if (values.checkVerifyBiodata != "yes") {
+        Swal.fire({
+          icon: 'error',
+          title: 'Silahkan centang pernyataan di form tentang data diri anda'
+        })
+      } else {
+        disableBtnProps.disabled = true;                 
+        axios
+          .post(`${urlLoginLive}ppdb`, {idRegister:myId, fullName:values.fullName, nisn:values.nisn, bornPlace:values.bornPlace, dateBorn:dateBorn, fromSchool:values.fromSchool, facultyFirst:facultyFirst, facultySecond:facultySecond, checkVerifyBiodata:checkVerify})
+          .then(response => {
+            console.log(response)
+            if (response.status == 200) {
+              disableBtnProps.disabled = false;
+              Swal.fire({
+                icon: 'success',
+                title: 'Pendaftaran Berhasil',
+                text: 'Selamat pendaftaran PPDB anda di SMKN 1 Nawangan berhasil',
+              })
+            } else {
+              disableBtnProps.disabled = false;
+            }
+          })
+      }
     }}
     >
       {({
@@ -138,14 +216,7 @@ export default function Checkout() {
         noValidate
       >        
     <React.Fragment>
-      <CssBaseline />
-      <AppBar position="absolute" color="default" className={classes.appBar}>
-        <Toolbar>
-          <Typography variant="h6" color="inherit" noWrap>
-            SMKN 1 Nawangan
-          </Typography>
-        </Toolbar>
-      </AppBar>
+      <CssBaseline />           
       <main className={classes.layout}>
         <Paper className={classes.paper}>
           <Typography variant="h5" align="center">
@@ -154,7 +225,7 @@ export default function Checkout() {
       <React.Fragment>
       <Typography variant="h6" style={{marginTop:"20px"}} gutterBottom>
         Biodata
-      </Typography>      
+      </Typography>         
       <Grid container spacing={3}>
         <Grid item xs={12} sm={6}>
           <TextField
@@ -239,7 +310,7 @@ export default function Checkout() {
           defaultValue={values.facultyFirst}
           autoComplete="facultyFirst"
         >
-          <MenuItem value={10}>Akutansi (AKL)</MenuItem>
+          <MenuItem value={10}>Akuntansi (AKL)</MenuItem>
           <MenuItem value={20}>Tata Busana (TB)</MenuItem>
           <MenuItem value={30}>Otomotif (TKRO)</MenuItem>
           <MenuItem value={40}>Pertanian (ATPH)</MenuItem>
@@ -259,7 +330,7 @@ export default function Checkout() {
           defaultValue={values.facultySecond}
           autoComplete="facultySecond"
         >
-          <MenuItem value={60}>Akutansi (AKL)</MenuItem>
+          <MenuItem value={60}>Akuntansi (AKL)</MenuItem>
           <MenuItem value={70}>Tata Busana (TB)</MenuItem>
           <MenuItem value={80}>Otomotif (TKRO)</MenuItem>
           <MenuItem value={90}>Pertanian (ATPH)</MenuItem>
@@ -290,6 +361,7 @@ export default function Checkout() {
                     color="primary"                    
                     className={classes.submit}
                     type="submit"
+                    {...disableBtnProps}
                   >
                     Daftar
                   </Button>
