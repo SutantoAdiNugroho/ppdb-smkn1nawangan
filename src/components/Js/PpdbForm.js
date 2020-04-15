@@ -6,30 +6,16 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import DateFnsUtils from '@date-io/date-fns';
 import {
-  MuiPickersUtilsProvider,
-  KeyboardTimePicker,
+  MuiPickersUtilsProvider,  
   KeyboardDatePicker,
 } from '@material-ui/pickers';
 import { makeStyles } from '@material-ui/core/styles';
 import InputLabel from '@material-ui/core/InputLabel';
-import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
-import NativeSelect from '@material-ui/core/NativeSelect';
 
-const useStyles = makeStyles((theme) => ({
-    formControl: {
-      margin: theme.spacing(1.5),
-      minWidth: 220,
-    },
-    selectEmpty: {
-      marginTop: theme.spacing(2),
-    },
-  }));
-
-export default function AddressForm() {
-    const classes = useStyles();
+export default function AddressForm() {    
     const [selectedDate, setSelectedDate] = React.useState(new Date('2014-08-18T21:11:54'));
 
     const handleDateChange = (date) => {
