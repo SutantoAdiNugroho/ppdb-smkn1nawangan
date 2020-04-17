@@ -10,6 +10,7 @@ import TextField from '@material-ui/core/TextField';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import DateFnsUtils from '@date-io/date-fns';
+import { withRouter } from "react-router-dom";
 import {
   MuiPickersUtilsProvider,  
   KeyboardDatePicker,
@@ -78,7 +79,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Checkout() {
+function Checkout(props) {
   const classes = useStyles();  
   let urlLoginLive = "https://ppdb-smkn1nawangan-back.herokuapp.com/";
   const disableBtnProps = {};
@@ -224,12 +225,16 @@ export default function Checkout() {
         axios
           .post(`${urlLoginLive}ppdb`, {idRegister:myId, fullName:values.fullName, nisn:values.nisn, bornPlace:values.bornPlace, dateBorn:dateBorn, fromSchool:values.fromSchool, facultyFirst:facultyFirst, facultySecond:facultySecond, checkVerifyBiodata:checkVerify})
           .then(response => {
-            console.log(response)
-            if (response.status == 200) {              
+            console.log(response.data.data)
+            let idRegistrant = response.data.data
+            console.log(idRegistrant._id)
+            if (response.status == 200) {                   
               Swal.fire({
                 icon: 'success',
                 title: 'Pendaftaran Berhasil',
                 text: 'Selamat pendaftaran PPDB anda di SMKN 1 Nawangan berhasil',
+              }).then(result => {
+                props.history.push(`regist-card/${idRegistrant._id}`);
               })
             } else {
               Swal.fire({
@@ -420,3 +425,5 @@ export default function Checkout() {
     </Formik>
   );
 }
+
+export default withRouter(Checkout)

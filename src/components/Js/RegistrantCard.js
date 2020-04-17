@@ -84,6 +84,14 @@ const useStyles = makeStyles((theme) => ({
 
 function Checkout({match}) {
   const classes = useStyles();  
+  const isLogin = localStorage.getItem("token");
+  let linkBack = ""
+
+  if (isLogin) {
+    linkBack = "/regist-table"
+  } else {
+    linkBack = "/"
+  }
 
   const [idRegister, setIdRegister] = React.useState("")
   const [fullName, setFullName] = React.useState("")  
@@ -163,7 +171,7 @@ function Checkout({match}) {
         <React.Fragment>
           <div>
               <Typography variant="h5" align="center">
-                  Kartu Peserta
+                  SMKN 1 Nawangan
                 </Typography>
                 <Typography variant="h6" align="center">
                   PPDB Online 2020
@@ -230,7 +238,7 @@ function Checkout({match}) {
           </div>
     </React.Fragment>                              
                 <div style={{textAlign:"center"}}>                                                        
-                  <Button
+                  {/* <Button
                     variant="contained"
                     color="primary"                    
                     className={classes.submit}                    
@@ -239,13 +247,14 @@ function Checkout({match}) {
                     component={LinkRouter}                  
                   >
                     Download pdf
-                  </Button>
+                  </Button> */}
                   <Button
                     variant="contained"
                     color="secondary"                    
                     className={classes.submit}
-                    type="submit"
-                    style={{marginTop:"40px", marginLeft:"5px"}}                    
+                    component={LinkRouter}
+                     to={linkBack}
+                    // style={{marginTop:"40px", marginLeft:"5px"}}                    
                   >
                     Kembali
                   </Button>

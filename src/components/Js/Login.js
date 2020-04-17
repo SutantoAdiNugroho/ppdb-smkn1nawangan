@@ -126,7 +126,7 @@ function SignIn(props) {
                     if (response.data.message == "Login successfull") {
                       swal.fire({
                         icon: 'success',
-                        title: 'Login Successfully',
+                        title: 'Login Berhasil',
                     }).then((result) => {
                         localStorage.setItem(
                             "token",

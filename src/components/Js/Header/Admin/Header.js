@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
 const logOut = () => {
   localStorage.removeItem("token");
   swal.fire({
-      title: 'You are Loged out',
+      title: 'Anda berhasil logout',
       icon: 'success'
   }).then(result => {
     window.location.reload();
