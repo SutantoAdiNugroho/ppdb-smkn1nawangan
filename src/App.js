@@ -1,6 +1,6 @@
 import React from 'react';
 import './App.css';
-import {PpdbOut, Login} from "./components"
+import {PpdbOut, Login, RegistrantTable, RegistrantCard} from "./components"
 import {
   BrowserRouter as Router,
   Route,
@@ -10,6 +10,7 @@ import {
 import Header from "./components/Js/Header/Header"
 
 function App() {
+  const isLogin = localStorage.getItem("token");
   return (   
     <Router>
       <Header />
@@ -20,6 +21,12 @@ function App() {
           </Route>
           <Route path="/login" exact={true}>
             <Login />    
+          </Route>
+          <Route path="/regist-table" exact={true}>
+            {isLogin ? <RegistrantTable /> : <Redirect to="/login" />}            
+          </Route>
+          <Route path="/regist-card/:id" exact={true}>
+            <RegistrantCard />    
           </Route>
         </Route>        
       </Switch>

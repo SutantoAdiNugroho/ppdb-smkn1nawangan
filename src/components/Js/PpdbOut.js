@@ -122,7 +122,7 @@ export default function Checkout() {
       let myId = `PPDB${myName}${nisn}`      
 
       let facultyFirst
-      let facultySecond
+      let facultySecond      
 
       switch (values.facultyFirst) {
         case 10:
@@ -170,9 +170,12 @@ export default function Checkout() {
       let getDay = new Date(values.date).getDate()
       dateBorn = `${getDay}/${getMonth}/${getFullYear}`
 
+      let fullYearNow = new Date().getFullYear()
+      let ageValidation = fullYearNow - getFullYear      
+
       let checkVerify = values.checkVerifyBiodata.toString()
 
-      if (values.fullName == "" || values.nisn == "" || values.bornPlace == "" || values.date == "" || values.fromSchool == "" || facultyFirst == "" || facultySecond == "") {
+      if (values.fullName == "" || values.nisn == "" || values.bornPlace == "" || values.date == "" || values.fromSchool == "" || facultyFirst == "" || facultySecond == "" || facultyFirst == undefined || facultySecond == undefined) {
         Swal.fire({
           icon: 'error',
           title: 'Mohon isikan data diri anda dengan benar'
@@ -182,22 +185,63 @@ export default function Checkout() {
           icon: 'error',
           title: 'Silahkan centang pernyataan di form tentang data diri anda'
         })
-      } else {
-                       
+      } else if (ageValidation <=13 ) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Maaf umur anda belum mencukupi'
+        })
+      } else if (facultyFirst == facultySecond) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Jurusan utama dan jurusan kedua tidak boleh sama!'
+        })
+      } else {  
+        let timerInterval
+        Swal.fire({
+          title: 'Silahkan tunggu..',              
+          timer: 9999999,
+          timerProgressBar: true,
+          onBeforeOpen: () => {
+            Swal.showLoading()
+            timerInterval = setInterval(() => {
+              const content = Swal.getContent()
+              if (content) {
+                const b = content.querySelector('b')
+                if (b) {
+                  b.textContent = Swal.getTimerLeft()
+                }
+              }
+            }, 100)
+          },
+          onClose: () => {
+            clearInterval(timerInterval)
+          }
+        }).then((result) => {          
+          if (result.dismiss === Swal.DismissReason.timer) {
+            console.log('I was closed by the timer')
+          }
+        })                     
         axios
           .post(`${urlLoginLive}ppdb`, {idRegister:myId, fullName:values.fullName, nisn:values.nisn, bornPlace:values.bornPlace, dateBorn:dateBorn, fromSchool:values.fromSchool, facultyFirst:facultyFirst, facultySecond:facultySecond, checkVerifyBiodata:checkVerify})
           .then(response => {
             console.log(response)
-            if (response.status == 200) {
-              disableBtnProps.disabled = false;
+            if (response.status == 200) {              
               Swal.fire({
                 icon: 'success',
                 title: 'Pendaftaran Berhasil',
                 text: 'Selamat pendaftaran PPDB anda di SMKN 1 Nawangan berhasil',
               })
             } else {
-              disableBtnProps.disabled = false;
+              Swal.fire({
+                icon: 'error',
+                title: 'Pendaftaran gagal, silahkan coba kembali'
+              })
             }
+          }).catch(error => {
+            Swal.fire({
+              icon: 'error',
+              title: 'Pendaftaran gagal, silahkan coba kembali'
+            })
           })
       }
     }}
@@ -361,7 +405,7 @@ export default function Checkout() {
                     color="primary"                    
                     className={classes.submit}
                     type="submit"
-                    {...disableBtnProps}
+                    style={{marginTop:"20px"}}                    
                   >
                     Daftar
                   </Button>

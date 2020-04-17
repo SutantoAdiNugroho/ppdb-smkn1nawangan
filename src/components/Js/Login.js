@@ -12,7 +12,10 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-import { Link as LinkRouter } from "react-router-dom";
+import { Link as LinkRouter, withRouter } from "react-router-dom";
+import { Formik, ErrorMessage } from "formik";
+import swal from "sweetalert2"
+import axios from "axios"
 
 function Copyright() {
   return (
@@ -47,8 +50,10 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function SignIn() {
+function SignIn(props) {
   const classes = useStyles();
+  const disableBtnProps = {};  
+  let urlLoginLive = "https://ppdb-smkn1nawangan-back.herokuapp.com/";
 
   return (
     <Container component="main" maxWidth="xs">
@@ -60,6 +65,99 @@ export default function SignIn() {
         <Typography component="h1" variant="h5">
           Login
         </Typography>
+        <Formik
+        initialValues={{
+          username: "",
+          password: ""
+        }}
+        validate=""
+        onSubmit={values => {            
+          if (values.username === "" || values.password === "") {                  
+            disableBtnProps.disabled = false;
+            swal.fire({
+                icon: 'error',
+                title: "Isikan data anda dengan benar saat login!",
+              }).then(result => {
+                disableBtnProps.disabled = false;
+              })
+          } else {
+            let timerInterval
+            swal.fire({
+              title: 'Silahkan tunggu..',              
+              timer: 9999999,
+              timerProgressBar: true,
+              onBeforeOpen: () => {
+                swal.showLoading()
+                timerInterval = setInterval(() => {
+                  const content = swal.getContent()
+                  if (content) {
+                    const b = content.querySelector('b')
+                    if (b) {
+                      b.textContent = swal.getTimerLeft()
+                    }
+                  }
+                }, 100)
+              },
+              onClose: () => {
+                clearInterval(timerInterval)
+              }
+            }).then((result) => {
+              /* Read more about handling dismissals below */
+              if (result.dismiss === swal.DismissReason.timer) {
+                console.log('I was closed by the timer')
+              }
+            })
+            axios
+                .post(`${urlLoginLive}admin/login`, values)
+                .then(response => {
+                  console.log(response)
+                  if (response.data.message == "username not registered!") {
+                    disableBtnProps.disabled = false;
+                    swal.fire({
+                      icon: 'error',
+                      title: "Username tidak terdaftar",
+                    })
+                  } else if (response.data.message == "Password is wrong!") {
+                    swal.fire({
+                      icon: 'error',
+                      title: "Password salah, silahkan coba kembali",
+                    })
+                  } else {
+                    if (response.data.message == "Login successfull") {
+                      swal.fire({
+                        icon: 'success',
+                        title: 'Login Successfully',
+                    }).then((result) => {
+                        localStorage.setItem(
+                            "token",
+                            JSON.stringify(response.data.data.token)
+                        );
+                        props.history.push("/");
+                        window.location.reload();
+                    })
+                    }
+                  }
+                }).catch(error => {
+                  swal.fire({
+                    icon: 'error',
+                    title: "Login gagal, silahkan coba kembali",
+                  })
+                })
+          }                           
+        }}
+        >
+          {({
+            values,
+            handleChange,
+            handleBlur,
+            handleSubmit,
+            isSubmitting
+          }) => (
+            <form
+              className={classes.form}
+              noValidate
+              onSubmit={handleSubmit}              
+            >
         <form className={classes.form} noValidate>
           <TextField
             variant="outlined"
@@ -71,6 +169,9 @@ export default function SignIn() {
             name="username"
             autoComplete="username"
             autoFocus
+            defaultValue={values.username}
+            onChange={handleChange}
+            onBlur={handleBlur}
           />
           <TextField
             variant="outlined"
@@ -82,17 +183,23 @@ export default function SignIn() {
             type="password"
             id="password"
             autoComplete="current-password"
+            defaultValue={values.password}
+            onChange={handleChange}
+            onBlur={handleBlur}
           />                             
         </form>
-        <Button
+        <Button            
             type="submit"
             fullWidth
             variant="contained"
             color="primary"
-            className={classes.submit}
+            className={classes.submit}            
           >
             Sign In
           </Button>
+          </form>
+          )}
+        </Formik>
           <Button
            style={{marginTop:"0px"}}            
             fullWidth
@@ -111,3 +218,5 @@ export default function SignIn() {
     </Container>
   );
 }
+
+export default withRouter(SignIn);

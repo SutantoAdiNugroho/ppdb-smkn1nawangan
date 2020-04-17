@@ -7,6 +7,8 @@ import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import Main from './Main'
+import { Link } from "react-router-dom";
+import swal from 'sweetalert2'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -19,6 +21,16 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
   },
 }));
+
+const logOut = () => {
+  localStorage.removeItem("token");
+  swal.fire({
+      title: 'You are Loged out',
+      icon: 'success'
+  }).then(result => {
+    window.location.reload();
+  })  
+};
 
 export default function ButtonAppBar() {
   const classes = useStyles();  
@@ -33,7 +45,7 @@ export default function ButtonAppBar() {
           <Typography variant="h6" className={classes.title}>
             SMKN 1 Nawangan
           </Typography>
-          <Button color="inherit">Logout</Button>
+          <Button size="small" variant="contained" color="secondary" onClick={logOut} component={Link} to="/">Logout</Button>
         </Toolbar>
       </AppBar>
     </div>
