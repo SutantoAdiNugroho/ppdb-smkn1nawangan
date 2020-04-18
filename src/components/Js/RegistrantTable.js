@@ -7,8 +7,8 @@ import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
-import axios from "axios"
 import Button from '@material-ui/core/Button';
+import { verify, axiosReportsUsers } from "./helpers"
 
 class ListProblem extends React.Component {
   constructor(props) {
@@ -20,10 +20,9 @@ class ListProblem extends React.Component {
     };
   }
 
-  showAllRegistrant = () => {
-    let urlLoginLive = "https://ppdb-smkn1nawangan-back.herokuapp.com/";
-    axios
-      .get(`${urlLoginLive}ppdb`)
+  showAllRegistrant = () => {    
+    axiosReportsUsers()
+      .get(`ppdb`)
       .then(response => {                
         this.setState({ data: response.data.data })
       })

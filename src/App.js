@@ -1,6 +1,6 @@
 import React from 'react';
 import './App.css';
-import {PpdbOut, Login, RegistrantTable, RegistrantCard} from "./components"
+import {PpdbOut, Login, RegistrantTable, RegistrantCard, AddAdmin} from "./components"
 import {
   BrowserRouter as Router,
   Route,
@@ -27,6 +27,9 @@ function App() {
           </Route>
           <Route path="/regist-card/:id" exact={true}>
             <RegistrantCard />    
+          </Route>
+          <Route path="/add-admin" exact={true}>
+            {isLogin ? <AddAdmin /> : <Redirect to="/login" />}            
           </Route>
         </Route>        
       </Switch>

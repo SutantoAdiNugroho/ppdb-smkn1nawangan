@@ -54,7 +54,7 @@ export default function SwipeableTemporaryDrawer() {
     >
       <List>
         <ListItem>
-          <ListItemText>Welcome, Admin</ListItemText>
+          <ListItemText>Welcome, SuperAdmin</ListItemText>
         </ListItem>
 
         {['Pendaftar PPDB 2020'].map((text, index) => (
@@ -65,6 +65,18 @@ export default function SwipeableTemporaryDrawer() {
           to="/regist-table"
           >
             <ListItemIcon><ViewListIcon /></ListItemIcon>
+            <ListItemText primary={text} ></ListItemText>
+          </ListItem>
+        ))}
+
+        {['Tambah Admin Baru'].map((text, index) => (
+          <ListItem 
+          button 
+          key={text}
+          component={Link}
+          to="/add-admin"
+          >
+            <ListItemIcon><PersonAddIcon /></ListItemIcon>
             <ListItemText primary={text} ></ListItemText>
           </ListItem>
         ))}

@@ -14,8 +14,10 @@ import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import { Link as LinkRouter, withRouter } from "react-router-dom";
 import { Formik, ErrorMessage } from "formik";
+import { registerValidation } from "./validation"
 import swal from "sweetalert2"
 import axios from "axios"
+import { verify, axiosReportsUsers } from "./helpers"
 
 function Copyright() {
   return (
@@ -28,6 +30,10 @@ function Copyright() {
       {'.'}
     </Typography>
   );
+}
+function AvoidSpace(event) {
+    var k = event ? event.which : window.event.keyCode;
+    if (k == 32) return false;
 }
 
 const useStyles = makeStyles((theme) => ({
@@ -58,91 +64,68 @@ function SignIn(props) {
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
-      <div className={classes.paper}>
-        <Avatar className={classes.avatar}>
-          <LockOutlinedIcon />
-        </Avatar>
+      <div className={classes.paper}>        
         <Typography component="h1" variant="h5">
-          Login
+          Daftar Admin
         </Typography>
         <Formik
         initialValues={{
+          fullName: "",  
           username: "",
-          password: ""
+          confirmPassword: "",
+          password: ""          
         }}
-        validate=""
-        onSubmit={values => {            
-          if (values.username === "" || values.password === "") {                  
-            disableBtnProps.disabled = false;
-            swal.fire({
-                icon: 'error',
-                title: "Isikan data anda dengan benar saat login!",
-              }).then(result => {
-                disableBtnProps.disabled = false;
-              })
-          } else {
-            let timerInterval
-            swal.fire({
-              title: 'Silahkan tunggu..',              
-              timer: 9999999,
-              timerProgressBar: true,
-              onBeforeOpen: () => {
-                swal.showLoading()
-                timerInterval = setInterval(() => {
-                  const content = swal.getContent()
-                  if (content) {
-                    const b = content.querySelector('b')
-                    if (b) {
-                      b.textContent = swal.getTimerLeft()
+        validate={registerValidation}
+        onSubmit={values => {
+            if (values.password != values.confirmPassword) {
+                swal.fire({
+                    icon: 'error',
+                    title: 'Mohon samakan password'
+                })
+            } else {
+                let timerInterval
+                swal.fire({
+                title: 'Silahkan tunggu..',              
+                timer: 9999999,
+                timerProgressBar: true,
+                onBeforeOpen: () => {
+                    swal.showLoading()
+                    timerInterval = setInterval(() => {
+                    const content = swal.getContent()
+                    if (content) {
+                        const b = content.querySelector('b')
+                        if (b) {
+                        b.textContent = swal.getTimerLeft()
+                        }
                     }
-                  }
-                }, 100)
-              },
-              onClose: () => {
-                clearInterval(timerInterval)
-              }
-            }).then((result) => {
-              /* Read more about handling dismissals below */
-              if (result.dismiss === swal.DismissReason.timer) {
-                console.log('I was closed by the timer')
-              }
-            })
-            axios
-                .post(`${urlLoginLive}admin/login`, values)
-                .then(response => {                  
-                  if (response.data.message == "username not registered!") {
-                    disableBtnProps.disabled = false;
+                    }, 100)
+                },
+                onClose: () => {
+                    clearInterval(timerInterval)
+                }
+                }).then((result) => {          
+                    if (result.dismiss === swal.DismissReason.timer) {
+                        console.log('I was closed by the timer')
+                    }
+                }) 
+                axiosReportsUsers()
+                .post(`admin`, {fullName:values.fullName, username:values.username, password:values.password, role:"admin"})
+                .then(response => {
+                    console.log(response.data.data)
                     swal.fire({
-                      icon: 'error',
-                      title: "Username tidak terdaftar",
-                    })
-                  } else if (response.data.message == "Password is wrong!") {
-                    swal.fire({
-                      icon: 'error',
-                      title: "Password salah, silahkan coba kembali",
-                    })
-                  } else {
-                    if (response.data.message == "Login successfull") {
-                      swal.fire({
                         icon: 'success',
-                        title: 'Login Berhasil',
-                    }).then((result) => {
-                        localStorage.setItem(
-                            "token",
-                            JSON.stringify(response.data.data.token)
-                        );
-                        props.history.push("/");
+                        title: 'Pendaftaran admin berhasil'
+                    }).then(result =>{
                         window.location.reload();
                     })
-                    }
-                  }
+                    
                 }).catch(error => {
-                  swal.fire({
+                    swal.fire({
                     icon: 'error',
-                    title: "Login gagal, silahkan coba kembali",
-                  })
+                    title: 'Pendaftaran gagal, silahkan coba kembali'
+                    })
                 })
-          }                           
+            }  
         }}
         >
           {({
@@ -158,6 +141,23 @@ function SignIn(props) {
               onSubmit={handleSubmit}              
             >
         <form className={classes.form} noValidate>
+        <TextField
+            variant="outlined"
+            margin="normal"
+            required
+            fullWidth
+            id="fullName"
+            label="Nama lengkap"
+            name="fullName"
+            autoComplete="fullName"
+            autoFocus
+            defaultValue={values.fullName}
+            onChange={handleChange}
+            onBlur={handleBlur}            
+          />        
+          <a style={{color:"red", fontStyle:"italic"}} >
+          <ErrorMessage name="fullName" />          
+          </a>              
           <TextField
             variant="outlined"
             margin="normal"
@@ -172,13 +172,33 @@ function SignIn(props) {
             onChange={handleChange}
             onBlur={handleBlur}
           />
+          <a style={{color:"red", fontStyle:"italic"}} >
+            <ErrorMessage name="username" />          
+          </a>              
+          <TextField
+            variant="outlined"
+            margin="normal"
+            required
+            fullWidth
+            name="confirmPassword"
+            label="Password"
+            type="password"
+            id="confirmPassword"
+            autoComplete="confirmPassword"
+            defaultValue={values.confirmPassword}
+            onChange={handleChange}
+            onBlur={handleBlur}
+          />
+          <a style={{color:"red", fontStyle:"italic"}} >
+            <ErrorMessage name="password" />          
+          </a>
           <TextField
             variant="outlined"
             margin="normal"
             required
             fullWidth
             name="password"
-            label="Password"
+            label="Konfirmasi password"
             type="password"
             id="password"
             autoComplete="current-password"
@@ -187,6 +207,9 @@ function SignIn(props) {
             onBlur={handleBlur}
           />                             
         </form>
+        <a style={{color:"red", fontStyle:"italic"}} >
+            <ErrorMessage name="password" />          
+        </a>
         <Button            
             type="submit"
             fullWidth
@@ -194,7 +217,7 @@ function SignIn(props) {
             color="primary"
             className={classes.submit}            
           >
-            Sign In
+            Tambah
           </Button>
           </form>
           )}
