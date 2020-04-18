@@ -54,8 +54,6 @@ const useStyles = makeStyles((theme) => ({
 
 function SignIn(props) {
   const classes = useStyles();
-  const disableBtnProps = {};  
-  let urlLoginLive = "https://ppdb-smkn1nawangan-back.herokuapp.com/";
 
   return (
     <Container component="main" maxWidth="xs">
@@ -110,6 +108,11 @@ function SignIn(props) {
                     swal.fire({
                         icon: 'success',
                         title: 'Pendaftaran admin berhasil'
+                    }).then(result => {
+                      document.getElementById('fullName').value = ""
+                      document.getElementById('username').value = ""                      
+                      document.getElementById('confirmPassword').value = ""
+                      document.getElementById('password').value = ""
                     })
                     
                 }).catch(error => {
