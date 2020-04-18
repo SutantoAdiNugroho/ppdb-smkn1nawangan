@@ -63,7 +63,7 @@ function SignIn(props) {
           <LockOutlinedIcon />
         </Avatar>
         <Typography component="h1" variant="h5">
-          Login
+          Login Panitia
         </Typography>
         <Formik
         initialValues={{
