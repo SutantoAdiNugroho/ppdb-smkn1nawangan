@@ -31,10 +31,6 @@ function Copyright() {
     </Typography>
   );
 }
-function AvoidSpace(event) {
-    var k = event ? event.which : window.event.keyCode;
-    if (k == 32) return false;
-}
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -110,13 +106,10 @@ function SignIn(props) {
                 }) 
                 axiosReportsUsers()
                 .post(`admin`, {fullName:values.fullName, username:values.username, password:values.password, role:"admin"})
-                .then(response => {
-                    console.log(response.data.data)
+                .then(response => {                    
                     swal.fire({
                         icon: 'success',
                         title: 'Pendaftaran admin berhasil'
-                    }).then(result =>{
-                        window.location.reload();
                     })
                     
                 }).catch(error => {

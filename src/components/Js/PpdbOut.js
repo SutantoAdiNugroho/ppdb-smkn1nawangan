@@ -122,6 +122,8 @@ function Checkout(props) {
       let myName = values.fullName.substr(0, 2).toUpperCase();
       let myId = `PPDB${myName}${nisn}`      
 
+      let myNisn = values.nisn.toString()
+
       let facultyFirst
       let facultySecond      
 
@@ -195,6 +197,11 @@ function Checkout(props) {
         Swal.fire({
           icon: 'error',
           title: 'Jurusan utama dan jurusan kedua tidak boleh sama!'
+        })
+      } else if (myNisn.length < 9 ) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Mohon masukkan NISN anda dengan benar'
         })
       } else {  
         let timerInterval
@@ -295,7 +302,7 @@ function Checkout(props) {
             required
             id="nisn"
             name="nisn"
-            label="NIS"
+            label="NISN"
             fullWidth
             autoComplete="nisn"
             onChange={handleChange}
