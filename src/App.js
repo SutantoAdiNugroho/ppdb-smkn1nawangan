@@ -8,6 +8,7 @@ import {
   Redirect
 } from "react-router-dom";
 import Header from "./components/Js/Header/Header"
+import { verify } from "./components/Js/helpers"
 
 function App() {
   const isLogin = localStorage.getItem("token");
@@ -20,7 +21,7 @@ function App() {
             <PpdbOut />    
           </Route>
           <Route path="/login" exact={true}>
-            <Login />    
+            {!isLogin ? <Login /> : <RegistrantTable /> }
           </Route>
           <Route path="/regist-table" exact={true}>
             {isLogin ? <RegistrantTable /> : <Redirect to="/login" />}            
@@ -29,7 +30,7 @@ function App() {
             <RegistrantCard />    
           </Route>
           <Route path="/add-admin" exact={true}>
-            {isLogin ? <AddAdmin /> : <Redirect to="/login" />}            
+            {!isLogin ? <Redirect to="/login" /> : verify().role == "admin" ? <RegistrantTable /> : <AddAdmin />}            
           </Route>
         </Route>        
       </Switch>

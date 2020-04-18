@@ -118,7 +118,7 @@ function Checkout(props) {
       checkVerifyBiodata: ""
     }} 
     onSubmit={values => {         
-      let nisn = values.nisn.toString().substr(2, 6)
+      let nisn = values.nisn.toString().substr(3, 7)
       let myName = values.fullName.substr(0, 2).toUpperCase();
       let myId = `PPDB${myName}${nisn}`      
 

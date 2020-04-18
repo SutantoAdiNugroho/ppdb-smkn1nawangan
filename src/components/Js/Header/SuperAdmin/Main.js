@@ -13,6 +13,7 @@ import ViewListIcon from '@material-ui/icons/ViewList';
 import { Link } from "react-router-dom";
 import MenuIcon from '@material-ui/icons/Menu';
 import IconButton from '@material-ui/core/IconButton';
+import { verify } from "../../helpers"
 
 const useStyles = makeStyles((theme) => ({
   list: {
@@ -54,7 +55,7 @@ export default function SwipeableTemporaryDrawer() {
     >
       <List>
         <ListItem>
-          <ListItemText>Welcome, SuperAdmin</ListItemText>
+          <ListItemText>Welcome, {verify().fullName}</ListItemText>
         </ListItem>
 
         {['Pendaftar PPDB 2020'].map((text, index) => (

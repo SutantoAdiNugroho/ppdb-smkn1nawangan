@@ -9,6 +9,9 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Button from '@material-ui/core/Button';
 import { verify, axiosReportsUsers } from "./helpers"
+import TextField from '@material-ui/core/TextField';
+import Typography from '@material-ui/core/Typography';
+import axios from 'axios';
 
 class ListProblem extends React.Component {
   constructor(props) {
@@ -25,6 +28,7 @@ class ListProblem extends React.Component {
       .get(`ppdb`)
       .then(response => {                
         this.setState({ data: response.data.data })
+        console.log(this.state.data.length)
       })
       .catch(error => {
         console.log(error);
@@ -32,8 +36,21 @@ class ListProblem extends React.Component {
   }
 
   componentDidMount = () => {
-    this.showAllRegistrant();    
+    this.showAllRegistrant();        
   }
+
+  handleChangeSearchRegistrant = event => {
+    axiosReportsUsers()
+    .get(`ppdb/search-fullname/?q=${event.target.value}`).then(result=>{
+      console.log(result);
+      
+      this.setState({data : result.data.data})
+      
+    }).catch(error=>{
+      console.log(error);
+      
+    })
+  };
 
   
   render () {
@@ -57,7 +74,19 @@ class ListProblem extends React.Component {
 
     return (
       <div style={{padding:"5px"}}>
-        <TableContainer style={{marginTop:"40px"}}>
+        <TableContainer style={{marginTop:"10px"}}>
+        <TextField
+            variant="outlined"
+            margin="normal"            
+            id="fullName"
+            label="Cari dengan nama.."
+            name="fullName"
+            autoComplete="fullName"
+            onChange={this.handleChangeSearchRegistrant}                      
+          />
+          <Button variant="contained" size="small" color="primary" style={{position:"absolute", right:"5px", top:"110px"}} onClick={() =>this.showAllRegistrant()}>
+              Refresh
+          </Button>
             <Table style={{minWidth:700}} aria-label="customized table">
                 <TableHead>
                 <TableRow>
