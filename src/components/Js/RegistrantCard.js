@@ -8,9 +8,6 @@ import Typography from '@material-ui/core/Typography';
 import { Link as LinkRouter,withRouter } from 'react-router-dom'
 import axios from "axios"
 import Swal from "sweetalert2"
-import jsPDF from 'jspdf'
-import html2canvas from 'html2canvas'
-import {isMobile} from 'react-device-detect'
 import ReactToPdf from 'react-to-pdf'
 
 const ref = React.createRef();
@@ -157,83 +154,83 @@ function Checkout({match}) {
       <CssBaseline />           
       <main className={classes.layout}>
         <Paper className={classes.paper}>
-        <React.Fragment>   
-          <div ref={ref}>
-              <Typography variant="h5" align="center">
-                  SMKN 1 Nawangan
+        <a ref={ref}>
+          <React.Fragment>             
+                <Typography variant="h5" align="center">
+                    SMKN 1 Nawangan
+                  </Typography>
+                  <Typography variant="h6" align="center">
+                    PPDB Online 2020
+                  </Typography>      
+                  <div style={{marginTop:"20px"}}>
+                    <Typography variant="h6" gutterBottom>
+                        ID Peserta
+                    </Typography>
+                    <Typography style={{marginTop:"-10px"}} gutterBottom>
+                        {idRegister.idRegister}
+                    </Typography>
+                  </div>
+                  <div style={{marginTop:"10px"}}>
+                    <Typography variant="h6" gutterBottom>
+                        Nama Lengkap
+                    </Typography>
+                    <Typography style={{marginTop:"-10px"}} gutterBottom>
+                        {fullName.fullName}
+                    </Typography>
+                  </div>
+                  <div style={{marginTop:"10px"}}>
+                    <Typography variant="h6" gutterBottom>
+                        NISN
+                    </Typography>
+                    <Typography style={{marginTop:"-10px"}} gutterBottom>
+                        {nisn.nisn}
+                    </Typography>
+                  </div>
+                  <div style={{marginTop:"10px"}}>
+                    <Typography variant="h6" gutterBottom>
+                        Tempat Tanggal Lahir
+                    </Typography>
+                    <Typography style={{marginTop:"-10px"}} gutterBottom>
+                        {bornPlace.bornPlace}, {dateBorn.dateBorn}
+                    </Typography>
+                </div>
+              <div style={{marginTop:"10px"}}>
+                <Typography variant="h6" gutterBottom>
+                    Asal Sekolah
                 </Typography>
-                <Typography variant="h6" align="center">
-                  PPDB Online 2020
-                </Typography>      
-                <div style={{marginTop:"20px"}}>
-                  <Typography variant="h6" gutterBottom>
-                      ID Peserta
-                  </Typography>
-                  <Typography style={{marginTop:"-10px"}} gutterBottom>
-                      {idRegister.idRegister}
-                  </Typography>
-                </div>
-                <div style={{marginTop:"10px"}}>
-                  <Typography variant="h6" gutterBottom>
-                      Nama Lengkap
-                  </Typography>
-                  <Typography style={{marginTop:"-10px"}} gutterBottom>
-                      {fullName.fullName}
-                  </Typography>
-                </div>
-                <div style={{marginTop:"10px"}}>
-                  <Typography variant="h6" gutterBottom>
-                      NISN
-                  </Typography>
-                  <Typography style={{marginTop:"-10px"}} gutterBottom>
-                      {nisn.nisn}
-                  </Typography>
-                </div>
-                <div style={{marginTop:"10px"}}>
-                  <Typography variant="h6" gutterBottom>
-                      Tempat Tanggal Lahir
-                  </Typography>
-                  <Typography style={{marginTop:"-10px"}} gutterBottom>
-                      {bornPlace.bornPlace}, {dateBorn.dateBorn}
-                  </Typography>
-              </div>
+                <Typography style={{marginTop:"-10px"}} gutterBottom>
+                    {fromSchool.fromSchool}
+                </Typography>
+            </div>
             <div style={{marginTop:"10px"}}>
               <Typography variant="h6" gutterBottom>
-                  Asal Sekolah
+                  Pilihan Jurusan
               </Typography>
               <Typography style={{marginTop:"-10px"}} gutterBottom>
-                  {fromSchool.fromSchool}
+                  1. {firstFaculty.firstFaculty}
               </Typography>
-          </div>
-          <div style={{marginTop:"10px"}}>
-            <Typography variant="h6" gutterBottom>
-                Pilihan Jurusan
-            </Typography>
-            <Typography style={{marginTop:"-10px"}} gutterBottom>
-                1. {firstFaculty.firstFaculty}
-            </Typography>
-            <Typography style={{marginTop:"-10px"}} gutterBottom>
-                2. {secondFaculty.secondFaculty}
-            </Typography>
-          </div>
-          <div style={{marginTop:"10px"}}>
-            <Typography variant="h6" gutterBottom>
-                Tanggal Pendaftaran
-            </Typography>
-            <Typography style={{marginTop:"-10px"}} gutterBottom>
-                {fullDateCreated}
-            </Typography>
-          </div>   
-        </div>       
-    </React.Fragment>                              
+              <Typography style={{marginTop:"-10px"}} gutterBottom>
+                  2. {secondFaculty.secondFaculty}
+              </Typography>
+            </div>
+            <div style={{marginTop:"10px"}}>
+              <Typography variant="h6" gutterBottom>
+                  Tanggal Pendaftaran
+              </Typography>
+              <Typography style={{marginTop:"-10px"}} gutterBottom>
+                  {fullDateCreated}
+              </Typography>
+            </div>           
+      </React.Fragment>                              
+    </a>       
                 <div style={{textAlign:"center"}}>    
-                <ReactToPdf targetRef={ref} filename="Kartu-Peserta.pdf" x={.5} y={.5}>
+                <ReactToPdf targetRef={ref} filename="Kartu-Peserta.pdf" x={30} y={.5}>
                     {({toPdf}) => (
                         <Button
                         variant="contained"
                         color="primary"                    
                         className={classes.submit}                    
-                        style={{marginTop:"40px", marginRight:"5px"}}   
+                        style={{marginTop:"40px", marginRight:"5px"}}
                         onClick={toPdf}
                         component={LinkRouter}                  
                       >
