@@ -10,34 +10,38 @@ import axios from "axios"
 import Swal from "sweetalert2"
 import jsPDF from 'jspdf'
 import html2canvas from 'html2canvas'
-import {isMobile} from 'react-device-detect';
+import {isMobile} from 'react-device-detect'
+import ReactToPdf from 'react-to-pdf'
+
+const ref = React.createRef();
 
 const printDocument = () => {
-  if (isMobile) {
-    const input = document.getElementById('divIdToPrint');
-    html2canvas(input)
-      .then((canvas) => {
-        const imgData = canvas.toDataURL('image/png');
+  // if (isMobile) {
+  //   const input = document.getElementById('divIdToPrint');
+  //   html2canvas(input)
+  //     .then((canvas) => {
+  //       const imgData = canvas.toDataURL('image/png');
 
-        const pdf = new jsPDF();
-        pdf.addImage(imgData, 'PNG', 0, 0);
-        pdf.save("download.pdf");
-      })
-    ;
-  } else {
-    document.getElementById('divToPrint').style.backgroundColor = "white"
-    document.getElementById('divToPrint').style.height = "850px"
+  //       const pdf = new jsPDF();
+  //       pdf.addImage(imgData, 'PNG', 0, 0);
+  //       pdf.save("download.pdf");
+  //     })
+  //   ;
+  // } else {
+  //   document.getElementById('divToPrint').style.backgroundColor = "white"
+  //   document.getElementById('divToPrint').style.height = "850px"
     
-    const input = document.getElementById('divToPrint');
-    html2canvas(input)
-      .then((canvas) => {
-        const imgData = canvas.toDataURL('image/png');
-        const pdf = new jsPDF();
-        pdf.addImage(imgData, 'JPEG', -25, -25);      
-        pdf.save("download.pdf");
-      })
-    ; 
-  }    
+  //   const input = document.getElementById('divToPrint');
+  //   html2canvas(input)
+  //     .then((canvas) => {
+  //       const imgData = canvas.toDataURL('image/png');
+  //       const pdf = new jsPDF();
+  //       pdf.addImage(imgData, 'JPEG', -73, -35);      
+  //       pdf.save("download.pdf");
+  //     })
+  //   ; 
+  // }      
+  
 };
 
 function Copyright() {
@@ -182,7 +186,8 @@ function Checkout({match}) {
       <CssBaseline />           
       <main className={classes.layout}>
         <Paper className={classes.paper}>
-        <React.Fragment>          
+        <React.Fragment>   
+          <div ref={ref}>
               <Typography variant="h5" align="center">
                   SMKN 1 Nawangan
                 </Typography>
@@ -220,7 +225,7 @@ function Checkout({match}) {
                   <Typography style={{marginTop:"-10px"}} gutterBottom>
                       {bornPlace.bornPlace}, {dateBorn.dateBorn}
                   </Typography>
-            </div>
+              </div>
             <div style={{marginTop:"10px"}}>
               <Typography variant="h6" gutterBottom>
                   Asal Sekolah
@@ -247,19 +252,24 @@ function Checkout({match}) {
             <Typography style={{marginTop:"-10px"}} gutterBottom>
                 {fullDateCreated}
             </Typography>
-          </div>          
+          </div>   
+        </div>       
     </React.Fragment>                              
-                <div style={{textAlign:"center"}}>                                                        
-                  <Button
-                    variant="contained"
-                    color="primary"                    
-                    className={classes.submit}                    
-                    style={{marginTop:"40px", marginRight:"5px"}}   
-                    onClick={printDocument} 
-                    component={LinkRouter}                  
-                  >
-                    Download pdf
-                  </Button>
+                <div style={{textAlign:"center"}}>    
+                <ReactToPdf targetRef={ref} filename="Kartu-Peserta.pdf" x={.5} y={.5}>
+                    {({toPdf}) => (
+                        <Button
+                        variant="contained"
+                        color="primary"                    
+                        className={classes.submit}                    
+                        style={{marginTop:"40px", marginRight:"5px"}}   
+                        onClick={toPdf}
+                        component={LinkRouter}                  
+                      >
+                        Download pdf
+                      </Button>
+                    )}
+                </ReactToPdf>                                                                      
                   <Button
                     variant="contained"
                     color="secondary"                    
