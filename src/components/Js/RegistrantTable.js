@@ -85,10 +85,7 @@ class ListProblem extends React.Component {
               autoComplete="fullName"
               onChange={this.handleChangeSearchRegistrant}                      
               style={{position:"absolute", left:"5px", top:"70px"}}
-            />
-            <div>
-            <Badge color="secondary" badgeContent={`Jumlah Pendaftar`} showZero></Badge>
-            </div>
+            />            
             <Button variant="contained" size="small" color="primary" style={{position:"absolute", right:"5px", top:"110px"}} onClick={() =>this.showAllRegistrant()}>
                 Refresh
             </Button>
