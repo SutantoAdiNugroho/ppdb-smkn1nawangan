@@ -15,35 +15,6 @@ import ReactToPdf from 'react-to-pdf'
 
 const ref = React.createRef();
 
-const printDocument = () => {
-  // if (isMobile) {
-  //   const input = document.getElementById('divIdToPrint');
-  //   html2canvas(input)
-  //     .then((canvas) => {
-  //       const imgData = canvas.toDataURL('image/png');
-
-  //       const pdf = new jsPDF();
-  //       pdf.addImage(imgData, 'PNG', 0, 0);
-  //       pdf.save("download.pdf");
-  //     })
-  //   ;
-  // } else {
-  //   document.getElementById('divToPrint').style.backgroundColor = "white"
-  //   document.getElementById('divToPrint').style.height = "850px"
-    
-  //   const input = document.getElementById('divToPrint');
-  //   html2canvas(input)
-  //     .then((canvas) => {
-  //       const imgData = canvas.toDataURL('image/png');
-  //       const pdf = new jsPDF();
-  //       pdf.addImage(imgData, 'JPEG', -73, -35);      
-  //       pdf.save("download.pdf");
-  //     })
-  //   ; 
-  // }      
-  
-};
-
 function Copyright() {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
@@ -122,7 +93,7 @@ function Checkout({match}) {
   const [createdAt, setCreatedAt] = React.useState("")
 
   const id = match.params.id
-  let urlLoginLive = "https://ppdb-smkn1nawangan-back.herokuapp.com/";  
+  let urlLoginLive = process.env.REACT_APP_API_LOGIN_LIVE;  
 
   useEffect(() => {
     let timerInterval
