@@ -12,15 +12,25 @@ import jsPDF from 'jspdf'
 import html2canvas from 'html2canvas'
 
 const printDocument = () => {
-  document.getElementById('divToPrint').style.backgroundColor = "white"
-  document.getElementById('divToPrint').style.height = "850px"
+  // document.getElementById('divToPrint').style.backgroundColor = "white"
+  // document.getElementById('divToPrint').style.height = "850px"
   
-  const input = document.getElementById('divToPrint');
+  // const input = document.getElementById('divToPrint');
+  // html2canvas(input)
+  //   .then((canvas) => {
+  //     const imgData = canvas.toDataURL('image/png');
+  //     const pdf = new jsPDF();
+  //     pdf.addImage(imgData, 'JPEG', -73, -35);      
+  //     pdf.save("download.pdf");
+  //   })
+  // ;
+  const input = document.getElementById('divIdToPrint');
   html2canvas(input)
     .then((canvas) => {
       const imgData = canvas.toDataURL('image/png');
+
       const pdf = new jsPDF();
-      pdf.addImage(imgData, 'JPEG', -73, -35);      
+      pdf.addImage(imgData, 'PNG', 0, 0);
       pdf.save("download.pdf");
     })
   ;
@@ -169,7 +179,7 @@ function Checkout({match}) {
       <main className={classes.layout}>
         <Paper className={classes.paper}>
         <React.Fragment>
-          <div>
+          <div id="divIdToPrint">
               <Typography variant="h5" align="center">
                   SMKN 1 Nawangan
                 </Typography>
@@ -238,7 +248,7 @@ function Checkout({match}) {
           </div>
     </React.Fragment>                              
                 <div style={{textAlign:"center"}}>                                                        
-                  {/* <Button
+                  <Button
                     variant="contained"
                     color="primary"                    
                     className={classes.submit}                    
@@ -247,14 +257,14 @@ function Checkout({match}) {
                     component={LinkRouter}                  
                   >
                     Download pdf
-                  </Button> */}
+                  </Button>
                   <Button
                     variant="contained"
                     color="secondary"                    
                     className={classes.submit}
                     component={LinkRouter}
                      to={linkBack}
-                    // style={{marginTop:"40px", marginLeft:"5px"}}                    
+                    style={{marginTop:"40px", marginLeft:"5px"}}                    
                   >
                     Kembali
                   </Button>

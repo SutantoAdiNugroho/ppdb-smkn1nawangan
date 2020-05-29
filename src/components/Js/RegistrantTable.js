@@ -12,6 +12,7 @@ import { verify, axiosReportsUsers } from "./helpers"
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import axios from 'axios';
+import Badge from '@material-ui/core/Badge';
 
 class ListProblem extends React.Component {
   constructor(props) {
@@ -74,19 +75,25 @@ class ListProblem extends React.Component {
 
     return (
       <div style={{padding:"5px"}}>
-        <TableContainer style={{marginTop:"10px"}}>
-        <TextField
-            variant="outlined"
-            margin="normal"            
-            id="fullName"
-            label="Cari dengan nama.."
-            name="fullName"
-            autoComplete="fullName"
-            onChange={this.handleChangeSearchRegistrant}                      
-          />
-          <Button variant="contained" size="small" color="primary" style={{position:"absolute", right:"5px", top:"110px"}} onClick={() =>this.showAllRegistrant()}>
-              Refresh
-          </Button>
+        <div>
+          <TextField
+              variant="outlined"
+              margin="normal"            
+              id="fullName"
+              label="Cari dengan nama.."
+              name="fullName"
+              autoComplete="fullName"
+              onChange={this.handleChangeSearchRegistrant}                      
+              style={{position:"absolute", left:"5px", top:"70px"}}
+            />
+            <div>
+            <Badge color="secondary" badgeContent={`Jumlah Pendaftar`} showZero></Badge>
+            </div>
+            <Button variant="contained" size="small" color="primary" style={{position:"absolute", right:"5px", top:"110px"}} onClick={() =>this.showAllRegistrant()}>
+                Refresh
+            </Button>
+          </div>
+        <TableContainer style={{marginTop:"90px"}}>        
             <Table style={{minWidth:700}} aria-label="customized table">
                 <TableHead>
                 <TableRow>

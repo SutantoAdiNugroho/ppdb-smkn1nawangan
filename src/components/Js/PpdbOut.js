@@ -81,8 +81,7 @@ const useStyles = makeStyles((theme) => ({
 
 function Checkout(props) {
   const classes = useStyles();  
-  let urlLoginLive = "https://ppdb-smkn1nawangan-back.herokuapp.com/";
-  const disableBtnProps = {};
+  let urlLoginLive = "https://ppdb-smkn1nawangan-back.herokuapp.com/";  
   const DatePickerField = ({ field, form, ...other }) => {
     const currentError = form.errors[field.name];
   
@@ -119,8 +118,8 @@ function Checkout(props) {
     }} 
     onSubmit={values => {         
       let nisn = values.nisn.toString().substr(3, 7)
-      let myName = values.fullName.substr(0, 2).toUpperCase();
-      let myId = `PPDB${myName}${nisn}`      
+      let myName = values.fullName.substr(0, 2).toUpperCase()
+      let myId = `PPDB${myName}${nisn}`
 
       let myNisn = values.nisn.toString()
 
@@ -230,19 +229,31 @@ function Checkout(props) {
           }
         })                     
         axios
-          .post(`${urlLoginLive}ppdb`, {idRegister:myId, fullName:values.fullName, nisn:values.nisn, bornPlace:values.bornPlace, dateBorn:dateBorn, fromSchool:values.fromSchool, facultyFirst:facultyFirst, facultySecond:facultySecond, checkVerifyBiodata:checkVerify})
-          .then(response => {
-            console.log(response.data.data)
-            let idRegistrant = response.data.data
-            console.log(idRegistrant._id)
-            if (response.status == 200) {                   
-              Swal.fire({
-                icon: 'success',
-                title: 'Pendaftaran Berhasil',
-                text: 'Selamat pendaftaran PPDB anda di SMKN 1 Nawangan berhasil',
-              }).then(result => {
-                props.history.push(`regist-card/${idRegistrant._id}`);
-              })
+          .post(`${urlLoginLive}ppdb`, {idRegister:myId, fullName:values.fullName, nisn:values.nisn, bornPlace:values.bornPlace, dateBorn:dateBorn, fromSchool:values.fromSchool, facultyFirst:facultyFirst, facultySecond:facultySecond, checkVerifyBiodata:checkVerify, password:"reg"})
+          .then(response => {            
+            let idRegistrant = response.data.data._id            
+            if (response.status == 200) {
+              let subsIdRegistrant = idRegistrant.substr(5, 10).toUpperCase()
+              let newIdRegistrant = `PPDB${subsIdRegistrant}`
+                axios
+                  .put(`${urlLoginLive}ppdb/id/${idRegistrant}`, {idRegister:newIdRegistrant})
+                  .then(response => {
+                    if (response.status == 200) {
+                      console.log(response)
+                      Swal.fire({
+                        icon: 'success',
+                        title: 'Pendaftaran Berhasil',
+                        text: 'Selamat pendaftaran PPDB anda di SMKN 1 Nawangan berhasil',
+                      }).then(result => {
+                        props.history.push(`regist-card/${idRegistrant}`);
+                      })
+                    } else {
+                      Swal.fire({
+                        icon: 'error',
+                        title: 'Pendaftaran gagal, silahkan coba kembali'
+                      })                    
+                    }                   
+                  })              
             } else {
               Swal.fire({
                 icon: 'error',
