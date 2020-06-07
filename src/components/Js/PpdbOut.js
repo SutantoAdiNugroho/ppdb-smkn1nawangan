@@ -3,7 +3,6 @@ import { makeStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
-import Link from '@material-ui/core/Link';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
@@ -19,22 +18,9 @@ import InputLabel from '@material-ui/core/InputLabel';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
-import { Formik, ErrorMessage, Form, Field  } from "formik";
+import { Formik, Field  } from "formik";
 import Swal from "sweetalert2"
 import axios from "axios"
-
-function Copyright() {
-  return (
-    <Typography variant="body2" color="textSecondary" align="center">
-      {'Admin © '}
-      <Link color="inherit" href="https://material-ui.com/">
-        SMKN 1 Nawangan
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  );
-}
 
 const useStyles = makeStyles((theme) => ({  
   layout: {
@@ -243,7 +229,7 @@ function Checkout(props) {
                       Swal.fire({
                         icon: 'success',
                         title: 'Pendaftaran Berhasil',
-                        text: 'Selamat pendaftaran PPDB anda di SMKN 1 Nawangan berhasil',
+                        text: 'Selamat pendaftaran PPDB anda di SMKN 1 Nawangan berhasil, tekan OK untuk ke halaman selanjutnya',
                       }).then(result => {
                         props.history.push(`regist-card/${idRegistrant}`);
                       })
@@ -254,17 +240,24 @@ function Checkout(props) {
                       })                    
                     }                   
                   })              
-            } else {
+            } else {              
               Swal.fire({
                 icon: 'error',
                 title: 'Pendaftaran gagal, silahkan coba kembali'
               })
             }
-          }).catch(error => {
-            Swal.fire({
-              icon: 'error',
-              title: 'Pendaftaran gagal, silahkan coba kembali'
-            })
+          }).catch(error => {            
+            if (error == "Error: Network Error") {
+              Swal.fire({
+                icon: 'error',
+                title: "Login gagal, silahkan cek koneksi anda",
+              })
+            } else {
+              Swal.fire({
+                icon: 'error',
+                title: "Login gagal, silahkan coba kembali",
+              })
+            }
           })
       }
     }}
@@ -434,8 +427,7 @@ function Checkout(props) {
                   </Button>
                 </div>                        
           </React.Fragment>
-        </Paper>
-        <Copyright />
+        </Paper>        
       </main>
     </React.Fragment>
     </form>

@@ -3,7 +3,6 @@ import { makeStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
-import Link from '@material-ui/core/Link';
 import Typography from '@material-ui/core/Typography';
 import { Link as LinkRouter,withRouter } from 'react-router-dom'
 import axios from "axios"
@@ -11,19 +10,6 @@ import Swal from "sweetalert2"
 import ReactToPdf from 'react-to-pdf'
 
 const ref = React.createRef();
-
-function Copyright() {
-  return (
-    <Typography variant="body2" color="textSecondary" align="center">
-      {'Admin © '}
-      <Link color="inherit">
-        SMKN 1 Nawangan
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  );
-}
 
 const useStyles = makeStyles((theme) => ({  
   layout: {
@@ -243,14 +229,13 @@ function Checkout({match}) {
                     color="secondary"                    
                     className={classes.submit}
                     component={LinkRouter}
-                     to={linkBack}
+                    to={linkBack}
                     style={{marginTop:"40px", marginLeft:"5px"}}                    
                   >
                     Kembali
                   </Button>
                 </div>                                  
-        </Paper>
-        <Copyright />
+        </Paper>        
       </main>
     </React.Fragment>    
     </div>

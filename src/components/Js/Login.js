@@ -17,19 +17,6 @@ import { Formik, ErrorMessage } from "formik";
 import swal from "sweetalert2"
 import axios from "axios"
 
-function Copyright() {
-  return (
-    <Typography variant="body2" color="textSecondary" align="center">
-      {'Admin © '}
-      <Link color="inherit" href="https://material-ui.com/">
-        SMKN 1 Nawangan
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  );
-}
-
 const useStyles = makeStyles((theme) => ({
   paper: {
     marginTop: theme.spacing(8),
@@ -136,13 +123,20 @@ function SignIn(props) {
                     })
                     }
                   }
-                }).catch(error => {
-                  swal.fire({
-                    icon: 'error',
-                    title: "Login gagal, silahkan coba kembali",
-                  })
+                }).catch(error => {                  
+                  if (error == "Error: Network Error") {
+                    swal.fire({
+                      icon: 'error',
+                      title: "Login gagal, silahkan cek koneksi anda",
+                    })
+                  } else {
+                    swal.fire({
+                      icon: 'error',
+                      title: "Login gagal, silahkan coba kembali",
+                    })
+                  }
                 })
-          }                           
+            }                           
         }}
         >
           {({
@@ -211,8 +205,7 @@ function SignIn(props) {
             Kembali
           </Button> 
       </div>
-      <Box mt={8}>
-        <Copyright />
+      <Box mt={8}>        
       </Box>
     </Container>
   );

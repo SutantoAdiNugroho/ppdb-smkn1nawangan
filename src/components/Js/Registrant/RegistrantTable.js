@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react';
-import { axiosReportsUsers } from "./helpers"
+import { axiosReportsUsers } from "../helpers"
 import { Link,withRouter } from 'react-router-dom'
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
@@ -14,6 +14,8 @@ import Swal from "sweetalert2"
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
+import { Modal, Container, Row, Col, Card} from "react-bootstrap";
+import "bootstrap/dist/css/bootstrap.min.css";
 
 const columns = [
   { id: 'idRegister', label: 'ID Register', minWidth: 170 },
@@ -60,13 +62,14 @@ const useStyles = makeStyles({
   },
 });
 
-function StickyHeadTable() {
+function StickyHeadTable() {  
   const classes = useStyles();
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [data, setData] = React.useState([])
+  const [modalShow, setModalShow] = React.useState(false);
   const [timeNow, setTimeNow] = React.useState("")
-  const [dateNow, setDateNow] = React.useState("")
+  const [dateNow, setDateNow] = React.useState("")    
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -88,24 +91,26 @@ function StickyHeadTable() {
             title: 'Gagal mengambil data, silahkan coba kembali'
           })
         })        
-  };
+  };  
 
   const myTimer = (event) => {
     let hoursNow = new Date().getHours()
     let minutesNow = new Date().getMinutes()
     let secondsNow = new Date().getSeconds()
     let fullTimeNow = `${hoursNow}:${minutesNow}:${secondsNow}` 
-    setTimeNow(fullTimeNow)
+    setTimeNow(fullTimeNow) 
 
     let createdAtFullyear = new Date().getFullYear()
     let createdAtMonth = new Date().getMonth()+1
     let createdAtDay = new Date().getDate()
     let fullDateCreated = `${createdAtDay}/${createdAtMonth}/${createdAtFullyear}` 
     setDateNow(fullDateCreated)
-  }
+  }    
 
-  useEffect(() => {    
-    let myVar = setInterval(myTimer, 1000);
+  useEffect(() => {        
+
+    let myVar = setInterval(myTimer, 1000);  
+
       axiosReportsUsers()
         .get(`ppdb`)
         .then(
@@ -116,28 +121,72 @@ function StickyHeadTable() {
             title: 'Gagal mengambil data, silahkan coba kembali'
           })
         })
+        
+      return () => {
+        clearInterval(myVar)
+      }
   }, [])
+
+  function MydModalWithGrid(props) {    
+    return (
+      <Modal {...props} aria-labelledby="contained-modal-title-vcenter">
+        <Modal.Header closeButton>
+          <Modal.Title id="contained-modal-title-vcenter">
+            Using Grid in Modal
+          </Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Container>
+            <Row className="show-grid">
+              <Col xs={12} md={8}>
+                <code>.col-xs-12 .col-md-8</code>
+              </Col>
+              <Col xs={6} md={4}>
+                <code>.col-xs-6 .col-md-4</code>
+              </Col>
+            </Row>
+  
+            <Row className="show-grid">
+              <Col xs={6} md={4}>
+                <code>.col-xs-6 .col-md-4</code>
+              </Col>
+              <Col xs={6} md={4}>
+                <code>.col-xs-6 .col-md-4</code>
+              </Col>
+              <Col xs={6} md={4}>
+                <code>.col-xs-6 .col-md-4</code>
+              </Col>
+            </Row>
+          </Container>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button onClick={props.onHide}>Close</Button>
+        </Modal.Footer>
+      </Modal>
+    );
+  }
             
   return (
-    <div>
-      <div style={{marginBottom:"100px"}}>
-           <TextField
-               variant="outlined"
-               margin="normal"            
-               id="fullName"
-               label="Cari dengan nama.."
-               name="fullName"
-               autoComplete="fullName"
+    <div>    
+      <MydModalWithGrid show={modalShow} onHide={() => setModalShow(false)} />
+    <div style={{marginBottom:"100px"}}>
+          <TextField
+              variant="outlined"
+              margin="normal"            
+              id="fullName"
+              label="Cari dengan nama.."
+              name="fullName"
+              autoComplete="fullName"
               onChange={handleChangeSearchRegistrant}
-               style={{position:"absolute", left:"5px", top:"70px"}}
-             />       
-             <Typography variant="h6" className={classes.title} style={{position:"absolute", right:"5px", top:"85px"}}>
-               {dateNow}
-             </Typography>
-             <Typography variant="h6" className={classes.title} style={{position:"absolute", right:"5px", top:"120px"}}>
-               {timeNow}
-             </Typography>   
-      </div>
+              style={{position:"absolute", left:"5px", top:"70px"}}
+            />       
+            <Typography variant="h6" className={classes.title} style={{position:"absolute", right:"5px", top:"85px"}}>
+              {dateNow}
+            </Typography>
+            <Typography variant="h6" className={classes.title} style={{position:"absolute", right:"5px", top:"120px"}}>
+              {timeNow}
+            </Typography>   
+    </div>
     <Paper className={classes.root}>       
       <TableContainer className={classes.container}>
         <Table stickyHeader aria-label="sticky table">
@@ -163,9 +212,15 @@ function StickyHeadTable() {
                     return (
                       <TableCell key={column.id} align={column.align}>
                         {column.id == "action" ? 
-                          <Button variant="contained" size="small" color="primary" component={Link} to={`regist-card/${row._id}`}>
-                              Detail
-                          </Button> :
+                        <div>
+                            <Button variant="contained" size="small" color="secondary" style={{marginTop:"10px", marginRight:"10px"}} component={Link} to={`regist-card/${row._id}`}>
+                                Detail
+                            </Button>
+                            <Button variant="contained" size="small" color="primary" style={{marginTop:"10px", marginRight:"10px"}} component={Link} to={`regist-verify/${row._id}`}>
+                                Verifikasi
+                            </Button>
+                          </div>
+                          :
                          column.format && typeof value === 'number' ? column.format(value) : value}                        
                       </TableCell>
                     );
@@ -184,7 +239,7 @@ function StickyHeadTable() {
         page={page}
         onChangePage={handleChangePage}
         onChangeRowsPerPage={handleChangeRowsPerPage}
-      />
+      />      
     </Paper>
     </div>
   );
