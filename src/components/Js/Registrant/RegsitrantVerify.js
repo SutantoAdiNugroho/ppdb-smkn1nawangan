@@ -157,11 +157,29 @@ function RegsitrantVerify({match}) {
             confirmButtonText: 'Ya'
           }).then((result) => {
             if (result.value) {
-              Swal.fire(
-                'Terkonfirmasi',
-                'Data pendaftar ini telah terkonfirmasi.',
-                'success'
-              )
+                Swal.mixin({
+                    input: 'text',
+                    confirmButtonText: 'Next &rarr;',
+                    showCancelButton: true,
+                    progressSteps: ['1']
+                  }).queue([
+                    {
+                      title: 'Catatan verifikasi',
+                      text: 'Tambahkan catatan untuk verifikasi gagal ini'
+                    }
+                  ]).then((result) => {
+                    if (result.value) {
+                      const answers = JSON.stringify(result.value)
+                      Swal.fire({
+                        title: 'All done!',
+                        html: `
+                          Your answers:
+                          <pre><code>${answers}</code></pre>
+                        `,
+                        confirmButtonText: 'OK'
+                      })
+                    }
+                  })              
             }
           })
     }

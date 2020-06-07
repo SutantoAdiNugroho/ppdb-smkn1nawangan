@@ -17,6 +17,7 @@ import {
 import Header from "./components/Js/Header/Header"
 import Footer from "./components/Js/Footer/Footer"
 import { verify } from "./components/Js/helpers"
+import "bootstrap/dist/css/bootstrap.min.css";
 
 function App() {
   const isLogin = localStorage.getItem("token");
@@ -32,13 +33,13 @@ function App() {
             {!isLogin ? <Login /> : <RegistrantTable /> }
           </Route>
           <Route path="/regist-table" exact={true}>
-            {isLogin ? <RegistrantTable /> : <Redirect to="/login" />}            
+            {isLogin ? <RegistrantTable /> : <Redirect to="/login" />}
           </Route>
           <Route path="/regist-card/:id" exact={true}>
             <RegistrantCard />    
           </Route>
           <Route path="/regist-verify/:id" exact={true}>
-            <RegsitrantVerify />    
+            {isLogin ? <RegsitrantVerify /> : <Redirect to="/login" />}            
           </Route>
           <Route path="/add-admin" exact={true}>
             {!isLogin ? <Redirect to="/login" /> : verify().role == "admin" ? <RegistrantTable /> : <AddAdmin />}            

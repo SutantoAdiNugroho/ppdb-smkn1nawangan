@@ -1,15 +1,13 @@
 import React, {useEffect} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import SwipeableDrawer from '@material-ui/core/SwipeableDrawer';
-import Button from '@material-ui/core/Button';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import SpeakerNotesIcon from '@material-ui/icons/SpeakerNotes';
-import AccountProfileIcon from '@material-ui/icons/AccountCircle';
-import PersonAddIcon from '@material-ui/icons/PersonAdd';
 import ViewListIcon from '@material-ui/icons/ViewList';
+import DoneAllIcon from '@material-ui/icons/DoneAll';
+import CancelIcon from '@material-ui/icons/Cancel';
 import { Link } from "react-router-dom";
 import MenuIcon from '@material-ui/icons/Menu';
 import IconButton from '@material-ui/core/IconButton';
@@ -66,6 +64,30 @@ export default function SwipeableTemporaryDrawer() {
           to="/regist-table"
           >
             <ListItemIcon><ViewListIcon /></ListItemIcon>
+            <ListItemText primary={text} ></ListItemText>
+          </ListItem>
+        ))}
+
+        {['Verifikasi Sukses'].map((text, index) => (
+          <ListItem 
+          button 
+          key={text}
+          component={Link}
+          to="/regist-table"
+          >
+            <ListItemIcon><DoneAllIcon /></ListItemIcon>
+            <ListItemText primary={text} ></ListItemText>
+          </ListItem>
+        ))}
+
+        {['Verifikasi Gagal'].map((text, index) => (
+          <ListItem 
+          button 
+          key={text}
+          component={Link}
+          to="/regist-table"
+          >
+            <ListItemIcon><CancelIcon /></ListItemIcon>
             <ListItemText primary={text} ></ListItemText>
           </ListItem>
         ))}
