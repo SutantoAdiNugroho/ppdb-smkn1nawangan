@@ -4,3 +4,4 @@ export { default as RegistrantTable } from "./Js/Registrant/RegistrantTable";
 export { default as RegistrantCard } from "./Js/Registrant/RegistrantCard";
 export { default as AddAdmin } from "./Js/AddAdmin";
 export { default as RegsitrantVerify } from "./Js/Registrant/RegsitrantVerify";
+export { default as RegistrantSuccess } from "./Js/Registrant/RegistrantSuccess";

@@ -6,7 +6,8 @@ import {
   RegistrantTable, 
   RegistrantCard, 
   AddAdmin, 
-  RegsitrantVerify
+  RegsitrantVerify,
+  RegistrantSuccess
 } from "./components"
 import {
   BrowserRouter as Router,
@@ -21,6 +22,25 @@ import "bootstrap/dist/css/bootstrap.min.css";
 
 function App() {
   const isLogin = localStorage.getItem("token");
+  
+  // window.onbeforeunload = function(e) {
+  //   window.localStorage.unloadTime = JSON.stringify(new Date());
+  // }
+
+  // window.onload = function () {
+
+  //   let loadTime = new Date();
+  //   let unloadTime = new Date(JSON.parse(window.localStorage.unloadTime));
+  //   let refreshTime = loadTime.getTime() - unloadTime.getTime();
+
+  //   console.log(refreshTime)
+    
+  //   if(refreshTime>5000) {//3000 milliseconds 
+  //     window.localStorage.removeItem("token");
+  //   }
+    
+  // };
+
   return (   
     <Router>
       <Header />
@@ -34,6 +54,9 @@ function App() {
           </Route>
           <Route path="/regist-table" exact={true}>
             {isLogin ? <RegistrantTable /> : <Redirect to="/login" />}
+          </Route>
+          <Route path="/regist-success" exact={true}>
+            {isLogin ? <RegistrantSuccess /> : <Redirect to="/login" />}
           </Route>
           <Route path="/regist-card/:id" exact={true}>
             <RegistrantCard />    

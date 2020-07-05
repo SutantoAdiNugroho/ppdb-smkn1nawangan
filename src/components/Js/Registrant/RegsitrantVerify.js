@@ -25,15 +25,12 @@ const useStyles = makeStyles({
 
 function RegsitrantVerify({match}) {
     const classes = useStyles();
-    const [verSuccess, setVerSuccess] = React.useState(false)
     const [btnSuccess, setBtnSuccess] = React.useState()
     const [btnFail, setBtnFail] = React.useState()
     const [btnDisabled, setBtnDisabled] = React.useState()
-    const [verFullnameSuccess, setVerFullnameSuccess] = React.useState(false)    
-    const [verNisnSuccess, setVerNisnSuccess] = React.useState(false)
-    const [verBornSuccess, setVerBornSuccess] = React.useState(false)
-    const [verFromSchSuccess, setVerFromSchSuccess] = React.useState(false)
     const [registrantData, setRegistrantData] = React.useState([])
+    const [verifFull, setVerifFull] = React.useState("")
+    const [idRegister, setIdRegister] = React.useState("")
 
     const id = match.params.id
 
@@ -62,56 +59,80 @@ function RegsitrantVerify({match}) {
         } else {
             setBtnDisabled(false)
             if (rdFullNameTrue && rdNisnTrue && rdBornTrue && rdFromSchTrue) {
-                setBtnSuccess(false)
-                setBtnFail(true)
-            } else {
-                setBtnSuccess(true)
-                setBtnFail(false)
+              setVerifFull({registrantData: id,
+                            resultVerify: "verified",
+                            fullNameVerify: rdFromSchTrue,
+                            nisnVerify: rdNisnTrue,
+                            bornPlaceVerify: rdBornTrue,
+                            dateBornVerify: rdBornTrue,
+                            fromSchoolVerify: rdFromSchTrue,
+                            notedVerify: "verified"
+                          })
+              setBtnSuccess(false)
+              setBtnFail(true)
+            } else {        
+              setVerifFull({registrantData: id,
+                            resultVerify: "unverified",
+                            fullNameVerify: rdFromSchTrue,
+                            nisnVerify: rdNisnTrue,
+                            bornPlaceVerify: rdBornTrue,
+                            dateBornVerify: rdBornTrue,
+                            fromSchoolVerify: rdFromSchTrue,                
+                          })                    
+              setBtnSuccess(true)
+              setBtnFail(false)
             }               
-        }                
-    }         
+        }                       
+    }   
+    
+    const onLoading = () => {
+
+      let timerInterval
+
+      Swal.fire({
+        title: 'Silahkan tunggu..',              
+        timer: 9999999,
+        timerProgressBar: true,
+        onBeforeOpen: () => {
+          Swal.showLoading()
+          timerInterval = setInterval(() => {
+            const content = Swal.getContent()
+            if (content) {
+              const b = content.querySelector('b')
+              if (b) {
+                b.textContent = Swal.getTimerLeft()
+              }
+            }
+          }, 100)
+        },
+        onClose: () => {
+          clearInterval(timerInterval)
+        }
+      }).then((result) => {          
+        if (result.dismiss === Swal.DismissReason.timer) {
+          console.log('I was closed by the timer')
+        }
+      })
+    }
 
     useEffect(() => {                   
 
-        let timerInterval
         let renderChange
 
         setBtnSuccess(true)
         setBtnFail(true)
 
-        Swal.fire({
-          title: 'Silahkan tunggu..',              
-          timer: 9999999,
-          timerProgressBar: true,
-          onBeforeOpen: () => {
-            Swal.showLoading()
-            timerInterval = setInterval(() => {
-              const content = Swal.getContent()
-              if (content) {
-                const b = content.querySelector('b')
-                if (b) {
-                  b.textContent = Swal.getTimerLeft()
-                }
-              }
-            }, 100)
-          },
-          onClose: () => {
-            clearInterval(timerInterval)
-          }
-        }).then((result) => {          
-          if (result.dismiss === Swal.DismissReason.timer) {
-            console.log('I was closed by the timer')
-          }
-        }) 
+        onLoading()
         axiosReportsUsers()
             .get(`ppdb/id/${id}`)
             .then(res => {
                 setRegistrantData(res.data.data[0])      
+                setIdRegister(res.data.data[0].idRegister)
                 Swal.fire({
                     icon: 'success',
                     title: 'Sukses mengambil data'
-                  }).then(result => {
-                    renderChange = setInterval(onChangeVerif, 500);
+                  }).then(result => {                    
+                    renderChange = setInterval(onChangeVerif, 500);                    
                   })                  
             }).catch(error => {
                 Swal.fire({
@@ -126,7 +147,7 @@ function RegsitrantVerify({match}) {
 
     }, [])
     
-    const onVerSuccess = () => {
+    const onVerSuccess = () => {      
         Swal.fire({
             title: 'Verifikasi berhasil?',
             text: "Pastikan semua data pendaftar benar!",
@@ -137,16 +158,38 @@ function RegsitrantVerify({match}) {
             confirmButtonText: 'Ya, semua data benar!'
           }).then((result) => {
             if (result.value) {
-              Swal.fire(
-                'Terkonfirmasi',
-                'Data pendaftar ini telah terkonfirmasi.',
-                'success'
-              )
+              onLoading()
+              axiosReportsUsers()
+              .post(`verify`, {...verifFull, idRegister: idRegister})
+              .then(response => {
+                if (response.status == 200) {
+                  axiosReportsUsers()
+                  .delete(`ppdb/${id}`)
+                  .then(response => {                    
+                    if (response.status == 200) {
+                      Swal.fire({
+                        icon: 'success',
+                        title: `Verifikasi data atas nama ${registrantData.fullName} telah berhasil!`
+                      })
+                    }                    
+                  })                  
+                } else {
+                  Swal.fire({
+                    icon: 'error',
+                    title: 'Gagal verifikasi data, silahkan coba kembali'
+                  })                  
+                }
+              }).catch(error => {
+                Swal.fire({
+                  icon: 'error',
+                  title: 'Gagal verifikasi data, silahkan coba kembali'
+                })
+              })              
             }
           })
     }
 
-    const onVerFail = () => {
+    const onVerFail = () => {      
         Swal.fire({
             title: 'Verifikasi gagal?',
             text: "Verifikasi data pendaftar ini terkonfirmasi gagal, pastikan semua data pendaftar benar!",
@@ -169,14 +212,34 @@ function RegsitrantVerify({match}) {
                     }
                   ]).then((result) => {
                     if (result.value) {
-                      const answers = JSON.stringify(result.value)
-                      Swal.fire({
-                        title: 'All done!',
-                        html: `
-                          Your answers:
-                          <pre><code>${answers}</code></pre>
-                        `,
-                        confirmButtonText: 'OK'
+                      const answer = result.value
+                      const dataAnswer = answer.toString()                      
+                      
+                      onLoading()
+                      axiosReportsUsers()
+                      .post(`verify`, {...verifFull, idRegister: idRegister, notedVerify: dataAnswer})
+                      .then(response => {
+                        if (response.status == 200) {
+                          axiosReportsUsers()
+                          .delete(`verify/vrf/${id}`)
+                          .then(response => {
+                            console.log(response)
+                          })
+                          Swal.fire({
+                            icon: 'success',
+                            title: `Verifikasi data atas nama ${registrantData.fullName} terkonfirmasi gagal!`
+                          })
+                        } else {
+                          Swal.fire({
+                            icon: 'error',
+                            title: 'Gagal verifikasi data, silahkan coba kembali'
+                          })                  
+                        }
+                      }).catch(error => {
+                        Swal.fire({
+                          icon: 'error',
+                          title: 'Gagal verifikasi data, silahkan coba kembali'
+                        })
                       })
                     }
                   })              

@@ -73,7 +73,7 @@ export default function SwipeableTemporaryDrawer() {
           button 
           key={text}
           component={Link}
-          to="/regist-table"
+          to="/regist-success"
           >
             <ListItemIcon><DoneAllIcon /></ListItemIcon>
             <ListItemText primary={text} ></ListItemText>

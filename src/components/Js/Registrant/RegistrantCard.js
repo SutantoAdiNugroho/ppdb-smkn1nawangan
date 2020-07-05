@@ -129,10 +129,12 @@ function Checkout({match}) {
         })
   }, []) 
 
-  let createdAtFullyear = new Date(createdAt.createdAt).getFullYear()
+  let createdAtFullyear = new Date(createdAt.createdAt).getFullYear()  
   let createdAtMonth = new Date(createdAt.createdAt).getMonth()+1
+  let createdAtMonthZ = (createdAtMonth <= 9 ? `0`+createdAtMonth : createdAtMonth)
   let createdAtDay = new Date(createdAt.createdAt).getDate()
-  let fullDateCreated = `${createdAtDay}/${createdAtMonth}/${createdAtFullyear}`  
+  let createdAtDayZ = (createdAtDay <= 9 ? `0`+createdAtDay : createdAtDay)
+  let fullDateCreated = `${createdAtDayZ}/${createdAtMonthZ}/${createdAtFullyear}`  
 
   return (     
     <div id="divToPrint">       

@@ -13,7 +13,6 @@ import TableRow from '@material-ui/core/TableRow';
 import Swal from "sweetalert2"
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
-import Typography from '@material-ui/core/Typography';
 
 const columns = [
   { id: 'idRegister', label: 'ID Register', minWidth: 170 },
@@ -51,6 +50,7 @@ const columns = [
 const useStyles = makeStyles({
   root: {
     width: '100%',
+    marginTop: '130px'
   },
   container: {
     maxHeight: 440,
@@ -92,15 +92,20 @@ function StickyHeadTable() {
 
   const myTimer = (event) => {
     let hoursNow = new Date().getHours()
+    let hoursNowZ = (hoursNow <= 9 ? `0`+hoursNow : hoursNow)
     let minutesNow = new Date().getMinutes()
-    let secondsNow = new Date().getSeconds()
-    let fullTimeNow = `${hoursNow}:${minutesNow}:${secondsNow}` 
+    let minutesNowZ = (minutesNow <= 9 ? `0`+minutesNow : minutesNow)
+    let secondsNow = new Date().getSeconds()    
+    let secondsNowZ = (secondsNow <= 9 ? `0`+secondsNow : secondsNow)
+    let fullTimeNow = `${hoursNowZ}:${minutesNowZ}:${secondsNowZ}` 
     setTimeNow(fullTimeNow) 
 
     let createdAtFullyear = new Date().getFullYear()
     let createdAtMonth = new Date().getMonth()+1
+    let createdAtMonthZ = (createdAtMonth <= 9 ? `0`+createdAtMonth : createdAtMonth)
     let createdAtDay = new Date().getDate()
-    let fullDateCreated = `${createdAtDay}/${createdAtMonth}/${createdAtFullyear}` 
+    let createdAtDayZ = (createdAtDay <= 9 ? `0`+createdAtDay : createdAtDay)
+    let fullDateCreated = `${createdAtDayZ}/${createdAtMonthZ}/${createdAtFullyear}` 
     setDateNow(fullDateCreated)
   }    
 
@@ -135,14 +140,26 @@ function StickyHeadTable() {
               name="fullName"
               autoComplete="fullName"
               onChange={handleChangeSearchRegistrant}
-              style={{position:"absolute", left:"5px", top:"70px"}}
+              style={{position:"absolute", left:"5px", top:"70px"}}              
             />       
-            <Typography variant="h6" className={classes.title} style={{position:"absolute", right:"5px", top:"85px"}}>
-              {dateNow}
-            </Typography>
-            <Typography variant="h6" className={classes.title} style={{position:"absolute", right:"5px", top:"120px"}}>
-              {timeNow}
-            </Typography>   
+            <TextField
+              style={{position:"absolute", right:"5px", top:"70px", width:"108px"}}
+              variant="outlined"
+              margin="normal"            
+              id="fullName"
+              size="small"
+              value={dateNow}
+              disabled
+            />
+            <TextField
+              style={{position:"absolute", right:"5px", top:"120px", width:"108px"}}
+              variant="outlined"
+              margin="normal"            
+              id="fullName"
+              size="small"
+              value={timeNow}
+              disabled
+            />
     </div>
     <Paper className={classes.root}>       
       <TableContainer className={classes.container}>
