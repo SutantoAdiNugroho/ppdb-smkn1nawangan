@@ -23,7 +23,7 @@ const useStyles = makeStyles({
   });
 
 
-function RegsitrantVerify({match}) {
+function RegsitrantVerify({match}, props) {
     const classes = useStyles();
     const [btnSuccess, setBtnSuccess] = React.useState()
     const [btnFail, setBtnFail] = React.useState()
@@ -32,7 +32,7 @@ function RegsitrantVerify({match}) {
     const [verifFull, setVerifFull] = React.useState("")
     const [idRegister, setIdRegister] = React.useState("")
 
-    const id = match.params.id
+    const id = match.params.id    
 
     const onChangeVerif = (event) => {
         let rdFullNameTrue = document.querySelector('input[name=fullnameTrueX]').checked;
@@ -61,7 +61,7 @@ function RegsitrantVerify({match}) {
             if (rdFullNameTrue && rdNisnTrue && rdBornTrue && rdFromSchTrue) {
               setVerifFull({registrantData: id,
                             resultVerify: "verified",
-                            fullNameVerify: rdFromSchTrue,
+                            fullNameVerify: rdFullNameTrue,
                             nisnVerify: rdNisnTrue,
                             bornPlaceVerify: rdBornTrue,
                             dateBornVerify: rdBornTrue,
@@ -73,7 +73,7 @@ function RegsitrantVerify({match}) {
             } else {        
               setVerifFull({registrantData: id,
                             resultVerify: "unverified",
-                            fullNameVerify: rdFromSchTrue,
+                            fullNameVerify: rdFullNameTrue,
                             nisnVerify: rdNisnTrue,
                             bornPlaceVerify: rdBornTrue,
                             dateBornVerify: rdBornTrue,
@@ -125,15 +125,24 @@ function RegsitrantVerify({match}) {
         onLoading()
         axiosReportsUsers()
             .get(`ppdb/id/${id}`)
-            .then(res => {
+            .then(res => {              
+              if (res.data.data[0].checkVerifyBiodata === "yes") {
                 setRegistrantData(res.data.data[0])      
                 setIdRegister(res.data.data[0].idRegister)
                 Swal.fire({
                     icon: 'success',
                     title: 'Sukses mengambil data'
-                  }).then(result => {                    
-                    renderChange = setInterval(onChangeVerif, 500);                    
-                  })                  
+                  }).then(result => {                                        
+                    renderChange = setInterval(onChangeVerif, 500);
+                  })
+              } else {
+                Swal.fire({
+                  icon: 'error',
+                  title: 'Maaf, tidak bisa verifikasi ulang pendaftar yang sudah terverifikasi'
+                }).then(result => {
+                  navigateTo()
+                })
+              }                
             }).catch(error => {
                 Swal.fire({
                     icon: 'error',
@@ -159,27 +168,27 @@ function RegsitrantVerify({match}) {
           }).then((result) => {
             if (result.value) {
               onLoading()
+
+              const postVerify = axiosReportsUsers().post(`verify`, {...verifFull, idRegister: idRegister})
+              const updateVerify = axiosReportsUsers().put(`ppdb/id/${id}`, {checkVerifyBiodata : "verified"})
+
               axiosReportsUsers()
-              .post(`verify`, {...verifFull, idRegister: idRegister})
-              .then(response => {
-                if (response.status == 200) {
-                  axiosReportsUsers()
-                  .delete(`ppdb/${id}`)
-                  .then(response => {                    
-                    if (response.status == 200) {
-                      Swal.fire({
-                        icon: 'success',
-                        title: `Verifikasi data atas nama ${registrantData.fullName} telah berhasil!`
-                      })
-                    }                    
-                  })                  
+              .all([postVerify, updateVerify])
+              .then(axiosReportsUsers().spread((...responses) => {
+                if (responses[0].status === 200 && responses[1].status === 200) {
+                  Swal.fire({
+                    icon: 'success',
+                    title: `Verifikasi data atas nama ${registrantData.fullName} telah berhasil!`
+                  }).then(result => {
+                    navigateTo()
+                  })
                 } else {
                   Swal.fire({
                     icon: 'error',
                     title: 'Gagal verifikasi data, silahkan coba kembali'
-                  })                  
-                }
-              }).catch(error => {
+                  })
+                }                
+              })).catch(error => {
                 Swal.fire({
                   icon: 'error',
                   title: 'Gagal verifikasi data, silahkan coba kembali'
@@ -190,6 +199,7 @@ function RegsitrantVerify({match}) {
     }
 
     const onVerFail = () => {      
+      console.log(verifFull)
         Swal.fire({
             title: 'Verifikasi gagal?',
             text: "Verifikasi data pendaftar ini terkonfirmasi gagal, pastikan semua data pendaftar benar!",
@@ -214,28 +224,28 @@ function RegsitrantVerify({match}) {
                     if (result.value) {
                       const answer = result.value
                       const dataAnswer = answer.toString()                      
+
+                      const postVerify = axiosReportsUsers().post(`verify`, {...verifFull, idRegister: idRegister, notedVerify: dataAnswer})
+                      const updateVerify = axiosReportsUsers().put(`ppdb/id/${id}`, {checkVerifyBiodata : "unverified"})
                       
                       onLoading()
                       axiosReportsUsers()
-                      .post(`verify`, {...verifFull, idRegister: idRegister, notedVerify: dataAnswer})
-                      .then(response => {
-                        if (response.status == 200) {
-                          axiosReportsUsers()
-                          .delete(`verify/vrf/${id}`)
-                          .then(response => {
-                            console.log(response)
-                          })
+                      .all([postVerify, updateVerify])
+                      .then(axiosReportsUsers().spread((...responses) => {
+                        if (responses[0].status === 200 && responses[1].status === 200) {
                           Swal.fire({
                             icon: 'success',
-                            title: `Verifikasi data atas nama ${registrantData.fullName} terkonfirmasi gagal!`
+                            title: `Verifikasi data atas nama ${registrantData.fullName} telah terverifikasi gagal!`
+                          }).then(result => {
+                            navigateTo()
                           })
                         } else {
                           Swal.fire({
                             icon: 'error',
                             title: 'Gagal verifikasi data, silahkan coba kembali'
-                          })                  
-                        }
-                      }).catch(error => {
+                          })
+                        } 
+                      })).catch(error => {
                         Swal.fire({
                           icon: 'error',
                           title: 'Gagal verifikasi data, silahkan coba kembali'

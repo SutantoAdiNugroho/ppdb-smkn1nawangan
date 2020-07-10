@@ -77,7 +77,7 @@ function StickyHeadTable() {
     setPage(0);
   };
 
-  const handleChangeSearchRegistrant = (event) => {
+  const handleChangeSearchRegistrant = (event) => {    
     axiosReportsUsers()
         .get(`ppdb/search-fullname/?q=${event.target.value}`)
         .then(

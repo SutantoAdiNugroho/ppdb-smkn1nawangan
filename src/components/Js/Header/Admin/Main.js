@@ -13,6 +13,8 @@ import MenuIcon from '@material-ui/icons/Menu';
 import IconButton from '@material-ui/core/IconButton';
 import { verify } from "../../helpers"
 
+import Divider from '@material-ui/core/Divider';
+
 const useStyles = makeStyles((theme) => ({
   list: {
     width: 250,
@@ -30,7 +32,6 @@ const useStyles = makeStyles((theme) => ({
 
 export default function SwipeableTemporaryDrawer() {
   const classes = useStyles();
-  const [data, setData] = React.useState("")
   const [state, setState] = React.useState({
     left: false
   });
@@ -68,6 +69,8 @@ export default function SwipeableTemporaryDrawer() {
           </ListItem>
         ))}
 
+        <Divider />
+
         {['Verifikasi Sukses'].map((text, index) => (
           <ListItem 
           button 
@@ -91,6 +94,7 @@ export default function SwipeableTemporaryDrawer() {
             <ListItemText primary={text} ></ListItemText>
           </ListItem>
         ))}
+        
           
       </List>
     </div>
