@@ -17,6 +17,10 @@ const useStyles = makeStyles((theme) => ({
   },
   title: {
     flexGrow: 1,
+    color: "#000000",
+    "&:hover": {
+      color: "#000000",
+    }
   },
 }));
 
@@ -40,7 +44,7 @@ export default function ButtonAppBar() {
         <Typography  variant="h6" style={{}}>
                 <Main />
             </Typography>          
-          <Typography variant="h6" className={classes.title}>
+          <Typography variant="h6" className={classes.title} component={Link} to={'/'} style={{textDecoration: 'none'}}>
             SMKN 1 Nawangan
           </Typography>
           <Button size="small" variant="contained" color="secondary" onClick={logOut} component={Link} to="/">Logout</Button>

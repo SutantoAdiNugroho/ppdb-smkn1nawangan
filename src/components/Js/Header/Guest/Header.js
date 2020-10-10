@@ -15,6 +15,10 @@ const useStyles = makeStyles((theme) => ({
   },
   title: {
     flexGrow: 1,
+    color: "#000000",
+    "&:hover": {
+      color: "#000000",
+    }
   },
 }));
 
@@ -25,7 +29,7 @@ export default function ButtonAppBar() {
     <div className={classes.root}>
       <AppBar position="static" color="default">
         <Toolbar>          
-          <Typography variant="h6" className={classes.title}>
+          <Typography variant="h6" className={classes.title} component={Link} to={'/'} style={{textDecoration: 'none'}}>
             SMKN 1 Nawangan
           </Typography>
           <Button component={Link} to="/login" color="primary" size="small" variant="contained">Panitia</Button>

@@ -6,6 +6,7 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import Main from './Main'
 import { Link } from "react-router-dom";
+
 import swal from 'sweetalert2'
 
 const useStyles = makeStyles((theme) => ({
@@ -17,6 +18,10 @@ const useStyles = makeStyles((theme) => ({
   },
   title: {
     flexGrow: 1,
+    color: "#000000",
+    "&:hover": {
+      color: "#000000",
+    }
   },
 }));
 
@@ -37,10 +42,10 @@ export default function ButtonAppBar() {
     <div className={classes.root}>
       <AppBar position="static" color="default">
         <Toolbar>
-        <Typography  variant="h6" style={{}}>
+          <Typography  variant="h6" style={{}}>
                 <Main />
-            </Typography>          
-          <Typography variant="h6" className={classes.title}>
+          </Typography>
+          <Typography variant="h6" className={classes.title} component={Link} to={'/'} style={{textDecoration: 'none'}}>
             SMKN 1 Nawangan
           </Typography>
           <Button size="small" variant="contained" color="secondary" onClick={logOut} component={Link} to="/">Logout</Button>

@@ -2,6 +2,7 @@ import React, {useEffect} from 'react';
 import { axiosReportsUsers } from "../helpers"
 import { Link,withRouter } from 'react-router-dom'
 import { fade, makeStyles } from '@material-ui/core/styles';
+
 import Paper from '@material-ui/core/Paper';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -257,24 +258,24 @@ function StickyHeadTable() {
   return (
     <div>          
      <div style={{marginBottom:"100px"}}>          
-            <TextField
-              style={{position:"absolute", right:"5px", top:"80px", width:"108px"}}
-              variant="outlined"
-              margin="normal"            
-              id="fullName"
-              size="small"
-              value={dateNow}
-              disabled
-            />
-            <TextField
-              style={{position:"absolute", right:"120px", top:"80px", width:"108px"}}
-              variant="outlined"
-              margin="normal"            
-              id="fullName"
-              size="small"
-              value={timeNow}
-              disabled
-            />
+        <TextField
+          style={{position:"absolute", right:"5px", top:"80px", width:"108px"}}
+          variant="outlined"
+          margin="normal"            
+          id="fullName"
+          size="small"
+          value={dateNow}
+          disabled
+        />
+        <TextField
+          style={{position:"absolute", right:"120px", top:"80px", width:"108px"}}
+          variant="outlined"
+          margin="normal"            
+          id="fullName"
+          size="small"
+          value={timeNow}
+          disabled
+        />
     </div>
 
     <div className={classes.rootZX}>
