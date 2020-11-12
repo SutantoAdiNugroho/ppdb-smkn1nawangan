@@ -42,7 +42,9 @@ var CanvasJSChart = CanvasJSReact.CanvasJSChart;
 function Dashboard(props) {
   const classes = useStyles();
   const [dateObj, setDateObj] = React.useState([]);
-  const [dataDash, setDataDash] = React.useState();
+  const [dataDash, setDataDash] = React.useState([]);
+  const [dataPerVery, setDataPerVery] = React.useState([]);
+  const [dataPerDay, setDataPerDay] = React.useState([]);
 
     useEffect(() => {        
         formatDate();
@@ -54,6 +56,8 @@ function Dashboard(props) {
             props.dispatch(hideLoader())
             console.log(res.data)
             setDataDash(res.data)
+            setDataPerVery(res.data.percentReg[0])
+            setDataPerDay(res.data.lastTen[0])
         }).catch(error => {
           Swal.fire({
             icon: 'error',
@@ -107,8 +111,8 @@ function Dashboard(props) {
         data: [{				
                 type: "column",
                 dataPoints: [
-                    { label: "Verifikasi Sukses",  y: 10  },
-                    { label: "Verifikasi Gagal", y: 15  },
+                    { label: "Verifikasi Sukses",  y: dataDash.totVerified },
+                    { label: "Verifikasi Gagal", y: dataDash.totUnverified },
                 ]
         }]
     }
@@ -128,9 +132,9 @@ function Dashboard(props) {
             indexLabel: "{y}%",
             indexLabelPlacement: "inside",
             dataPoints: [
-                { y: 52.94, label: "Verifikasi Sukses" },
-                { y: 17.65, label: "Verifikasi Gagal" },
-                { y: 29.41, label: "Belum Terverifikasi" },
+                { y: dataPerVery.verify, label: "Verifikasi Sukses" },
+                { y: dataPerVery.unverify, label: "Verifikasi Gagal" },
+                { y: dataPerVery.notytVerify, label: "Belum Terverifikasi" },
             ]
         }]
     }
@@ -148,22 +152,20 @@ function Dashboard(props) {
                     xValueFormatString: "DD MMM YYYY",
                     yValueFormatString: "#,##0.## Pendaftar",
                     dataPoints: [
-                        { x: new Date(dateObj.decreaseToday), y: 7},
-                        { x: new Date(dateObj.decreaseOneDay), y: 8},
-                        { x: new Date(dateObj.decreaseTwoDay), y: 6},
-                        { x: new Date(dateObj.decreaseThreeDay), y: 5},
-                        { x: new Date(dateObj.decreaseFourDay), y: 4},
-                        { x: new Date(dateObj.decreaseFiveDay), y: 3},
-                        { x: new Date(dateObj.decreaseSixDay), y: 3},
-                        { x: new Date(dateObj.decreaseSevenDay), y: 3},
-                        { x: new Date(dateObj.decreaseEightDay), y: 3},
-                        { x: new Date(dateObj.decreaseNineDay), y: 3},
+                        { x: new Date(dateObj.decreaseToday), y: dataPerDay.today},
+                        { x: new Date(dateObj.decreaseOneDay), y: dataPerDay.decOne},
+                        { x: new Date(dateObj.decreaseTwoDay), y: dataPerDay.decTwo},
+                        { x: new Date(dateObj.decreaseThreeDay), y: dataPerDay.decThr},
+                        { x: new Date(dateObj.decreaseFourDay), y: dataPerDay.decFou},
+                        { x: new Date(dateObj.decreaseFiveDay), y: dataPerDay.decFiv},
+                        { x: new Date(dateObj.decreaseSixDay), y: dataPerDay.decSix},
+                        { x: new Date(dateObj.decreaseSevenDay), y: dataPerDay.decSev},
+                        { x: new Date(dateObj.decreaseEightDay), y: dataPerDay.decEig},
+                        { x: new Date(dateObj.decreaseNineDay), y: dataPerDay.decNin},
                     ]
                 }
         ]
     }
-
-    console.log(dataDash)
 
   return (
       <div>
@@ -177,7 +179,7 @@ function Dashboard(props) {
                                 Total Pendaftar
                             </Typography>
                             <Typography variant="h5" component="h2" className={classes.pos} color="textSecondary">
-                                270
+                                {dataDash.length === 0 ? 0 : dataDash.totalAll}
                             </Typography>
                         </CardContent>
                         <CardActions>
@@ -194,7 +196,7 @@ function Dashboard(props) {
                                     Belum Terverifikasi
                                 </Typography>
                                 <Typography variant="h5" component="h2" className={classes.pos} color="textSecondary">
-                                    70
+                                    {dataDash.length === 0 ? 0 : dataDash.totNotYetVer}
                                 </Typography>
                             </CardContent>
                             <CardActions>
@@ -211,7 +213,7 @@ function Dashboard(props) {
                                     Verifikasi Sukses
                                 </Typography>
                                 <Typography variant="h5" component="h2" className={classes.pos} color="textSecondary">
-                                    70
+                                    {dataDash.length === 0 ? 0 : dataDash.totVerified}
                                 </Typography>
                             </CardContent>
                             <CardActions>
@@ -228,7 +230,7 @@ function Dashboard(props) {
                                     Verifikasi Gagal
                                 </Typography>
                                 <Typography variant="h5" component="h2" className={classes.pos} color="textSecondary">
-                                    70
+                                    {dataDash.length === 0 ? 0 : dataDash.totUnverified}
                                 </Typography>
                             </CardContent>
                             <CardActions>
