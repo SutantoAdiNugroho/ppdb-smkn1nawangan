@@ -9,10 +9,10 @@ import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import { Link as LinkRouter, withRouter } from "react-router-dom";
 import { Formik, ErrorMessage } from "formik";
-import { registerValidation } from "../validation"
 import swal from "sweetalert2"
 
-import { axiosReportsUsers } from "../helpers"
+import { registerValidation } from "../../../modules/validation"
+import { axiosReportsUsers } from "../../../modules/helpers"
 
 function Copyright() {
   return (

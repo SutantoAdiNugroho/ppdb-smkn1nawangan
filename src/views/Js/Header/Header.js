@@ -1,9 +1,11 @@
 import React, { Fragment } from "react";
 import { withRouter } from "react-router-dom";
-import GuestHeader from "./Guest/Header";
-import AdminHeader from "./Admin/Header";
-import SuperAdminHeader from "./SuperAdmin/Header";
-import { verify } from "../helpers"
+
+import GuestHeader from "../../../components/Header/Guest/Header";
+import AdminHeader from "../../../components/Header/Admin/Header";
+import SuperAdminHeader from "../../../components/Header/SuperAdmin/Header";
+
+import { verify } from "../../../modules/helpers"
 
 function Header() {
   return (

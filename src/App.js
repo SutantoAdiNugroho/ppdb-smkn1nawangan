@@ -1,5 +1,5 @@
 import React from 'react';
-import './App.css';
+import './assets/css/main.css';
 import {
   PpdbOut, 
   Login,
@@ -9,19 +9,18 @@ import {
   AddAdmin, 
   RegsitrantVerify,
   RegistrantSuccess
-} from "./components"
+} from "./views"
 import {
   BrowserRouter as Router,
   Route,
   Switch,
   Redirect
 } from "react-router-dom";
-import Header from "./components/Js/Header/Header"
-import Footer from "./components/Js/Footer/Footer"
 
-import { verify } from "./components/Js/helpers"
+import Header from "./views/Js/Header/Header"
+import Footer from "./components/Footer/Footer"
 
-import "bootstrap/dist/css/bootstrap.min.css";
+import { verify } from "./modules/helpers"
 
 function App() {
 

@@ -1,4 +1,6 @@
 import React, {useEffect} from 'react'
+import { withRouter, useHistory } from 'react-router-dom';
+
 import { CardDeck, Card, Button} from "react-bootstrap";
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
@@ -6,9 +8,9 @@ import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormControl from '@material-ui/core/FormControl';
-import { withRouter, useHistory } from 'react-router-dom';
-import { axiosReportsUsers } from "../helpers"
 import Swal from "sweetalert2"
+
+import { axiosReportsUsers } from "../../../modules/helpers"
 
 const useStyles = makeStyles({
     root: {

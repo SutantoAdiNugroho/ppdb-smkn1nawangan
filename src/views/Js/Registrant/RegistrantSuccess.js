@@ -1,6 +1,5 @@
 import React, {useEffect} from 'react';
-import { axiosReportsUsers } from "../helpers"
-import { Link,withRouter } from 'react-router-dom'
+import { Link, withRouter } from 'react-router-dom'
 import { fade, makeStyles } from '@material-ui/core/styles';
 
 import Paper from '@material-ui/core/Paper';
@@ -31,6 +30,8 @@ import AccessibilityNewIcon from '@material-ui/icons/AccessibilityNew';
 import MotorcycleIcon from '@material-ui/icons/Motorcycle';
 import EcoIcon from '@material-ui/icons/Eco';
 import SpaIcon from '@material-ui/icons/Spa';
+
+import { axiosReportsUsers } from "../../../modules/helpers"
 
 function TabPanel(props) {
     const { children, value, index, ...other } = props;

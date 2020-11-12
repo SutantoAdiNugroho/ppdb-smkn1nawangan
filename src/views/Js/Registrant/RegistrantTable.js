@@ -1,6 +1,6 @@
 import React, {useEffect} from 'react';
-import { axiosReportsUsers } from "../helpers"
-import { Link,withRouter } from 'react-router-dom'
+import { Link, withRouter } from 'react-router-dom'
+
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Table from '@material-ui/core/Table';
@@ -13,6 +13,8 @@ import TableRow from '@material-ui/core/TableRow';
 import Swal from "sweetalert2"
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
+
+import { axiosReportsUsers } from "../../../modules/helpers"
 
 const columns = [
   { id: 'idRegister', label: 'ID Register', minWidth: 170 },

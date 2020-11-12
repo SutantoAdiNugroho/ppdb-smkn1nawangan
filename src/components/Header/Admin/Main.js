@@ -1,5 +1,6 @@
 import React, {useEffect} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
+
 import SwipeableDrawer from '@material-ui/core/SwipeableDrawer';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
@@ -11,9 +12,9 @@ import CancelIcon from '@material-ui/icons/Cancel';
 import { Link } from "react-router-dom";
 import MenuIcon from '@material-ui/icons/Menu';
 import IconButton from '@material-ui/core/IconButton';
-import { verify } from "../../helpers"
-
 import Divider from '@material-ui/core/Divider';
+
+import { verify } from "../../../modules/helpers"
 
 const useStyles = makeStyles((theme) => ({
   list: {
