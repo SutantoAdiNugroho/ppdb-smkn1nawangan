@@ -1,79 +1,117 @@
-import React from 'react';
-import './assets/css/main.css';
+import React from "react";
+import "./assets/css/main.css";
 import {
-  PpdbOut, 
+  ThemeProvider,
+  createMuiTheme,
+  responsiveFontSizes,
+} from "@material-ui/core/styles";
+
+import {
+  //Main
+  Home,
+  Contact,
+
+  //PPDB
+  HomePpdb,
+  PpdbOut,
   Login,
   AdminDash,
-  RegistrantTable, 
-  RegistrantCard, 
-  AddAdmin, 
+  RegistrantTable,
+  RegistrantCard,
+  AddAdmin,
   RegsitrantVerify,
-  RegistrantSuccess
-} from "./views"
+  RegistrantSuccess,
+  DashSkeleton,
+
+  //NotFound
+  NotFound,
+} from "./views";
 import {
   BrowserRouter as Router,
   Route,
   Switch,
-  Redirect
+  Redirect,
 } from "react-router-dom";
 
-import Header from "./views/Js/Header/Header"
-import Footer from "./components/Footer/Footer"
+import Header from "./views/Js/Ppdb/Header/Header";
+import Footer from "./components/Footer/Footer";
 
-import { verify } from "./modules/helpers"
+import { verify } from "./modules/helpers";
 
 function App() {
-
   const isLogin = localStorage.getItem("token");
 
-  return (   
-    <Router>
-      <Header />
-      <Switch>
-        <Route>
-          <Route path="/" exact={true}>
-            {!isLogin ? <PpdbOut /> : <AdminDash /> }
+  let theme = createMuiTheme({
+    typography: {
+      fontFamily: ["Open Sans", "sans-serif"].join(","),
+    },
+  });
+  theme = responsiveFontSizes(theme);
+
+  return (
+    <ThemeProvider theme={theme}>
+      <Router>
+        <Header />
+        <Switch>
+          <Route>
+            <Route path="/" exact={true}>
+              <Home />
+              {/* {!isLogin ? <PpdbOut /> : <AdminDash />} */}
+            </Route>
+            <Route path="/ppdb" exact={true}>
+              <HomePpdb />
+            </Route>
+            <Route path="/login" exact={true}>
+              {!isLogin ? <Login /> : <RegistrantTable />}
+            </Route>
+            <Route path="/regist-table" exact={true}>
+              {isLogin ? <RegistrantTable /> : <Redirect to="/login" />}
+            </Route>
+            <Route path="/regist-success" exact={true}>
+              {isLogin ? <RegistrantSuccess /> : <Redirect to="/login" />}
+            </Route>
+            <Route path="/regist-card/:id" exact={true}>
+              <RegistrantCard />
+            </Route>
+            <Route path="/regist-verify/:id" exact={true}>
+              {isLogin ? <RegsitrantVerify /> : <Redirect to="/login" />}
+            </Route>
+            <Route path="/add-admin" exact={true}>
+              {!isLogin ? (
+                <Redirect to="/login" />
+              ) : verify().role === "admin" ? (
+                <RegistrantTable />
+              ) : (
+                <AddAdmin />
+              )}
+            </Route>
+            <Route path="/dash-skele" exact={true}>
+              <DashSkeleton />
+            </Route>
+            {/* <Route render={() => <NotFound />} /> */}
           </Route>
-          <Route path="/login" exact={true}>
-            {!isLogin ? <Login /> : <RegistrantTable /> }
-          </Route>
-          <Route path="/regist-table" exact={true}>
-            {isLogin ? <RegistrantTable /> : <Redirect to="/login" />}
-          </Route>
-          <Route path="/regist-success" exact={true}>
-            {isLogin ? <RegistrantSuccess /> : <Redirect to="/login" />}
-          </Route>
-          <Route path="/regist-card/:id" exact={true}>
-            <RegistrantCard />    
-          </Route>
-          <Route path="/regist-verify/:id" exact={true}>
-            {isLogin ? <RegsitrantVerify /> : <Redirect to="/login" />}            
-          </Route>
-          <Route path="/add-admin" exact={true}>
-            {!isLogin ? <Redirect to="/login" /> : verify().role == "admin" ? <RegistrantTable /> : <AddAdmin />}            
-          </Route>
-        </Route>        
-      </Switch>
-      <Footer />
-    </Router> 
+        </Switch>
+        <Footer />
+      </Router>
+    </ThemeProvider>
   );
 }
 export default App;
 
 // window.onbeforeunload = function(e) {
-  //   window.localStorage.unloadTime = JSON.stringify(new Date());
-  // }
+//   window.localStorage.unloadTime = JSON.stringify(new Date());
+// }
 
-  // window.onload = function () {
+// window.onload = function () {
 
-  //   let loadTime = new Date();
-  //   let unloadTime = new Date(JSON.parse(window.localStorage.unloadTime));
-  //   let refreshTime = loadTime.getTime() - unloadTime.getTime();
+//   let loadTime = new Date();
+//   let unloadTime = new Date(JSON.parse(window.localStorage.unloadTime));
+//   let refreshTime = loadTime.getTime() - unloadTime.getTime();
 
-  //   console.log(refreshTime)
-    
-  //   if(refreshTime>5000) {//3000 milliseconds 
-  //     window.localStorage.removeItem("token");
-  //   }
-    
-  // };
+//   console.log(refreshTime)
+
+//   if(refreshTime>5000) {//3000 milliseconds
+//     window.localStorage.removeItem("token");
+//   }
+
+// };

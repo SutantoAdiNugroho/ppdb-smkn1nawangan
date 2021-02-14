@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import LoaderGif from '../../assets/img/loading.gif'
 
 class Loader extends Component {
-    state = { }
+    state = {}
 
     render() {
         const { loading } = this.props;
@@ -20,6 +20,6 @@ class Loader extends Component {
     }
 }
 
-const mapStateToProps = state =>({ loading: state.loading})
+const mapStateToProps = state => ({ loading: state.loading })
 
 export default connect(mapStateToProps)(Loader)

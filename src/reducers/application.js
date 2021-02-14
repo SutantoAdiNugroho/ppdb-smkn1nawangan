@@ -1,36 +1,36 @@
-import { SET_DASH } from "../actions/application"
+import { SET_DASH } from "../actions/application";
 
 const initialState = {
-    loading: false,
-    users: [],
+  loading: false,
+  users: [],
 };
 
-export default (state = initialState, {type, payload}) => {
-    console.log(type);
-    switch (type) {
-        case "SHOW_LOADER":
-            return {...state, loading : true};
-        
-        case "HIDE_LOADER":
-            return {...state, loading : false};
+export default (state = initialState, { type, payload }) => {
+  console.log(type);
+  switch (type) {
+    case "SHOW_LOADER":
+      return { ...state, loading: true };
 
-        case SET_DASH:
-            return payload;
+    case "HIDE_LOADER":
+      return { ...state, loading: false };
 
-        case "GET_USER":
-            return {
-                ...state,
-                users: payload,
-                loading: false
-            }
-        case "ERROR_USER":
-            return {
-                ...state,
-                users: payload,
-                loading: false
-            }          
+    case SET_DASH:
+      return payload;
 
-        default:
-            return state;
-    }
+    case "GET_USER":
+      return {
+        ...state,
+        users: payload,
+        loading: false,
+      };
+    case "ERROR_USER":
+      return {
+        ...state,
+        users: payload,
+        loading: false,
+      };
+
+    default:
+      return state;
+  }
 };
