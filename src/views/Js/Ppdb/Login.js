@@ -3,13 +3,17 @@ import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import TextField from "@material-ui/core/TextField";
-import Box from "@material-ui/core/Box";
-import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
+import { Box, Grid } from "@material-ui/core";
 import Typography from "@material-ui/core/Typography";
-import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
+import { makeStyles } from "@material-ui/core/styles";
+
+import AccountCircleIcon from "@material-ui/icons/AccountCircle";
+import AssignmentIndIcon from "@material-ui/icons/AssignmentInd";
+
 import { Link as LinkRouter, withRouter } from "react-router-dom";
 import { Formik } from "formik";
+
 import swal from "sweetalert2";
 import axios from "axios";
 
@@ -21,8 +25,14 @@ const useStyles = makeStyles((theme) => ({
     alignItems: "center",
   },
   avatar: {
+    backgroundColor: "#42b983",
     margin: theme.spacing(1),
-    backgroundColor: theme.palette.secondary.main,
+  },
+  cardLogin: {
+    border: "1px solid",
+    borderRadius: "10px",
+    minWidth: "150px",
+    maxHeight: "100%",
   },
   form: {
     width: "100%", // Fix IE 11 issue.
@@ -30,6 +40,16 @@ const useStyles = makeStyles((theme) => ({
   },
   submit: {
     margin: theme.spacing(3, 0, 2),
+  },
+  buttonRes: {
+    margin: theme.spacing(3, 0, 2),
+    backgroundColor: "#0d2538",
+    color: "white",
+  },
+  buttonReg: {
+    margin: theme.spacing(3, 0, 2),
+    backgroundColor: "#42b983",
+    color: "white",
   },
 }));
 
@@ -42,12 +62,41 @@ function SignIn(props) {
     <Container component="main" maxWidth="xs">
       <CssBaseline />
       <div className={classes.paper}>
-        <Avatar className={classes.avatar}>
-          <LockOutlinedIcon />
-        </Avatar>
-        <Typography component="h1" variant="h5">
-          Login Panitia
-        </Typography>
+        <div style={{ display: "flex" }}>
+          <div className={classes.cardLogin}>
+            <Grid
+              container
+              style={{ flexFlow: "column nowrap" }}
+              justify="center"
+              alignItems="center"
+            >
+              <Avatar className={classes.avatar}>
+                <AccountCircleIcon />
+              </Avatar>
+              <Typography component="h1" variant="h5">
+                Pendaftar
+              </Typography>
+              <Box p={0.5} />
+            </Grid>
+          </div>
+          <Box p={1} />
+          <div className={classes.cardLogin}>
+            <Grid
+              container
+              style={{ flexFlow: "column nowrap" }}
+              justify="center"
+              alignItems="center"
+            >
+              <Avatar className={classes.avatar}>
+                <AssignmentIndIcon />
+              </Avatar>
+              <Typography component="h1" variant="h5">
+                Panitia
+              </Typography>
+              <Box p={0.5} />
+            </Grid>
+          </div>
+        </div>
         <Formik
           initialValues={{
             username: "",
@@ -183,10 +232,10 @@ function SignIn(props) {
                 type="submit"
                 fullWidth
                 variant="contained"
-                color="primary"
-                className={classes.submit}
+                // color="#42b983"
+                className={classes.buttonReg}
               >
-                Sign In
+                Login
               </Button>
             </form>
           )}
@@ -195,8 +244,8 @@ function SignIn(props) {
           style={{ marginTop: "0px" }}
           fullWidth
           variant="contained"
-          color="secondary"
-          className={classes.submit}
+          // color="secondary"
+          className={classes.buttonRes}
           component={LinkRouter}
           to="/"
         >
