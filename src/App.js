@@ -61,7 +61,7 @@ function App() {
             <Route path="/ppdb" exact={true}>
               <HomePpdb />
             </Route>
-            <Route path="/login" exact={true}>
+            <Route path="/ppdb/login" exact={true}>
               {!isLogin ? <Login /> : <RegistrantTable />}
             </Route>
             <Route path="/regist-table" exact={true}>

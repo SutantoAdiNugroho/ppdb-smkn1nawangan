@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -10,6 +10,7 @@ import { makeStyles } from "@material-ui/core/styles";
 
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 import AssignmentIndIcon from "@material-ui/icons/AssignmentInd";
+import CheckIcon from "@material-ui/icons/Check";
 
 import { Link as LinkRouter, withRouter } from "react-router-dom";
 import { Formik } from "formik";
@@ -30,9 +31,14 @@ const useStyles = makeStyles((theme) => ({
   },
   cardLogin: {
     border: "1px solid",
+    borderColor: "#aba8a7",
     borderRadius: "10px",
     minWidth: "150px",
     maxHeight: "100%",
+    // "&:hover": {
+    //   backgroundColor: "#42b983",
+    //   color: "white",
+    // },
   },
   form: {
     width: "100%", // Fix IE 11 issue.
@@ -55,6 +61,30 @@ const useStyles = makeStyles((theme) => ({
 
 function SignIn(props) {
   const classes = useStyles();
+  const [isPendaftar, setIsPendaftar] = React.useState(true);
+  const [compPendaftar, setCompPendaftar] = React.useState({
+    backgroundColor: "#42b983",
+    color: "white",
+  });
+  const [compPanitia, setCompPanitia] = React.useState({
+    backgroundColor: "white",
+    color: "black",
+  });
+
+  useEffect(() => {}, []);
+
+  const initIsPendaftar = (type) => {
+    if (type === "pendaftar") {
+      setIsPendaftar(true);
+      setCompPendaftar({ backgroundColor: "#42b983", color: "white" });
+      setCompPanitia({ backgroundColor: "white", color: "black" });
+    } else {
+      setIsPendaftar(false);
+      setCompPendaftar({ backgroundColor: "white", color: "black" });
+      setCompPanitia({ backgroundColor: "#42b983", color: "white" });
+    }
+  };
+
   const disableBtnProps = {};
   let urlLoginLive = process.env.REACT_APP_API_LOGIN_LIVE;
 
@@ -62,8 +92,12 @@ function SignIn(props) {
     <Container component="main" maxWidth="xs">
       <CssBaseline />
       <div className={classes.paper}>
-        <div style={{ display: "flex" }}>
-          <div className={classes.cardLogin}>
+        <Box display="flex">
+          <div
+            style={compPendaftar}
+            className={classes.cardLogin}
+            onClick={() => initIsPendaftar("pendaftar")}
+          >
             <Grid
               container
               style={{ flexFlow: "column nowrap" }}
@@ -71,7 +105,7 @@ function SignIn(props) {
               alignItems="center"
             >
               <Avatar className={classes.avatar}>
-                <AccountCircleIcon />
+                {isPendaftar === true ? <CheckIcon /> : <AccountCircleIcon />}
               </Avatar>
               <Typography component="h1" variant="h5">
                 Pendaftar
@@ -80,7 +114,11 @@ function SignIn(props) {
             </Grid>
           </div>
           <Box p={1} />
-          <div className={classes.cardLogin}>
+          <div
+            style={compPanitia}
+            className={classes.cardLogin}
+            onClick={() => initIsPendaftar("panitia")}
+          >
             <Grid
               container
               style={{ flexFlow: "column nowrap" }}
@@ -88,7 +126,7 @@ function SignIn(props) {
               alignItems="center"
             >
               <Avatar className={classes.avatar}>
-                <AssignmentIndIcon />
+                {isPendaftar !== true ? <CheckIcon /> : <AssignmentIndIcon />}
               </Avatar>
               <Typography component="h1" variant="h5">
                 Panitia
@@ -96,7 +134,7 @@ function SignIn(props) {
               <Box p={0.5} />
             </Grid>
           </div>
-        </div>
+        </Box>
         <Formik
           initialValues={{
             username: "",
@@ -213,20 +251,37 @@ function SignIn(props) {
                   onChange={handleChange}
                   onBlur={handleBlur}
                 />
-                <TextField
-                  variant="outlined"
-                  margin="normal"
-                  required
-                  fullWidth
-                  name="password"
-                  label="Password"
-                  type="password"
-                  id="password"
-                  autoComplete="current-password"
-                  defaultValue={values.password}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                />
+                {isPendaftar ? (
+                  <TextField
+                    variant="outlined"
+                    margin="normal"
+                    required
+                    fullWidth
+                    name="pin"
+                    label="PIN"
+                    type="pin"
+                    id="pin"
+                    autoComplete="current-password"
+                    defaultValue={values.password}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                  />
+                ) : (
+                  <TextField
+                    variant="outlined"
+                    margin="normal"
+                    required
+                    fullWidth
+                    name="password"
+                    label="Password"
+                    type="password"
+                    id="password"
+                    autoComplete="current-password"
+                    defaultValue={values.password}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                  />
+                )}
               </form>
               <Button
                 type="submit"
@@ -247,7 +302,7 @@ function SignIn(props) {
           // color="secondary"
           className={classes.buttonRes}
           component={LinkRouter}
-          to="/"
+          to="/ppdb"
         >
           Kembali
         </Button>

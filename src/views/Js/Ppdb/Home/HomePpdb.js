@@ -207,7 +207,7 @@ function HomePpdb() {
                     <Grid container justify="flex-start">
                       <Typography>
                         Sudah mendaftar?{" "}
-                        <Link className={classes.typoLogin} to="/login">
+                        <Link className={classes.typoLogin} to="/ppdb/login">
                           Login
                         </Link>
                       </Typography>
