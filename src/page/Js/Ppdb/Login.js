@@ -2,13 +2,13 @@ import React, { useEffect } from "react";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
-import TextField from "@material-ui/core/TextField";
 import { Box, Grid } from "@material-ui/core";
 import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
 import { makeStyles } from "@material-ui/core/styles";
 
 import OutTextField from "../../../components/Textfield/Textfield";
+import OutButton from "../../../components/Button/Button";
 
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 import AssignmentIndIcon from "@material-ui/icons/AssignmentInd";
@@ -37,10 +37,6 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: "10px",
     minWidth: "150px",
     maxHeight: "100%",
-    // "&:hover": {
-    //   backgroundColor: "#42b983",
-    //   color: "white",
-    // },
   },
   form: {
     width: "100%", // Fix IE 11 issue.
@@ -49,23 +45,7 @@ const useStyles = makeStyles((theme) => ({
   submit: {
     margin: theme.spacing(3, 0, 2),
   },
-  buttonRes: {
-    margin: theme.spacing(3, 0, 2),
-    backgroundColor: "#0d2538",
-    color: "white",
-  },
-  buttonReg: {
-    margin: theme.spacing(3, 0, 2),
-    backgroundColor: "#42b983",
-    color: "white",
-  },
   textField: {
-    // "& .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline": {
-    //   borderColor: "green",
-    // },
-    // "&:hover .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline": {
-    //   borderColor: "red",
-    // },
     "& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline": {
       borderColor: "#42b983",
       color: "#42b983",
@@ -323,29 +303,28 @@ function SignIn(props) {
                   // />
                 )}
               </form>
-              <Button
-                type="submit"
-                fullWidth
-                variant="contained"
-                color="#42b983"
-                className={classes.buttonReg}
-              >
-                Login
-              </Button>
+              <Box marginTop={1.5}>
+                <OutButton
+                  label="Login"
+                  variant="contained"
+                  backgroundColor="#42b983"
+                  type="submit"
+                  fullWidth={true}
+                />
+              </Box>
+              <Box marginTop={1}>
+                <OutButton
+                  label="Kembali"
+                  variant="contained"
+                  backgroundColor="#0d2538"
+                  fullWidth={true}
+                  component={LinkRouter}
+                  to="/ppdb"
+                />
+              </Box>
             </form>
           )}
         </Formik>
-        <Button
-          style={{ marginTop: "0px" }}
-          fullWidth
-          variant="contained"
-          // color="secondary"
-          className={classes.buttonRes}
-          component={LinkRouter}
-          to="/ppdb"
-        >
-          Kembali
-        </Button>
         <Grid container justify="flex-end">
           <Typography variant="body2">Lupa password? Ganti</Typography>
         </Grid>

@@ -33,7 +33,6 @@ const useStyles = makeStyles((theme) => ({
 
 const OutTextfield = (props) => {
   const classes = useStyles();
-  console.log("props textfield", props);
   return (
     <div>
       {props.type === "standard" ? (

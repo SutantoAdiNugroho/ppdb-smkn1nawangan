@@ -13,6 +13,7 @@ import {
 } from "@material-ui/core";
 
 import OutTextfield from "../../../../components/Textfield/Textfield";
+import OutButton from "../../../../components/Button/Button";
 
 import { Link } from "react-router-dom";
 
@@ -70,17 +71,6 @@ const useStyles = makeStyles((theme) => ({
   buttons: {
     display: "flex",
     marginTop: 30,
-  },
-  buttonRes: {
-    marginRight: 5,
-    marginBottom: 5,
-    backgroundColor: "#0d2538",
-    color: "white",
-  },
-  buttonReg: {
-    marginBottom: 5,
-    backgroundColor: "#42b983",
-    color: "white",
   },
   typoLogin: {
     color: "#000000",
@@ -209,16 +199,23 @@ function HomePpdb() {
                       </Typography>
                     </Grid>
                     <Grid container justify="flex-end">
-                      <Button variant="contained" className={classes.buttonRes}>
-                        Reset
-                      </Button>
-                      <Button
-                        variant="contained"
-                        className={classes.buttonReg}
-                        type="submit"
-                      >
-                        Daftar
-                      </Button>
+                      <Box p={0.5}>
+                        <OutButton
+                          label="Daftar"
+                          variant="contained"
+                          backgroundColor="#42b983"
+                          type="submit"
+                          fullWidth={false}
+                        />
+                      </Box>
+                      <Box p={0.5}>
+                        <OutButton
+                          label="Reset"
+                          variant="contained"
+                          backgroundColor="#0d2538"
+                          fullWidth={false}
+                        />
+                      </Box>
                     </Grid>
                   </div>
                 </React.Fragment>
