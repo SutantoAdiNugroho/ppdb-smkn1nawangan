@@ -25,7 +25,7 @@ import {
 
   //NotFound
   NotFound,
-} from "./views";
+} from "./page";
 import {
   BrowserRouter as Router,
   Route,
@@ -33,7 +33,7 @@ import {
   Redirect,
 } from "react-router-dom";
 
-import Header from "./views/Js/Ppdb/Header/Header";
+import Header from "./page/Js/Ppdb/Header/Header";
 import Footer from "./components/Footer/Footer";
 
 import { verify } from "./modules/helpers";
@@ -88,7 +88,9 @@ function App() {
             <Route path="/dash-skele" exact={true}>
               <DashSkeleton />
             </Route>
-            {/* <Route render={() => <NotFound />} /> */}
+            {/* <Route path="*">
+              <NotFound />
+            </Route> */}
           </Route>
         </Switch>
         <Footer />

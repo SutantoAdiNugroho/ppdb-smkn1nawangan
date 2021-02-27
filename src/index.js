@@ -1,6 +1,5 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import "./index.css";
 import App from "./App";
 
 import { Provider } from "react-redux";
@@ -11,19 +10,6 @@ import { BrowserRouter } from "react-router-dom";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import "react-loadingmask/dist/react-loadingmask.css";
-
-import { createMuiTheme } from "@material-ui/core/styles";
-import { ThemeProvider } from "@material-ui/styles";
-
-const THEME = createMuiTheme({
-  typography: {
-    fontFamily: `"Roboto", "Helvetica", "Arial", sans-serif`,
-    fontSize: 14,
-    fontWeightLight: 300,
-    fontWeightRegular: 400,
-    fontWeightMedium: 500,
-  },
-});
 
 ReactDOM.render(
   <Provider store={store}>

@@ -57,6 +57,23 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: "#42b983",
     color: "white",
   },
+  textField: {
+    // "& .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline": {
+    //   borderColor: "green",
+    // },
+    // "&:hover .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline": {
+    //   borderColor: "red",
+    // },
+    "& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline": {
+      borderColor: "#42b983",
+      color: "#42b983",
+    },
+  },
+  textFieldLabel: {
+    "&.Mui-focused": {
+      color: "#42b983",
+    },
+  },
 }));
 
 function SignIn(props) {
@@ -74,14 +91,19 @@ function SignIn(props) {
   useEffect(() => {}, []);
 
   const initIsPendaftar = (type) => {
-    if (type === "pendaftar") {
-      setIsPendaftar(true);
-      setCompPendaftar({ backgroundColor: "#42b983", color: "white" });
-      setCompPanitia({ backgroundColor: "white", color: "black" });
-    } else {
-      setIsPendaftar(false);
-      setCompPendaftar({ backgroundColor: "white", color: "black" });
-      setCompPanitia({ backgroundColor: "#42b983", color: "white" });
+    switch (type) {
+      case "pendaftar":
+        setIsPendaftar(true);
+        setCompPendaftar({ backgroundColor: "#42b983", color: "white" });
+        setCompPanitia({ backgroundColor: "white", color: "black" });
+        break;
+      case "panitia":
+        setIsPendaftar(false);
+        setCompPendaftar({ backgroundColor: "white", color: "black" });
+        setCompPanitia({ backgroundColor: "#42b983", color: "white" });
+        break;
+      default:
+        break;
     }
   };
 
@@ -238,6 +260,7 @@ function SignIn(props) {
             <form className={classes.form} noValidate onSubmit={handleSubmit}>
               <form className={classes.form} noValidate>
                 <TextField
+                  className={classes.textField}
                   variant="outlined"
                   margin="normal"
                   required
@@ -250,24 +273,36 @@ function SignIn(props) {
                   defaultValue={values.username}
                   onChange={handleChange}
                   onBlur={handleBlur}
+                  InputLabelProps={{
+                    classes: {
+                      root: classes.textFieldLabel,
+                    },
+                  }}
                 />
                 {isPendaftar ? (
                   <TextField
+                    className={classes.textField}
                     variant="outlined"
                     margin="normal"
                     required
                     fullWidth
                     name="pin"
                     label="PIN"
-                    type="pin"
+                    type="password"
                     id="pin"
                     autoComplete="current-password"
                     defaultValue={values.password}
                     onChange={handleChange}
                     onBlur={handleBlur}
+                    InputLabelProps={{
+                      classes: {
+                        root: classes.textFieldLabel,
+                      },
+                    }}
                   />
                 ) : (
                   <TextField
+                    className={classes.textField}
                     variant="outlined"
                     margin="normal"
                     required
@@ -280,6 +315,11 @@ function SignIn(props) {
                     defaultValue={values.password}
                     onChange={handleChange}
                     onBlur={handleBlur}
+                    InputLabelProps={{
+                      classes: {
+                        root: classes.textFieldLabel,
+                      },
+                    }}
                   />
                 )}
               </form>
@@ -287,7 +327,7 @@ function SignIn(props) {
                 type="submit"
                 fullWidth
                 variant="contained"
-                // color="#42b983"
+                color="#42b983"
                 className={classes.buttonReg}
               >
                 Login
@@ -306,6 +346,9 @@ function SignIn(props) {
         >
           Kembali
         </Button>
+        <Grid container justify="flex-end">
+          <Typography variant="body2">Lupa password? Ganti</Typography>
+        </Grid>
       </div>
       <Box mt={8}></Box>
     </Container>

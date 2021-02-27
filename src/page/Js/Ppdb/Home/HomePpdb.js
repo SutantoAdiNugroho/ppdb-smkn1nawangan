@@ -12,6 +12,8 @@ import {
   Button,
 } from "@material-ui/core";
 
+import OutTextfield from "../../../../components/Textfield/Textfield";
+
 import { Link } from "react-router-dom";
 
 import SvgPpdbOne from "../../../../assets/svg/home-ppdb-1.svg";
@@ -141,62 +143,56 @@ function HomePpdb() {
                   <div className={classes.formMargin}>
                     <Grid container spacing={3}>
                       <Grid item xs={12} sm={6}>
-                        <TextField
-                          required
-                          id="firstname"
-                          name="firstname"
+                        <OutTextfield
+                          type="standard"
                           label="Nama Depan"
-                          fullWidth
+                          name="firstname"
+                          required={true}
                         />
                       </Grid>
                       <Grid item xs={12} sm={6}>
-                        <TextField
-                          required
-                          id="lastname"
-                          name="lastname"
+                        <OutTextfield
+                          type="standard"
                           label="Nama Belakang"
-                          fullWidth
+                          name="lastname"
+                          required={true}
                         />
                       </Grid>
                       <Grid item xs={12}>
-                        <TextField
-                          required
-                          id="email"
-                          name="email"
+                        <OutTextfield
+                          type="standard"
                           label="Email"
+                          name="email"
                           inputMode="email"
-                          fullWidth
+                          required={true}
                         />
                       </Grid>
                       <Grid item xs={12}>
-                        <TextField
-                          required
-                          id="fromSchool"
-                          name="fromSchool"
+                        <OutTextfield
+                          type="standard"
                           label="Asal Sekolah"
-                          fullWidth
+                          name="fromSchool"
+                          required={true}
                         />
                       </Grid>
                       <Grid item xs={12} sm={6}>
-                        <TextField
-                          required
-                          id="password"
-                          name="password"
+                        <OutTextfield
+                          type="standard"
                           label="PIN"
-                          type="password"
+                          name="pin"
+                          inputType="password"
                           inputProps={{ maxLength: 6 }}
-                          fullWidth
+                          required={true}
                         />
                       </Grid>
                       <Grid item xs={12} sm={6}>
-                        <TextField
-                          required
-                          id="password2"
-                          name="password2"
+                        <OutTextfield
+                          type="standard"
                           label="Konfirmasi PIN"
-                          type="password"
+                          name="secondPin"
+                          inputType="password"
                           inputProps={{ maxLength: 6 }}
-                          fullWidth
+                          required={true}
                         />
                       </Grid>
                     </Grid>
