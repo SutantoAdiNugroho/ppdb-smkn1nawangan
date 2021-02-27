@@ -2,7 +2,7 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 ## PPDB SMKN 1 Nawangan 
 
-A front end web project of PPDB SMKN 1 Nawangan<br />
+A front end web of PPDB SMKN 1 Nawangan<br />
 In the project directory, you can run:
 
 ### `yarn start`
