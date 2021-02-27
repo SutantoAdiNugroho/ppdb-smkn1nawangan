@@ -57,19 +57,20 @@ const OutTextfield = (props) => {
         </FormControl>
       ) : (
         <TextField
-          className={classes.textField}
-          variant="outlined"
-          margin="normal"
-          required
           fullWidth
-          name="pin"
-          label="PIN"
-          type="password"
-          id="pin"
-          autoComplete="current-password"
-          //   defaultValue={values.password}
-          //   onChange={handleChange}
-          //   onBlur={handleBlur}
+          className={classes.textField}
+          variant={props.type}
+          margin="normal"
+          required={props.required}
+          name={props.name}
+          label={props.label}
+          type={props.inputType !== undefined ? props.inputType : ""}
+          id={props.id}
+          autoComplete={props.autoComplete}
+          defaultValue={props.defaultValue}
+          onChange={props.onChange}
+          onBlur={props.onBlur}
+          inputProps={props.inputProps !== undefined ? props.inputProps : ""}
           InputLabelProps={{
             classes: {
               root: classes.textFieldLabel,

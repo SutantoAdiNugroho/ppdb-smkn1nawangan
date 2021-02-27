@@ -8,6 +8,8 @@ import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
 import { makeStyles } from "@material-ui/core/styles";
 
+import OutTextField from "../../../components/Textfield/Textfield";
+
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 import AssignmentIndIcon from "@material-ui/icons/AssignmentInd";
 import CheckIcon from "@material-ui/icons/Check";
@@ -164,6 +166,7 @@ function SignIn(props) {
           }}
           validate=""
           onSubmit={(values) => {
+            console.log("values login", values);
             if (values.username === "" || values.password === "") {
               disableBtnProps.disabled = false;
               swal
@@ -259,68 +262,65 @@ function SignIn(props) {
           }) => (
             <form className={classes.form} noValidate onSubmit={handleSubmit}>
               <form className={classes.form} noValidate>
-                <TextField
-                  className={classes.textField}
-                  variant="outlined"
-                  margin="normal"
-                  required
-                  fullWidth
+                <OutTextField
                   id="username"
+                  autoComplete="username"
+                  type="outlined"
                   label="Username"
                   name="username"
-                  autoComplete="username"
-                  autoFocus
+                  required={true}
                   defaultValue={values.username}
                   onChange={handleChange}
                   onBlur={handleBlur}
-                  InputLabelProps={{
-                    classes: {
-                      root: classes.textFieldLabel,
-                    },
-                  }}
                 />
                 {isPendaftar ? (
-                  <TextField
-                    className={classes.textField}
-                    variant="outlined"
-                    margin="normal"
-                    required
-                    fullWidth
-                    name="pin"
-                    label="PIN"
-                    type="password"
+                  <OutTextField
                     id="pin"
-                    autoComplete="current-password"
-                    defaultValue={values.password}
+                    autoComplete="pin"
+                    type="outlined"
+                    label="PIN"
+                    name="pin"
+                    inputType="password"
+                    required={true}
+                    inputProps={{ maxLength: 6 }}
+                    defaultValue={values.pin}
                     onChange={handleChange}
                     onBlur={handleBlur}
-                    InputLabelProps={{
-                      classes: {
-                        root: classes.textFieldLabel,
-                      },
-                    }}
                   />
                 ) : (
-                  <TextField
-                    className={classes.textField}
-                    variant="outlined"
-                    margin="normal"
-                    required
-                    fullWidth
-                    name="password"
-                    label="Password"
-                    type="password"
+                  <OutTextField
                     id="password"
-                    autoComplete="current-password"
-                    defaultValue={values.password}
+                    autoComplete="password"
+                    type="outlined"
+                    label="Password"
+                    name="password"
+                    inputType="password"
+                    required={true}
+                    inputProps={{ maxLength: 10 }}
+                    defaultValue={values.pin}
                     onChange={handleChange}
                     onBlur={handleBlur}
-                    InputLabelProps={{
-                      classes: {
-                        root: classes.textFieldLabel,
-                      },
-                    }}
                   />
+                  // <TextField
+                  //   className={classes.textField}
+                  //   variant="outlined"
+                  //   margin="normal"
+                  //   required
+                  //   fullWidth
+                  //   name="password"
+                  //   label="Password"
+                  //   type="password"
+                  //   id="password"
+                  //   autoComplete="current-password"
+                  //   defaultValue={values.password}
+                  //   onChange={handleChange}
+                  //   onBlur={handleBlur}
+                  //   InputLabelProps={{
+                  //     classes: {
+                  //       root: classes.textFieldLabel,
+                  //     },
+                  //   }}
+                  // />
                 )}
               </form>
               <Button
