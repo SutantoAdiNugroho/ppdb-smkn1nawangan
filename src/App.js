@@ -21,6 +21,8 @@ import {
   AddAdmin,
   RegsitrantVerify,
   RegistrantSuccess,
+  StudentFormStart,
+  StudentFormBiodata,
   DashSkeleton,
 
   //NotFound
@@ -33,7 +35,7 @@ import {
   Redirect,
 } from "react-router-dom";
 
-import Header from "./page/Js/Ppdb/Header/Header";
+import Header from "./page/Js/Main/Header/Header";
 import Footer from "./components/Footer/Footer";
 
 import { verify } from "./modules/helpers";
@@ -57,6 +59,9 @@ function App() {
             <Route path="/" exact={true}>
               <Home />
               {/* {!isLogin ? <PpdbOut /> : <AdminDash />} */}
+            </Route>
+            <Route path="/ppdb/out" exact={true}>
+              <PpdbOut />
             </Route>
             <Route path="/ppdb" exact={true}>
               <HomePpdb />
@@ -84,6 +89,12 @@ function App() {
               ) : (
                 <AddAdmin />
               )}
+            </Route>
+            <Route path="/ppdb/students/form-start" exact={true}>
+              <StudentFormStart />
+            </Route>
+            <Route path="/ppdb/students/form-biodata" exact={true}>
+              <StudentFormBiodata />
             </Route>
             <Route path="/dash-skele" exact={true}>
               <DashSkeleton />

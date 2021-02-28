@@ -14,7 +14,7 @@ import Swal from "sweetalert2";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 
-import { axiosReportsUsers } from "../../../../modules/helpers";
+import { axiosReportsUsers } from "../../../../../modules/helpers";
 
 const columns = [
   { id: "idRegister", label: "ID Register", minWidth: 170 },

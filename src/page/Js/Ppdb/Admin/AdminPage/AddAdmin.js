@@ -11,8 +11,8 @@ import { Link as LinkRouter, withRouter } from "react-router-dom";
 import { Formik, ErrorMessage } from "formik";
 import swal from "sweetalert2"
 
-import { registerValidation } from "../../../../modules/validation"
-import { axiosReportsUsers } from "../../../../modules/helpers"
+import { registerValidation } from "../../../../../modules/validation"
+import { axiosReportsUsers } from "../../../../../modules/helpers"
 
 function Copyright() {
   return (

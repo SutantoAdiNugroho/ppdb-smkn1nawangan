@@ -31,7 +31,7 @@ import MotorcycleIcon from "@material-ui/icons/Motorcycle";
 import EcoIcon from "@material-ui/icons/Eco";
 import SpaIcon from "@material-ui/icons/Spa";
 
-import { axiosReportsUsers } from "../../../../modules/helpers";
+import { axiosReportsUsers } from "../../../../../modules/helpers";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;

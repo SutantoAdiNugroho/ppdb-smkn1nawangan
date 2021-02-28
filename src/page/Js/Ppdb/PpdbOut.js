@@ -89,12 +89,12 @@ const useStyles = (theme) => ({
 
 const DatePickerField = ({ field, form, ...other }) => {
   const currentError = form.errors[field.name];
-
+  const currentVal = null;
   return (
     <KeyboardDatePicker
       clearable
       name={field.name}
-      value={field.value}
+      value={currentVal}
       format="dd/MM/yyyy"
       helperText={currentError}
       error={Boolean(currentError)}

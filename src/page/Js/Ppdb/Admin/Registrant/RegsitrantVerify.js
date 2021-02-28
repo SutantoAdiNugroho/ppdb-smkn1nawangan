@@ -10,7 +10,7 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 import FormControl from "@material-ui/core/FormControl";
 import Swal from "sweetalert2";
 
-import { axiosReportsUsers } from "../../../../modules/helpers";
+import { axiosReportsUsers } from "../../../../../modules/helpers";
 
 const useStyles = makeStyles({
   root: {

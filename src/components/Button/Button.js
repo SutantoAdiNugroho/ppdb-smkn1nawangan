@@ -17,7 +17,6 @@ const useStyles = (props) =>
   }));
 
 const OutButton = (props) => {
-  console.log("props button", props);
   const classes = useStyles(props)();
   return (
     <div>

@@ -8,12 +8,12 @@ import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import { connect } from 'react-redux'
 
-import CanvasJSReact from '../../../../assets/chartjs/canvasjs.react';
-import Loader from '../../../../components/Loading/Loader';
+import CanvasJSReact from '../../../../../assets/chartjs/canvasjs.react';
+import Loader from '../../../../../components/Loading/Loader';
 import Swal from "sweetalert2"
 
-import { showLoader, hideLoader, getUser } from '../../../../actions/application';
-import { axiosReportsUsers } from "../../../../modules/helpers"
+import { showLoader, hideLoader, getUser } from '../../../../../actions/application';
+import { axiosReportsUsers } from "../../../../../modules/helpers"
 
 
 const useStyles = makeStyles((theme) => ({
