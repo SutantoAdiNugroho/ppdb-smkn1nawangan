@@ -14,11 +14,12 @@ import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 import AssignmentIndIcon from "@material-ui/icons/AssignmentInd";
 import CheckIcon from "@material-ui/icons/Check";
 
-import { Link as LinkRouter, withRouter } from "react-router-dom";
+import { Link as LinkRouter, withRouter, useHistory } from "react-router-dom";
 import { Formik } from "formik";
+import { useDispatch, useSelector } from "react-redux";
+import { adminLogin } from "../../../actions/application";
 
 import swal from "sweetalert2";
-import axios from "axios";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -61,6 +62,7 @@ const useStyles = makeStyles((theme) => ({
 function SignIn(props) {
   const classes = useStyles();
   const [isPendaftar, setIsPendaftar] = React.useState(true);
+  const [loginData, setLoginData] = React.useState([]);
   const [compPendaftar, setCompPendaftar] = React.useState({
     backgroundColor: "#42b983",
     color: "white",
@@ -70,7 +72,18 @@ function SignIn(props) {
     color: "black",
   });
 
-  useEffect(() => {}, []);
+  const dispatch = useDispatch();
+  const history = useHistory();
+  const userAfterLogin = useSelector((state) => state);
+  console.log("setAfterLogin", userAfterLogin);
+
+  useEffect(() => {
+    setLoginData(userAfterLogin);
+  }, [userAfterLogin]);
+
+  const submitLogin = (values) => {
+    dispatch(adminLogin(values, history));
+  };
 
   const initIsPendaftar = (type) => {
     switch (type) {
@@ -88,9 +101,6 @@ function SignIn(props) {
         break;
     }
   };
-
-  const disableBtnProps = {};
-  let urlLoginLive = process.env.REACT_APP_API_LOGIN_LIVE;
 
   return (
     <Container component="main" maxWidth="xs">
@@ -143,93 +153,22 @@ function SignIn(props) {
           initialValues={{
             username: "",
             password: "",
+            pin: "",
           }}
           validate=""
           onSubmit={(values) => {
             console.log("values login", values);
-            if (values.username === "" || values.password === "") {
-              disableBtnProps.disabled = false;
-              swal
-                .fire({
-                  icon: "error",
-                  title: "Isikan data anda dengan benar saat login!",
-                })
-                .then((result) => {
-                  disableBtnProps.disabled = false;
-                });
+            if (
+              values.username === "" ||
+              values.password === "" ||
+              values.pin
+            ) {
+              swal.fire({
+                icon: "error",
+                title: "Isikan data anda dengan benar saat login!",
+              });
             } else {
-              let timerInterval;
-              swal
-                .fire({
-                  title: "Silahkan tunggu..",
-                  timer: 9999999,
-                  timerProgressBar: true,
-                  onBeforeOpen: () => {
-                    swal.showLoading();
-                    timerInterval = setInterval(() => {
-                      const content = swal.getContent();
-                      if (content) {
-                        const b = content.querySelector("b");
-                        if (b) {
-                          b.textContent = swal.getTimerLeft();
-                        }
-                      }
-                    }, 100);
-                  },
-                  onClose: () => {
-                    clearInterval(timerInterval);
-                  },
-                })
-                .then((result) => {
-                  if (result.dismiss === swal.DismissReason.timer) {
-                    console.log("I was closed by the timer");
-                  }
-                });
-              axios
-                .post(`${urlLoginLive}admin/login`, values)
-                .then((response) => {
-                  if (response.data.message === "username not registered!") {
-                    disableBtnProps.disabled = false;
-                    swal.fire({
-                      icon: "error",
-                      title: "Username tidak terdaftar",
-                    });
-                  } else if (response.data.message === "Password is wrong!") {
-                    swal.fire({
-                      icon: "error",
-                      title: "Password salah, silahkan coba kembali",
-                    });
-                  } else {
-                    if (response.data.message === "Login successfull") {
-                      swal
-                        .fire({
-                          icon: "success",
-                          title: "Login Berhasil",
-                        })
-                        .then((result) => {
-                          localStorage.setItem(
-                            "token",
-                            JSON.stringify(response.data.data.token)
-                          );
-                          props.history.push("/");
-                          window.location.reload();
-                        });
-                    }
-                  }
-                })
-                .catch((error) => {
-                  if (error === "Error: Network Error") {
-                    swal.fire({
-                      icon: "error",
-                      title: "Login gagal, silahkan cek koneksi anda",
-                    });
-                  } else {
-                    swal.fire({
-                      icon: "error",
-                      title: "Login gagal, silahkan coba kembali",
-                    });
-                  }
-                });
+              submitLogin(values);
             }
           }}
         >
@@ -277,7 +216,7 @@ function SignIn(props) {
                     inputType="password"
                     required={true}
                     inputProps={{ maxLength: 10 }}
-                    defaultValue={values.pin}
+                    defaultValue={values.password}
                     onChange={handleChange}
                     onBlur={handleBlur}
                   />
@@ -310,6 +249,7 @@ function SignIn(props) {
                   backgroundColor="#42b983"
                   type="submit"
                   fullWidth={true}
+                  disabled={userAfterLogin.loading}
                 />
               </Box>
               <Box marginTop={1}>

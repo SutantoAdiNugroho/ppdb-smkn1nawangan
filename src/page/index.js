@@ -10,6 +10,8 @@ export { default as StudentFormStart } from "./Js/Ppdb/Students/FormStart";
 export { default as StudentFormBiodata } from "./Js/Ppdb/Students/FormBiodata";
 export { default as StudentFormSchool } from "./Js/Ppdb/Students/FormSchool";
 export { default as StudentFormSchoolGrade } from "./Js/Ppdb/Students/FormSchoolGrade";
+export { default as StudentFormFinish } from "./Js/Ppdb/Students/FormFinish";
+export { default as StudentFormChooseMajority } from "./Js/Ppdb/Students/FormChooseMajority";
 export { default as AdminDash } from "./Js/Ppdb/Admin/AdminPage/Dashboard";
 export { default as RegistrantTable } from "./Js/Ppdb/Admin/Registrant/RegistrantTable";
 export { default as RegistrantCard } from "./Js/Ppdb/Admin/Registrant/RegistrantCard";

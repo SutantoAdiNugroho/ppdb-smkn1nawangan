@@ -1,5 +1,6 @@
 import axios from "axios";
 import CryptoJs from "crypto-js";
+import loginToken from "./loginToken";
 
 export const axiosReportsUsers = () => {
   axios.defaults.baseURL = process.env.REACT_APP_API_LOGIN_LIVE;

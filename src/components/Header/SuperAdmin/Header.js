@@ -31,15 +31,14 @@ function HeaderLogout(props) {
   const classes = useStyles();
 
   const logOut = () => {
-    localStorage.removeItem("token");
     swal
       .fire({
         title: "Anda berhasil logout",
         icon: "success",
       })
       .then((result) => {
-        window.location.reload();
-        props.history.push("/");
+        props.history.push("/ppdb/login");
+        localStorage.removeItem("token");
       });
   };
 

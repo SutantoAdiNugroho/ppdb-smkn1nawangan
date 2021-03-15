@@ -28,6 +28,7 @@ const OutButton = (props) => {
           fullWidth={props.fullWidth}
           component={props.component}
           to={props.to}
+          disabled={props.disabled !== undefined ? props.disabled : false}
         >
           {props.label}
         </Button>
@@ -37,6 +38,7 @@ const OutButton = (props) => {
           variant={props.variant}
           type={props.type !== undefined ? props.type : ""}
           fullWidth={props.fullWidth}
+          disabled={props.disabled !== undefined ? props.disabled : false}
         >
           {props.label}
         </Button>

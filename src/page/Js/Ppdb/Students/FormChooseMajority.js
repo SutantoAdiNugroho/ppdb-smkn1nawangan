@@ -14,6 +14,7 @@ import {
   InputLabel,
   Select,
   MenuItem,
+  Checkbox,
 } from "@material-ui/core";
 import DateFnsUtils from "@date-io/date-fns";
 import {
@@ -88,17 +89,70 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function FormSchool() {
+function FormChooseMajority() {
   const classes = useStyles();
-  const [selectedDate, setSelectedDate] = React.useState(null);
-  const [selectedRadio, setSelectedRadio] = React.useState("female");
+  const [selectedSecondFaculty, setSelectedSecondFaculty] = React.useState(
+    true
+  );
+  const [opsFstFaculty, setOpsFstFaculty] = React.useState([
+    "Akuntansi (AKL)",
+    "Tata Busana (TB)",
+    "Otomotif (TKRO)",
+    "Pertanian (ATPH)",
+    "Kria Kayu (KKKR)",
+  ]);
+  const [opsSecFaculty, setOpsSecFaculty] = React.useState([]);
 
-  const handleChangeRadio = (event) => {
-    setSelectedRadio(event.target.value);
-  };
+  const handleClickFaculty = (event) => {
+    let faculFrst = event.target;
+    setOpsSecFaculty([]);
+    console.log("value faculty", faculFrst.value);
 
-  const handleDateChange = (date) => {
-    setSelectedDate(date);
+    switch (faculFrst.value) {
+      case 0:
+        setOpsSecFaculty([
+          "Tata Busana (TB)",
+          "Otomotif (TKRO)",
+          "Pertanian (ATPH)",
+          "Kria Kayu (KKKR)",
+        ]);
+        break;
+      case 1:
+        setOpsSecFaculty([
+          "Akuntansi (AKL)",
+          "Otomotif (TKRO)",
+          "Pertanian (ATPH)",
+          "Kria Kayu (KKKR)",
+        ]);
+        break;
+      case 2:
+        setOpsSecFaculty([
+          "Akuntansi (AKL)",
+          "Tata Busana (TB)",
+          "Pertanian (ATPH)",
+          "Kria Kayu (KKKR)",
+        ]);
+        break;
+      case 3:
+        setOpsSecFaculty([
+          "Akuntansi (AKL)",
+          "Tata Busana (TB)",
+          "Otomotif (TKRO)",
+          "Kria Kayu (KKKR)",
+        ]);
+        break;
+      case 4:
+        setOpsSecFaculty([
+          "Akuntansi (AKL)",
+          "Tata Busana (TB)",
+          "Otomotif (TKRO)",
+          "Pertanian (ATPH)",
+        ]);
+        break;
+      default:
+        break;
+    }
+    setSelectedSecondFaculty(false);
   };
 
   return (
@@ -108,7 +162,7 @@ function FormSchool() {
           <React.Fragment>
             <CssBaseline />
             <Typography variant="h5" align="center">
-              Form Pendidikan
+              Form Pilih Jurusan
             </Typography>
             <main className={classes.layout}>
               <Paper className={classes.paper}>
@@ -148,69 +202,68 @@ function FormSchool() {
                     style={{ marginTop: "20px" }}
                     gutterBottom
                   >
-                    Pendidikan
+                    Jurusan
                   </Typography>
                   <div className={classes.formMargin}>
                     <Grid container spacing={3}>
                       <Grid item xs={12} sm={6}>
-                        <OutTextfield
-                          type="standard"
-                          label="Asal Sekolah"
-                          name="fromSchool"
-                          required={true}
-                        />
-                      </Grid>
-                      <Grid item xs={12} sm={6}>
                         <FormControl fullWidth>
                           <InputLabel id="demo-simple-select-label">
-                            Tingkatan Sekolah
+                            Jurusan utama
                           </InputLabel>
                           <Select
                             labelId="demo-simple-select-label"
                             id="facultyFirst"
                             name="facultyFirst"
                             autoComplete="facultyFirst"
+                            onClick={(event) => handleClickFaculty(event)}
                           >
-                            <MenuItem key={1} value={"smp"}>
-                              SMP
-                            </MenuItem>
-                            <MenuItem key={2} value={"kejarpaket2"}>
-                              Kejar Paket 2
-                            </MenuItem>
+                            {opsFstFaculty.map((option, index) => {
+                              return (
+                                <MenuItem key={index} value={index}>
+                                  {option}
+                                </MenuItem>
+                              );
+                            })}
                           </Select>
                         </FormControl>
                       </Grid>
                       <Grid item xs={12} sm={6}>
-                        <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                          <KeyboardDatePicker
-                            fullWidth
-                            id="date-picker-dialog"
-                            label="Tanggal Masuk"
-                            views={["year", "month"]}
-                            format="dd/yyyy"
-                            value={selectedDate}
-                            onChange={handleDateChange}
-                            KeyboardButtonProps={{
-                              "aria-label": "change date",
-                            }}
-                          />
-                        </MuiPickersUtilsProvider>
+                        <FormControl fullWidth>
+                          <InputLabel id="demo-simple-select-label">
+                            Jurusan kedua
+                          </InputLabel>
+                          <Select
+                            labelId="demo-simple-select-label"
+                            id="facultySecond"
+                            name="facultySecond"
+                            autoComplete="facultySecond"
+                            disabled={selectedSecondFaculty}
+                          >
+                            {opsSecFaculty.map((option, index) => {
+                              return (
+                                <MenuItem value={index + 5}>{option}</MenuItem>
+                              );
+                            })}
+                          </Select>
+                        </FormControl>
                       </Grid>
-                      <Grid item xs={12} sm={6}>
-                        <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                          <KeyboardDatePicker
-                            fullWidth
-                            id="date-picker-dialog"
-                            label="Tanggal Lulus"
-                            views={["year", "month"]}
-                            format="dd/yyyy"
-                            value={selectedDate}
-                            onChange={handleDateChange}
-                            KeyboardButtonProps={{
-                              "aria-label": "change date",
-                            }}
-                          />
-                        </MuiPickersUtilsProvider>
+                      <Grid item xs={12}>
+                        <FormControlLabel
+                          control={
+                            <Checkbox
+                              id="checkVerifyBiodata"
+                              color="secondary"
+                              name="checkVerifyBiodata"
+                              value="yes"
+                              //   onChange={handleChange}
+                              //   onBlur={handleBlur}
+                              //   defaultValue={values.checkVerifyBiodata}
+                              autoComplete="checkVerifyBiodata"
+                            />
+                          }
+                          label="Saya bersedia ditempatkan di jurusan mana saja bila saya tidak diterima di kedua jurusan yang saya pilih"
+                        />
                       </Grid>
                     </Grid>
                   </div>
@@ -247,4 +300,4 @@ function FormSchool() {
   );
 }
 
-export default FormSchool;
+export default FormChooseMajority;

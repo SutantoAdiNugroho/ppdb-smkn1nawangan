@@ -23,6 +23,10 @@ import {
   RegistrantSuccess,
   StudentFormStart,
   StudentFormBiodata,
+  StudentFormSchool,
+  StudentFormSchoolGrade,
+  StudentFormFinish,
+  StudentFormChooseMajority,
   DashSkeleton,
 
   //NotFound
@@ -34,6 +38,8 @@ import {
   Switch,
   Redirect,
 } from "react-router-dom";
+
+import { ProtectedRoute } from "./modules/route";
 
 import Header from "./page/Js/Main/Header/Header";
 import Footer from "./components/Footer/Footer";
@@ -55,53 +61,65 @@ function App() {
       <Router>
         <Header />
         <Switch>
-          <Route>
-            <Route path="/" exact={true}>
-              <Home />
-              {/* {!isLogin ? <PpdbOut /> : <AdminDash />} */}
-            </Route>
-            <Route path="/ppdb/out" exact={true}>
-              <PpdbOut />
-            </Route>
-            <Route path="/ppdb" exact={true}>
-              <HomePpdb />
-            </Route>
-            <Route path="/ppdb/login" exact={true}>
-              {!isLogin ? <Login /> : <RegistrantTable />}
-            </Route>
-            <Route path="/regist-table" exact={true}>
-              {isLogin ? <RegistrantTable /> : <Redirect to="/login" />}
-            </Route>
-            <Route path="/regist-success" exact={true}>
-              {isLogin ? <RegistrantSuccess /> : <Redirect to="/login" />}
-            </Route>
-            <Route path="/regist-card/:id" exact={true}>
-              <RegistrantCard />
-            </Route>
-            <Route path="/regist-verify/:id" exact={true}>
-              {isLogin ? <RegsitrantVerify /> : <Redirect to="/login" />}
-            </Route>
-            <Route path="/add-admin" exact={true}>
-              {!isLogin ? (
-                <Redirect to="/login" />
-              ) : verify().role === "admin" ? (
-                <RegistrantTable />
-              ) : (
-                <AddAdmin />
-              )}
-            </Route>
-            <Route path="/ppdb/students/form-start" exact={true}>
-              <StudentFormStart />
-            </Route>
-            <Route path="/ppdb/students/form-biodata" exact={true}>
-              <StudentFormBiodata />
-            </Route>
-            <Route path="/dash-skele" exact={true}>
-              <DashSkeleton />
-            </Route>
-            {/* <Route path="*">
-              <NotFound />
-            </Route> */}
+          <ProtectedRoute
+            exact
+            path="/"
+            type="triple"
+            component={AdminDash}
+            secondComp={StudentFormStart}
+            thirdComp={Home}
+          />
+          <Route path="/ppdb/out" exact={true}>
+            <PpdbOut />
+          </Route>
+          <Route path="/ppdb" exact={true}>
+            <HomePpdb />
+          </Route>
+          <Route path="/ppdb/login" exact={true}>
+            
+            <Login />
+          </Route>
+          <Route path="/regist-table" exact={true}>
+            {isLogin ? <RegistrantTable /> : <Redirect to="/login" />}
+          </Route>
+          <Route path="/regist-success" exact={true}>
+            {isLogin ? <RegistrantSuccess /> : <Redirect to="/login" />}
+          </Route>
+          <Route path="/regist-card/:id" exact={true}>
+            <RegistrantCard />
+          </Route>
+          <Route path="/regist-verify/:id" exact={true}>
+            {isLogin ? <RegsitrantVerify /> : <Redirect to="/login" />}
+          </Route>
+          <Route path="/add-admin" exact={true}>
+            {!isLogin ? (
+              <Redirect to="/login" />
+            ) : verify().role === "admin" ? (
+              <RegistrantTable />
+            ) : (
+              <AddAdmin />
+            )}
+          </Route>
+          <Route path="/ppdb/students/form-start" exact={true}>
+            <StudentFormStart />
+          </Route>
+          <Route path="/ppdb/students/form-biodata" exact={true}>
+            <StudentFormBiodata />
+          </Route>
+          <Route path="/ppdb/students/form-school" exact={true}>
+            <StudentFormSchool />
+          </Route>
+          <Route path="/ppdb/students/form-school-grade" exact={true}>
+            <StudentFormSchoolGrade />
+          </Route>
+          <Route path="/ppdb/students/form-finish" exact={true}>
+            <StudentFormFinish />
+          </Route>
+          <Route path="/ppdb/students/form-majority" exact={true}>
+            <StudentFormChooseMajority />
+          </Route>
+          <Route path="/dash-skele" exact={true}>
+            <DashSkeleton />
           </Route>
         </Switch>
         <Footer />

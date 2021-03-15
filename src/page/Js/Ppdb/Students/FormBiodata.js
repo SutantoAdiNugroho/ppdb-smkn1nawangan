@@ -156,6 +156,7 @@ function FormBiodata() {
                         <MuiPickersUtilsProvider utils={DateFnsUtils}>
                           <KeyboardDatePicker
                             fullWidth
+                            required
                             id="date-picker-dialog"
                             label="Tanggal Lahir"
                             format="MM/dd/yyyy"
