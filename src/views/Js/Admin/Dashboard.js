@@ -51,7 +51,7 @@ function Dashboard(props) {
         props.dispatch(showLoader())
 
         axiosReportsUsers()
-        .get(`ppdb/count/dash`)
+        .get(`ppdb-admin/count/dash`)
         .then( res => {
             props.dispatch(hideLoader())
             console.log(res.data)
