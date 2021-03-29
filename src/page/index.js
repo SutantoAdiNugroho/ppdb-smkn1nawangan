@@ -18,6 +18,7 @@ export { default as RegistrantCard } from "./Js/Ppdb/Admin/Registrant/Registrant
 export { default as AddAdmin } from "./Js/Ppdb/Admin/AdminPage/AddAdmin";
 export { default as RegsitrantVerify } from "./Js/Ppdb/Admin/Registrant/RegsitrantVerify";
 export { default as RegistrantSuccess } from "./Js/Ppdb/Admin/Registrant/RegistrantSuccess";
+export { default as VerifyStudentAccount } from "./Js/Ppdb/Students/Verification/VerifiyAccount";
 
 //404NotFound
 export { default as NotFound } from "./Js/NotFound/404NotFound";

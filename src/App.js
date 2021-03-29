@@ -27,6 +27,7 @@ import {
   StudentFormSchoolGrade,
   StudentFormFinish,
   StudentFormChooseMajority,
+  VerifyStudentAccount,
   DashSkeleton,
 
   //NotFound
@@ -40,6 +41,13 @@ import {
 } from "react-router-dom";
 
 import { ProtectedRoute } from "./modules/route";
+import {
+  FOURTH_COMPONENT,
+  FOURTH_REDIRECT,
+  TRIPLE_COMPONENT,
+  TRIPLE_REDIRECT,
+  DOUBLE,
+} from "./modules/route/SectionAuth";
 
 import Header from "./page/Js/Main/Header/Header";
 import Footer from "./components/Footer/Footer";
@@ -75,10 +83,20 @@ function App() {
           <Route path="/ppdb" exact={true}>
             <HomePpdb />
           </Route>
-          <Route path="/ppdb/login" exact={true}>
-            
-            <Login />
-          </Route>
+          <ProtectedRoute
+            exact
+            path="/ppdb/login"
+            type="double"
+            component={Login}
+            redirectTo="/"
+          />
+          <ProtectedRoute
+            exact
+            path="/ppdb/admin/regist-table"
+            type=""
+            component={Login}
+            redirectTo="/"
+          />
           <Route path="/regist-table" exact={true}>
             {isLogin ? <RegistrantTable /> : <Redirect to="/login" />}
           </Route>
@@ -118,6 +136,9 @@ function App() {
           <Route path="/ppdb/students/form-majority" exact={true}>
             <StudentFormChooseMajority />
           </Route>
+          <Route path="/ppdb/students/verify/:id" exact={true}>
+            <VerifyStudentAccount />
+          </Route>
           <Route path="/dash-skele" exact={true}>
             <DashSkeleton />
           </Route>
@@ -128,21 +149,3 @@ function App() {
   );
 }
 export default App;
-
-// window.onbeforeunload = function(e) {
-//   window.localStorage.unloadTime = JSON.stringify(new Date());
-// }
-
-// window.onload = function () {
-
-//   let loadTime = new Date();
-//   let unloadTime = new Date(JSON.parse(window.localStorage.unloadTime));
-//   let refreshTime = loadTime.getTime() - unloadTime.getTime();
-
-//   console.log(refreshTime)
-
-//   if(refreshTime>5000) {//3000 milliseconds
-//     window.localStorage.removeItem("token");
-//   }
-
-// };

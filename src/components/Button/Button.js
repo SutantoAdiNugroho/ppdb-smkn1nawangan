@@ -1,6 +1,7 @@
 import React from "react";
 import Button from "@material-ui/core/Button";
 import { makeStyles } from "@material-ui/core";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 const useStyles = (props) =>
   makeStyles((theme) => ({
@@ -40,7 +41,7 @@ const OutButton = (props) => {
           fullWidth={props.fullWidth}
           disabled={props.disabled !== undefined ? props.disabled : false}
         >
-          {props.label}
+          {props.label} <CircularProgress size={20} />
         </Button>
       )}
     </div>

@@ -37,11 +37,8 @@ function HeaderLogout(props) {
         icon: "success",
       })
       .then((res) => {
-        props.history.push("/ppdb/login");
-        window.location.reload();
-      })
-      .then((res) => {
         localStorage.removeItem("token");
+        props.history.push("/ppdb/login");
       });
   };
 

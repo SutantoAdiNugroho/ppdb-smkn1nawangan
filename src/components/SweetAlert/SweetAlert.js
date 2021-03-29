@@ -11,10 +11,8 @@ const SweetAlert = (props) => {
         })
         .then((res) => {
           localStorage.setItem("token", JSON.stringify(props.data));
-        })
-        .then((res) => {
           props.history.push("/");
-          window.location.reload();
+          // window.location.reload();
         });
       break;
     case ERROR_AUTH:

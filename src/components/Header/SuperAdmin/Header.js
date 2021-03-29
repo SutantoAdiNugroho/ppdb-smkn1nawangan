@@ -36,9 +36,9 @@ function HeaderLogout(props) {
         title: "Anda berhasil logout",
         icon: "success",
       })
-      .then((result) => {
-        props.history.push("/ppdb/login");
+      .then((res) => {
         localStorage.removeItem("token");
+        props.history.push("/ppdb/login");
       });
   };
 

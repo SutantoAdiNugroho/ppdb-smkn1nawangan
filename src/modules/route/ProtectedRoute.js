@@ -1,7 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Route, Redirect } from "react-router-dom";
-import { useSelector } from "react-redux";
 import { verify } from "../helpers/verifyToken";
+import {
+  FOURTH_COMPONENT,
+  FOURTH_REDIRECT,
+  TRIPLE_COMPONENT,
+  TRIPLE_REDIRECT,
+  DOUBLE,
+} from "./SectionAuth";
 
 const ProtectedRoute = ({
   component: Component,
@@ -9,20 +15,6 @@ const ProtectedRoute = ({
   thirdComp: ThirdComp,
   ...props
 }) => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-
-  async function getToken() {
-    const token = await localStorage.getItem("token");
-    if (token) {
-      setIsLoggedIn(true);
-    } else {
-      setIsLoggedIn(false);
-    }
-  }
-  useEffect(() => {
-    getToken();
-  }, []);
-
   console.log("check props", props);
 
   return (
@@ -31,7 +23,7 @@ const ProtectedRoute = ({
         <Route
           {...props}
           render={(props) =>
-            !isLoggedIn ? (
+            JSON.parse(localStorage.getItem("token")) === null ? (
               <ThirdComp {...props} />
             ) : verify().role === "admin" ? (
               <Component {...props} />
@@ -44,7 +36,11 @@ const ProtectedRoute = ({
         <Route
           {...props}
           render={(props) =>
-            isLoggedIn ? <Component {...props} /> : <SecondComp {...props} />
+            JSON.parse(localStorage.getItem("token")) === null ? (
+              <Component {...props} />
+            ) : (
+              <Redirect to={props.redirectTo} />
+            )
           }
         />
       )}
