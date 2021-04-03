@@ -222,7 +222,7 @@ function Checkout(props) {
               let subsIdRegistrant = idRegistrant.substr(5, 10).toUpperCase()
               let newIdRegistrant = `PPDB${subsIdRegistrant}`
                 axios
-                  .put(`${urlLoginLive}ppdb/id/${idRegistrant}`, {idRegister:newIdRegistrant})
+                  .put(`${urlLoginLive}ppdb-admin/id/${idRegistrant}`, {idRegister:newIdRegistrant})
                   .then(response => {
                     if (response.status == 200) {
                       console.log(response)
