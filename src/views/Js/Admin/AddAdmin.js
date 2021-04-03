@@ -98,7 +98,7 @@ function SignIn(props) {
                     }
                 }) 
                 axiosReportsUsers()
-                .post(`admin`, {fullName:values.fullName, username:values.username, password:values.password, role:"admin"})
+                .post(`auth/admin/register`, {fullName:values.fullName, username:values.username, password:values.password, role:"admin"})
                 .then(response => {                    
                     swal.fire({
                         icon: 'success',

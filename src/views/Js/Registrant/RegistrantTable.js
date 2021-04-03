@@ -116,7 +116,7 @@ function StickyHeadTable() {
     let myVar = setInterval(myTimer, 1000);  
 
       axiosReportsUsers()
-        .get(`ppdb`)
+        .get(`ppdb-admin`)
         .then(
           res => setData(res.data.data)
         ).catch(error => {

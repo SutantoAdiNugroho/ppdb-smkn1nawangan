@@ -91,7 +91,7 @@ function SignIn(props) {
               }
             })
             axios
-                .post(`${urlLoginLive}admin/login`, values)
+                .post(`${urlLoginLive}auth/admin/login`, values)
                 .then(response => {                  
                   if (response.data.message == "username not registered!") {
                     disableBtnProps.disabled = false;

@@ -105,7 +105,7 @@ function Checkout({match}) {
           }
         }) 
     axios
-        .get(`${urlLoginLive}ppdb/id/${id}`)
+        .get(`${urlLoginLive}ppdb-admin/id/${id}`)
         .then(response => {          
           setFullName({ fullName : response.data.data[0].fullName })
           setIdRegister({ idRegister : response.data.data[0].idRegister })
