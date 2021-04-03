@@ -215,7 +215,7 @@ function Checkout(props) {
           }
         })                     
         axios
-          .post(`${urlLoginLive}ppdb`, {idRegister:myId, fullName:values.fullName, nisn:values.nisn, bornPlace:values.bornPlace, dateBorn:dateBorn, fromSchool:values.fromSchool, facultyFirst:facultyFirst, facultySecond:facultySecond, checkVerifyBiodata:checkVerify, password:"reg"})
+          .post(`${urlLoginLive}ppdb-admin`, {idRegister:myId, fullName:values.fullName, nisn:values.nisn, bornPlace:values.bornPlace, dateBorn:dateBorn, fromSchool:values.fromSchool, facultyFirst:facultyFirst, facultySecond:facultySecond, checkVerifyBiodata:checkVerify, password:"reg"})
           .then(response => {            
             let idRegistrant = response.data.data._id            
             if (response.status == 200) {
