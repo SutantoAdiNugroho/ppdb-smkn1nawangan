@@ -126,7 +126,7 @@ function RegsitrantVerify({match}, props) {
 
         onLoading()
         axiosReportsUsers()
-            .get(`ppdb/id/${id}`)
+            .get(`ppdb-admin/id/${id}`)
             .then(res => {              
               if (res.data.data[0].checkVerifyBiodata === "yes") {
                 setRegistrantData(res.data.data[0])      
@@ -172,7 +172,7 @@ function RegsitrantVerify({match}, props) {
               onLoading()
 
               const postVerify = axiosReportsUsers().post(`verify`, {...verifFull, idRegister: idRegister})
-              const updateVerify = axiosReportsUsers().put(`ppdb/id/${id}`, {checkVerifyBiodata : "verified"})
+              const updateVerify = axiosReportsUsers().put(`ppdb-admin/id/${id}`, {checkVerifyBiodata : "verified"})
 
               axiosReportsUsers()
               .all([postVerify, updateVerify])
