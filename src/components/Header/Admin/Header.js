@@ -46,7 +46,7 @@ export default function ButtonAppBar() {
                 <Main />
           </Typography>
           <Typography variant="h6" className={classes.title} component={Link} to={'/'} style={{textDecoration: 'none'}}>
-            SMKN 1 Nawangan
+            SMKN 1 Example
           </Typography>
           <Button size="small" variant="contained" color="secondary" onClick={logOut} component={Link} to="/">Logout</Button>
         </Toolbar>
