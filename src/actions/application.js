@@ -1,5 +1,4 @@
 import { axiosReportsUsers } from '../modules/helpers'
-import axios from 'axios'
 
 export const SET_DASH = "SET_DASH"
 

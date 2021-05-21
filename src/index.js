@@ -12,28 +12,26 @@ import { BrowserRouter } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "react-loadingmask/dist/react-loadingmask.css";
 
-import { createMuiTheme } from '@material-ui/core/styles';
-import { ThemeProvider } from '@material-ui/styles';
+import {
+  createMuiTheme,
+  ThemeProvider,
+  responsiveFontSizes,
+} from "@material-ui/core/styles";
 
-const THEME = createMuiTheme({
+let theme = createMuiTheme({
   typography: {
-   "fontFamily": `"Roboto", "Helvetica", "Arial", sans-serif`,
-   "fontSize": 14,
-   "fontWeightLight": 300,
-   "fontWeightRegular": 400,
-   "fontWeightMedium": 500
-  }
+    fontFamily: ["Open Sans", "sans-serif"].join(","),
+  },
 });
+theme = responsiveFontSizes(theme);
 
 ReactDOM.render(
-  <ThemeProvider theme={THEME}>
+  <ThemeProvider theme={theme}>
     <Provider store={store}>
-        <App />
+      <App />
     </Provider>
   </ThemeProvider>,
   document.getElementById("root")
 );
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: https://bit.ly/CRA-PWA
+
 serviceWorker.unregister();

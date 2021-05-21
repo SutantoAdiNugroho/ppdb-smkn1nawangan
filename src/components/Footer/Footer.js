@@ -10,7 +10,7 @@ export default function Copyright() {
       align="center"
       style={{ marginTop: "50px" }}
     >
-      {"This website template by © "}
+      {"© This website template by "}
       <a
         rel="noreferrer"
         target="_blank"
