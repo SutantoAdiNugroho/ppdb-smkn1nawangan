@@ -80,6 +80,12 @@ function StickyHeadTable() {
   };
 
   const handleChangeSearchRegistrant = (event) => {
+    // let searchVal = event.target.value;
+    // let valX = data.filter((arr) => {
+    //   return arr.fullName.includes(searchVal);
+    // });
+
+    // setData(valX);
     axiosReportsUsers()
       .get(`ppdb-admin/search-fullname/?q=${event.target.value}`)
       .then((res) => setData(res.data.data))
@@ -111,18 +117,25 @@ function StickyHeadTable() {
     setDateNow(fullDateCreated);
   };
 
-  useEffect(() => {
-    let myVar = setInterval(myTimer, 1000);
-
+  const fetchDatas = () => {
     axiosReportsUsers()
       .get(`ppdb-admin`)
-      .then((res) => setData(res.data.data))
+      .then((res) => {
+        console.log(res.data.data);
+        setData(res.data.data);
+      })
       .catch((error) => {
         Swal.fire({
           icon: "error",
           title: "Gagal mengambil data, silahkan coba kembali",
         });
       });
+  };
+
+  useEffect(() => {
+    let myVar = setInterval(myTimer, 1000);
+
+    fetchDatas();
 
     return () => {
       clearInterval(myVar);
@@ -213,7 +226,10 @@ function StickyHeadTable() {
                                     marginRight: "10px",
                                   }}
                                   component={Link}
-                                  to={`regist-card/${row._id}`}
+                                  to={{
+                                    pathname: `regist-card/${row._id}`,
+                                    state: "01",
+                                  }}
                                 >
                                   Detail
                                 </Button>

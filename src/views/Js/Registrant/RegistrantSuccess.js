@@ -390,14 +390,17 @@ function StickyHeadTable() {
                             const value = row[column.id];
                             return (
                               <TableCell key={column.id} align={column.align}>
-                                {column.id == "action" ? (
+                                {column.id === "action" ? (
                                   <div>
                                     <Button
                                       variant="contained"
                                       size="small"
                                       color="secondary"
                                       component={Link}
-                                      to={`regist-card/${row._id}`}
+                                      to={{
+                                        pathname: `regist-card/${row._id}`,
+                                        state: "02",
+                                      }}
                                     >
                                       Detail
                                     </Button>
@@ -470,14 +473,17 @@ function StickyHeadTable() {
                             const value = row[column.id];
                             return (
                               <TableCell key={column.id} align={column.align}>
-                                {column.id == "action" ? (
+                                {column.id === "action" ? (
                                   <div>
                                     <Button
                                       variant="contained"
                                       size="small"
                                       color="secondary"
                                       component={Link}
-                                      to={`regist-card/${row._id}`}
+                                      to={{
+                                        pathname: `regist-card/${row._id}`,
+                                        state: "02",
+                                      }}
                                     >
                                       Detail
                                     </Button>
@@ -550,14 +556,17 @@ function StickyHeadTable() {
                             const value = row[column.id];
                             return (
                               <TableCell key={column.id} align={column.align}>
-                                {column.id == "action" ? (
+                                {column.id === "action" ? (
                                   <div>
                                     <Button
                                       variant="contained"
                                       size="small"
                                       color="secondary"
                                       component={Link}
-                                      to={`regist-card/${row._id}`}
+                                      to={{
+                                        pathname: `regist-card/${row._id}`,
+                                        state: "02",
+                                      }}
                                     >
                                       Detail
                                     </Button>
@@ -630,14 +639,17 @@ function StickyHeadTable() {
                             const value = row[column.id];
                             return (
                               <TableCell key={column.id} align={column.align}>
-                                {column.id == "action" ? (
+                                {column.id === "action" ? (
                                   <div>
                                     <Button
                                       variant="contained"
                                       size="small"
                                       color="secondary"
                                       component={Link}
-                                      to={`regist-card/${row._id}`}
+                                      to={{
+                                        pathname: `regist-card/${row._id}`,
+                                        state: "02",
+                                      }}
                                     >
                                       Detail
                                     </Button>
@@ -710,14 +722,17 @@ function StickyHeadTable() {
                             const value = row[column.id];
                             return (
                               <TableCell key={column.id} align={column.align}>
-                                {column.id == "action" ? (
+                                {column.id === "action" ? (
                                   <div>
                                     <Button
                                       variant="contained"
                                       size="small"
                                       color="secondary"
                                       component={Link}
-                                      to={`regist-card/${row._id}`}
+                                      to={{
+                                        pathname: `regist-card/${row._id}`,
+                                        state: "02",
+                                      }}
                                     >
                                       Detail
                                     </Button>

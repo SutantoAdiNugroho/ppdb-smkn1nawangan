@@ -55,17 +55,8 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function Checkout({ match }) {
+function Checkout({ match, location }) {
   const classes = useStyles();
-  const isLogin = localStorage.getItem("token");
-  let linkBack = "";
-
-  if (isLogin) {
-    linkBack = "/regist-table";
-  } else {
-    linkBack = "/";
-  }
-
   const [idRegister, setIdRegister] = React.useState("");
   const [fullName, setFullName] = React.useState("");
   const [nisn, setNisn] = React.useState("");
@@ -76,11 +67,26 @@ function Checkout({ match }) {
   const [secondFaculty, setSecondFaculty] = React.useState("");
   const [createdAt, setCreatedAt] = React.useState("");
   const [isLoading, setIsLoading] = React.useState(true);
+  const [goBack, setGoBack] = React.useState("");
 
   const id = match.params.id;
   let urlLoginLive = process.env.REACT_APP_API_LOGIN_LIVE;
 
   useEffect(() => {
+
+    switch (location.state) {
+      case "01":
+        setGoBack("/regist-table");
+        break;
+      case "02":
+        setGoBack("/regist-success");
+        break;
+
+      default:
+        setGoBack("/");
+        break;
+    }
+
     let timerInterval;
     Swal.fire({
       title: "Silahkan tunggu..",
@@ -258,7 +264,7 @@ function Checkout({ match }) {
                 color="secondary"
                 className={classes.submit}
                 component={LinkRouter}
-                to={linkBack}
+                to={goBack}
                 style={{ marginTop: "40px", marginLeft: "5px" }}
               >
                 Kembali
