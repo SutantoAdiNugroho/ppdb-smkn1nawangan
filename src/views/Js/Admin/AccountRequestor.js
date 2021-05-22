@@ -17,35 +17,19 @@ import TextField from "@material-ui/core/TextField";
 import { axiosReportsUsers } from "../../../modules/helpers";
 
 const columns = [
-  { id: "idRegister", label: "ID Register", minWidth: 170 },
-  { id: "fullName", label: "Nama Lengkap", minWidth: 100 },
+  { id: "_id", label: "ID", minWidth: 170 },
+  { id: "nameRequestor", label: "Nama Lengkap", minWidth: 100 },
   {
-    id: "nisn",
-    label: "NISN",
+    id: "email",
+    label: "Email",
     minWidth: 170,
-    align: "right",
-    format: (value) => value.toLocaleString("en-US"),
-  },
-  {
-    id: "fromSchool",
-    label: "Asal Sekolah",
-    minWidth: 170,
-    align: "right",
-    format: (value) => value.toLocaleString("en-US"),
-  },
-  {
-    id: "facultyFirst",
-    label: "Jurusan Utama",
-    minWidth: 170,
-    align: "right",
-    format: (value) => value.toLocaleString("en-US"),
+    align: "center",
   },
   {
     id: "action",
     label: "Aksi",
     minWidth: 170,
-    align: "right",
-    format: (value) => value.toFixed(2),
+    align: "center",
   },
 ];
 
@@ -79,18 +63,6 @@ function StickyHeadTable() {
     setPage(0);
   };
 
-  const handleChangeSearchRegistrant = (event) => {
-    axiosReportsUsers()
-      .get(`ppdb-admin/search-fullname/?q=${event.target.value}&type=yes`)
-      .then((res) => setData(res.data.data))
-      .catch((error) => {
-        Swal.fire({
-          icon: "error",
-          title: "Gagal mengambil data, silahkan coba kembali",
-        });
-      });
-  };
-
   const myTimer = (event) => {
     let hoursNow = new Date().getHours();
     let hoursNowZ = hoursNow <= 9 ? `0` + hoursNow : hoursNow;
@@ -113,9 +85,28 @@ function StickyHeadTable() {
 
   const fetchDatas = () => {
     axiosReportsUsers()
-      .get(`ppdb-admin`)
+      .get(`auth/get/requestor`)
       .then((res) => {
         setData(res.data.data);
+      })
+      .catch((error) => {
+        Swal.fire({
+          icon: "error",
+          title: "Gagal mengambil data, silahkan coba kembali",
+        });
+      });
+  };
+
+  const approveRequest = (id) => {
+    axiosReportsUsers()
+      .put(`auth/approve/requestor`, { id: id })
+      .then((res) => {
+        Swal.fire({
+          icon: "success",
+          title: "Pemberitahuan berhasil dikirim",
+        }).then((res) => {
+          fetchDatas();
+        });
       })
       .catch((error) => {
         Swal.fire({
@@ -138,16 +129,6 @@ function StickyHeadTable() {
   return (
     <div>
       <div style={{ marginBottom: "100px" }}>
-        <TextField
-          variant="outlined"
-          margin="normal"
-          id="fullName"
-          label="Cari dengan nama.."
-          name="fullName"
-          autoComplete="fullName"
-          onChange={handleChangeSearchRegistrant}
-          style={{ position: "absolute", left: "5px", top: "70px" }}
-        />
         <TextField
           style={{
             position: "absolute",
@@ -213,34 +194,10 @@ function StickyHeadTable() {
                                 <Button
                                   variant="contained"
                                   size="small"
-                                  color="secondary"
-                                  style={{
-                                    marginTop: "10px",
-                                    marginRight: "10px",
-                                  }}
-                                  component={Link}
-                                  to={{
-                                    pathname: `regist-card/${row._id}`,
-                                    state: "01",
-                                  }}
-                                >
-                                  Detail
-                                </Button>
-                                <Button
-                                  variant="contained"
-                                  size="small"
                                   color="primary"
-                                  style={{
-                                    marginTop: "10px",
-                                    marginRight: "10px",
-                                  }}
-                                  component={Link}
-                                  to={{
-                                    pathname: `regist-verify/${row._id}`,
-                                    state: "01",
-                                  }}
+                                  onClick={() => approveRequest(row._id)}
                                 >
-                                  Verifikasi
+                                  Approve
                                 </Button>
                               </div>
                             ) : column.format && typeof value === "number" ? (

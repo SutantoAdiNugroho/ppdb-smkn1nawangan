@@ -127,6 +127,7 @@ const useStyles = makeStyles((theme) => ({
       backgroundColor: fade(theme.palette.common.white, 0.25),
     },
     marginLeft: 0,
+    marginRight: 30,
     width: "100%",
     [theme.breakpoints.up("sm")]: {
       marginLeft: theme.spacing(1),
@@ -175,6 +176,7 @@ function StickyHeadTable() {
   const [facultyKkkr, setFacultyKkkr] = React.useState([]);
   const [facultyTb, setFacultyTb] = React.useState([]);
   const [facultyTkro, setFacultyTkro] = React.useState([]);
+  const [facultyAll, setFacultyAll] = React.useState([]);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -182,11 +184,23 @@ function StickyHeadTable() {
   };
 
   const handleChangeAll = (event) => {
+    let nameStudent = event.target.value;
+
     if (event.target.value !== "") {
       setValue(8);
-    } else {
-      setValue(oldValue);
     }
+
+    axiosReportsUsers()
+      .get(`ppdb-admin/search-fullname/?q=${nameStudent}&type=verified`)
+      .then((res) => {
+        setFacultyAll(res.data.data);
+      })
+      .catch((error) => {
+        Swal.fire({
+          icon: "error",
+          title: "Gagal mengambil data, silahkan coba kembali",
+        });
+      });
   };
 
   const handleChangePage = (event, newPage) => {
@@ -198,18 +212,41 @@ function StickyHeadTable() {
     setPage(0);
   };
 
-  //   const handleChangeSearchRegistrant = (event) => {
-  //     axiosReportsUsers()
-  //         .get(`ppdb/search-fullname/?q=${event.target.value}`)
-  //         .then(
-  //           res => setData(res.data.data)
-  //         ).catch(error => {
-  //           Swal.fire({
-  //             icon: 'error',
-  //             title: 'Gagal mengambil data, silahkan coba kembali'
-  //           })
-  //         })
-  //   };
+  const handleChangeSearchRegistrant = (event) => {
+    let nameFaculty = event.target.name;
+
+    axiosReportsUsers()
+      .get(
+        `ppdb-admin/verified/search-fullname/?q=${event.target.value}&type=verified&faculty=${nameFaculty}`
+      )
+      .then((res) => {
+        switch (nameFaculty) {
+          case "Akuntansi (AKL)":
+            setFacultyAkl(res.data.data);
+            break;
+          case "Tata Busana (TB)":
+            setFacultyTb(res.data.data);
+            break;
+          case "Otomotif (TKRO)":
+            setFacultyTkro(res.data.data);
+            break;
+          case "Pertanian (ATPH)":
+            setFacultyAtph(res.data.data);
+            break;
+          case "Kria Kayu (KKKR)":
+            setFacultyKkkr(res.data.data);
+            break;
+          default:
+            break;
+        }
+      })
+      .catch((error) => {
+        Swal.fire({
+          icon: "error",
+          title: "Gagal mengambil data, silahkan coba kembali",
+        });
+      });
+  };
 
   const myTimer = (event) => {
     let hoursNow = new Date().getHours();
@@ -297,7 +334,7 @@ function StickyHeadTable() {
                   <SearchIcon />
                 </div>
                 <InputBase
-                  placeholder="Search…"
+                  placeholder="Cari nama semua.."
                   classes={{
                     root: classes.inputRoot,
                     input: classes.inputInput,
@@ -354,9 +391,9 @@ function StickyHeadTable() {
             margin="normal"
             id="fullName"
             label="Cari dengan nama.."
-            name="fullName"
+            name="Akuntansi (AKL)"
             autoComplete="fullName"
-            //   onChange={handleChangeSearchRegistrant}
+            onChange={handleChangeSearchRegistrant}
           />
 
           <Paper className={classes.root}>
@@ -437,9 +474,9 @@ function StickyHeadTable() {
             margin="normal"
             id="fullName"
             label="Cari dengan nama.."
-            name="fullName"
+            name="Tata Busana (TB)"
             autoComplete="fullName"
-            //   onChange={handleChangeSearchRegistrant}
+            onChange={handleChangeSearchRegistrant}
           />
 
           <Paper className={classes.root}>
@@ -520,9 +557,9 @@ function StickyHeadTable() {
             margin="normal"
             id="fullName"
             label="Cari dengan nama.."
-            name="fullName"
+            name="Otomotif (TKRO)"
             autoComplete="fullName"
-            //   onChange={handleChangeSearchRegistrant}
+            onChange={handleChangeSearchRegistrant}
           />
 
           <Paper className={classes.root}>
@@ -603,9 +640,9 @@ function StickyHeadTable() {
             margin="normal"
             id="fullName"
             label="Cari dengan nama.."
-            name="fullName"
+            name="Pertanian (ATPH)"
             autoComplete="fullName"
-            //   onChange={handleChangeSearchRegistrant}
+            onChange={handleChangeSearchRegistrant}
           />
 
           <Paper className={classes.root}>
@@ -686,9 +723,9 @@ function StickyHeadTable() {
             margin="normal"
             id="fullName"
             label="Cari dengan nama.."
-            name="fullName"
+            name="Kria Kayu (KKKR)"
             autoComplete="fullName"
-            //   onChange={handleChangeSearchRegistrant}
+            onChange={handleChangeSearchRegistrant}
           />
 
           <Paper className={classes.root}>
@@ -756,6 +793,79 @@ function StickyHeadTable() {
               rowsPerPageOptions={[10, 25, 100]}
               component="div"
               count={facultyKkkr.length}
+              rowsPerPage={rowsPerPage}
+              page={page}
+              onChangePage={handleChangePage}
+              onChangeRowsPerPage={handleChangeRowsPerPage}
+            />
+          </Paper>
+        </TabPanel>
+        <TabPanel value={value} index={8}>
+          <Paper className={classes.root}>
+            <TableContainer className={classes.container}>
+              <Table stickyHeader aria-label="sticky table">
+                <TableHead>
+                  <TableRow>
+                    {columns.map((column) => (
+                      <TableCell
+                        key={column.id}
+                        align={column.align}
+                        style={{ minWidth: column.minWidth }}
+                      >
+                        {column.label}
+                      </TableCell>
+                    ))}
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {facultyAll
+                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                    .map((row) => {
+                      return (
+                        <TableRow
+                          hover
+                          role="checkbox"
+                          tabIndex={-1}
+                          key={row.idRegister}
+                        >
+                          {columns.map((column) => {
+                            const value = row[column.id];
+                            return (
+                              <TableCell key={column.id} align={column.align}>
+                                {column.id === "action" ? (
+                                  <div>
+                                    <Button
+                                      variant="contained"
+                                      size="small"
+                                      color="secondary"
+                                      component={Link}
+                                      to={{
+                                        pathname: `regist-card/${row._id}`,
+                                        state: "02",
+                                      }}
+                                    >
+                                      Detail
+                                    </Button>
+                                  </div>
+                                ) : column.format &&
+                                  typeof value === "number" ? (
+                                  column.format(value)
+                                ) : (
+                                  value
+                                )}
+                              </TableCell>
+                            );
+                          })}
+                        </TableRow>
+                      );
+                    })}
+                </TableBody>
+              </Table>
+            </TableContainer>
+            <TablePagination
+              rowsPerPageOptions={[10, 25, 100]}
+              component="div"
+              count={facultyAll.length}
               rowsPerPage={rowsPerPage}
               page={page}
               onChangePage={handleChangePage}

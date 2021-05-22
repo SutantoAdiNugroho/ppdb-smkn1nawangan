@@ -11,6 +11,7 @@ import { Link } from "react-router-dom";
 import MenuIcon from "@material-ui/icons/Menu";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import IconButton from "@material-ui/core/IconButton";
+import EmailIcon from "@material-ui/icons/Email";
 import Divider from "@material-ui/core/Divider";
 
 import swal from "sweetalert2";
@@ -86,6 +87,15 @@ export default function SwipeableTemporaryDrawer() {
           <ListItem button key={text} component={Link} to="/add-admin">
             <ListItemIcon>
               <PersonAddIcon />
+            </ListItemIcon>
+            <ListItemText primary={text}></ListItemText>
+          </ListItem>
+        ))}
+
+        {["Daftar Reqest Akun"].map((text, index) => (
+          <ListItem button key={text} component={Link} to="/account-requestor">
+            <ListItemIcon>
+              <EmailIcon />
             </ListItemIcon>
             <ListItemText primary={text}></ListItemText>
           </ListItem>

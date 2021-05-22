@@ -4,10 +4,11 @@ import {
   PpdbOut,
   Login,
   AdminDash,
+  AddAdmin,
+  AccountRequestor,
   RegistrantTable,
   RegistrantCard,
   RegistrantCardFailed,
-  AddAdmin,
   RegsitrantVerify,
   RegistrantSuccess,
   RegistrantFailed,
@@ -60,9 +61,18 @@ function App() {
             {!isLogin ? (
               <Redirect to="/login" />
             ) : verify().role === "admin" ? (
-              <RegistrantTable />
+              <Redirect to="/" />
             ) : (
               <AddAdmin />
+            )}
+          </Route>
+          <Route path="/account-requestor" exact={true}>
+            {!isLogin ? (
+              <Redirect to="/login" />
+            ) : verify().role === "admin" ? (
+              <Redirect to="/" />
+            ) : (
+              <AccountRequestor />
             )}
           </Route>
         </Route>

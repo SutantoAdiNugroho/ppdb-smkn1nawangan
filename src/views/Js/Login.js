@@ -4,6 +4,7 @@ import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import TextField from "@material-ui/core/TextField";
 import Box from "@material-ui/core/Box";
+import Grid from "@material-ui/core/Grid";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
@@ -12,6 +13,9 @@ import { Link as LinkRouter, withRouter } from "react-router-dom";
 import { Formik } from "formik";
 import swal from "sweetalert2";
 import axios from "axios";
+import { Link } from "react-router-dom";
+
+import { axiosReportsUsers } from "../../modules/helpers/axios";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -37,6 +41,83 @@ function SignIn(props) {
   const classes = useStyles();
   const disableBtnProps = {};
   let urlLoginLive = process.env.REACT_APP_API_LOGIN_LIVE;
+
+  const handleSendMail = () => {
+    swal
+      .fire({
+        title: "Biodata Requestor",
+        html: `<input type="text" id="fullName" class="swal2-input" placeholder="Nama Lengkap">
+      <input type="email" id="email" class="swal2-input" placeholder="Email">`,
+        confirmButtonText: "Proses",
+        focusConfirm: false,
+        preConfirm: () => {
+          const login = swal.getPopup().querySelector("#fullName").value;
+          const password = swal.getPopup().querySelector("#email").value;
+
+          if (!login || !password) {
+            swal.showValidationMessage(
+              `Silahkan masukkan nama lengkap dan email`
+            );
+          } else if (!password.match(/^\S+@\S+\.\S+$/)) {
+            swal.showValidationMessage(`Silahkan masukkan email yang valid`);
+          }
+          return { login: login, password: password };
+        },
+      })
+      .then((result) => {
+        try {
+          const fullName = result.value.login;
+          const email = result.value.password;
+
+          let timerInterval;
+          swal
+            .fire({
+              title: "Silahkan tunggu..",
+              timer: 9999999,
+              timerProgressBar: true,
+              onBeforeOpen: () => {
+                swal.showLoading();
+                timerInterval = setInterval(() => {
+                  const content = swal.getContent();
+                  if (content) {
+                    const b = content.querySelector("b");
+                    if (b) {
+                      b.textContent = swal.getTimerLeft();
+                    }
+                  }
+                }, 100);
+              },
+              onClose: () => {
+                clearInterval(timerInterval);
+              },
+            })
+            .then((result) => {
+              if (result.dismiss === swal.DismissReason.timer) {
+                console.log("I was closed by the timer");
+              }
+            });
+          axios
+            .post(`${urlLoginLive}auth/add/requestor`, {
+              nameRequestor: fullName,
+              email: email,
+            })
+            .then((res) => {
+              swal.fire({
+                icon: "success",
+                title: "Permintaan Berhasil Dikirim",
+              });
+            })
+            .catch((error) => {
+              swal.fire({
+                icon: "error",
+                title: "Gagal mengirim data, silahkan coba kembali",
+              });
+            });
+        } catch (error) {
+          console.log("popup closed");
+        }
+      });
+  };
 
   return (
     <Container component="main" maxWidth="xs">
@@ -113,7 +194,6 @@ function SignIn(props) {
                   }
                 })
                 .catch((error) => {
-                  console.log(error.response);
 
                   try {
                     const resp = error.response.status;
@@ -210,6 +290,17 @@ function SignIn(props) {
         >
           Kembali
         </Button>
+        <Grid item xs={12}>
+          <Typography>
+            <Link
+              className={classes.typoLogin}
+              onClick={() => handleSendMail()}
+            >
+              Klik disini
+            </Link>{" "}
+            untuk mendapatkan akun
+          </Typography>
+        </Grid>
       </div>
       <Box mt={8}></Box>
     </Container>
