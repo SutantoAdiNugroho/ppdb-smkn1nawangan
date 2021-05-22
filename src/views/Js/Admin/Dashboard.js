@@ -7,12 +7,13 @@ import CardContent from "@material-ui/core/CardContent";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import { connect } from "react-redux";
+import { Link as LinkRouter } from "react-router-dom";
 
 import CanvasJSReact from "../../../assets/chartjs/canvasjs.react";
 import Loader from "../../../components/Loading/Loader";
 import Swal from "sweetalert2";
 
-import { showLoader, hideLoader, getUser } from "../../../actions/application";
+import { showLoader, hideLoader } from "../../../actions/application";
 import { axiosReportsUsers } from "../../../modules/helpers";
 import { Box } from "@material-ui/core";
 
@@ -191,7 +192,13 @@ function Dashboard(props) {
                   </Typography>
                 </CardContent>
                 <CardActions>
-                  <Button size="small">Visit</Button>
+                  <Button
+                    component={LinkRouter}
+                    to="/regist-table"
+                    size="small"
+                  >
+                    Visit
+                  </Button>
                 </CardActions>
               </Card>
             </div>
@@ -213,7 +220,13 @@ function Dashboard(props) {
                   </Typography>
                 </CardContent>
                 <CardActions>
-                  <Button size="small">Visit</Button>
+                  <Button
+                    component={LinkRouter}
+                    to="/regist-table"
+                    size="small"
+                  >
+                    Visit
+                  </Button>
                 </CardActions>
               </Card>
             </div>
@@ -235,7 +248,13 @@ function Dashboard(props) {
                   </Typography>
                 </CardContent>
                 <CardActions>
-                  <Button size="small">Visit</Button>
+                  <Button
+                    component={LinkRouter}
+                    to="/regist-success"
+                    size="small"
+                  >
+                    Visit
+                  </Button>
                 </CardActions>
               </Card>
             </div>
@@ -257,7 +276,13 @@ function Dashboard(props) {
                   </Typography>
                 </CardContent>
                 <CardActions>
-                  <Button size="small">Visit</Button>
+                  <Button
+                    component={LinkRouter}
+                    to="/regist-failed"
+                    size="small"
+                  >
+                    Visit
+                  </Button>
                 </CardActions>
               </Card>
             </div>
@@ -266,11 +291,11 @@ function Dashboard(props) {
         <Box p={3} />
         <Grid container spacing={0}>
           <Grid item xs={12} sm={6}>
-          <Box p={3} />
+            <Box p={3} />
             <CanvasJSChart options={optionsSuccessFail} />
           </Grid>
           <Grid item xs={12} sm={6}>
-          <Box p={3} />
+            <Box p={3} />
             <CanvasJSChart options={optionsTotal} />
           </Grid>
         </Grid>

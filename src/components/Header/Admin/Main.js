@@ -94,7 +94,7 @@ export default function SwipeableTemporaryDrawer() {
         ))}
 
         {["Verifikasi Gagal"].map((text, index) => (
-          <ListItem button key={text} component={Link} to="/regist-table">
+          <ListItem button key={text} component={Link} to="/regist-failed">
             <ListItemIcon>
               <CancelIcon />
             </ListItemIcon>

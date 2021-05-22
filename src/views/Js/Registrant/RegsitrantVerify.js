@@ -24,7 +24,7 @@ const useStyles = makeStyles({
   },
 });
 
-function RegsitrantVerify({ match }, props) {
+function RegsitrantVerify({ match, location }) {
   const classes = useStyles();
   const [btnSuccess, setBtnSuccess] = React.useState();
   const [btnFail, setBtnFail] = React.useState();
@@ -32,8 +32,10 @@ function RegsitrantVerify({ match }, props) {
   const [registrantData, setRegistrantData] = React.useState([]);
   const [verifFull, setVerifFull] = React.useState("");
   const [idRegister, setIdRegister] = React.useState("");
+  const [goBack, setGoBack] = React.useState("");
 
   const id = match.params.id;
+  const history = useHistory();
 
   const onChangeVerif = (event) => {
     let rdFullNameTrue = document.querySelector("input[name=fullnameTrueX]")
@@ -127,11 +129,25 @@ function RegsitrantVerify({ match }, props) {
     setBtnSuccess(true);
     setBtnFail(true);
 
+    switch (location.state) {
+      case "01":
+        setGoBack("/regist-table");
+        break;
+      case "02":
+        setGoBack("/regist-failed");
+        break;
+
+      default:
+        setGoBack("/");
+        break;
+    }
+
     onLoading();
     axiosReportsUsers()
       .get(`ppdb-admin/id/${id}`)
       .then((res) => {
-        if (res.data.data[0].checkVerifyBiodata === "yes") {
+        const chkVerification = res.data.data[0].checkVerifyBiodata;
+        if (chkVerification === "yes" || chkVerification === "unverified") {
           setRegistrantData(res.data.data[0]);
           setIdRegister(res.data.data[0].idRegister);
           Swal.fire({
@@ -247,9 +263,12 @@ function RegsitrantVerify({ match }, props) {
                 idRegister: idRegister,
                 notedVerify: dataAnswer,
               });
-              const updateVerify = axiosReportsUsers().put(`ppdb-admin/id/${id}`, {
-                checkVerifyBiodata: "unverified",
-              });
+              const updateVerify = axiosReportsUsers().put(
+                `ppdb-admin/id/${id}`,
+                {
+                  checkVerifyBiodata: "unverified",
+                }
+              );
 
               onLoading();
               axiosReportsUsers()
@@ -286,8 +305,7 @@ function RegsitrantVerify({ match }, props) {
     });
   };
 
-  const history = useHistory();
-  const navigateTo = () => history.push("/regist-table");
+  const navigateTo = () => history.push(goBack);
 
   return (
     <div>
@@ -329,7 +347,7 @@ function RegsitrantVerify({ match }, props) {
             </FormControl>
           </Card.Body>
           <Card.Footer>
-            <small className="text-muted">Last updated 3 mins ago</small>
+            <small className="text-muted">Student biodata</small>
           </Card.Footer>
         </Card>
         <Card>
@@ -358,7 +376,7 @@ function RegsitrantVerify({ match }, props) {
             </FormControl>
           </Card.Body>
           <Card.Footer>
-            <small className="text-muted">Last updated 3 mins ago</small>
+            <small className="text-muted">Student biodata</small>
           </Card.Footer>
         </Card>
         <Card>
@@ -389,7 +407,7 @@ function RegsitrantVerify({ match }, props) {
             </FormControl>
           </Card.Body>
           <Card.Footer>
-            <small className="text-muted">Last updated 3 mins ago</small>
+            <small className="text-muted">Student biodata</small>
           </Card.Footer>
         </Card>
         <Card>
@@ -422,7 +440,7 @@ function RegsitrantVerify({ match }, props) {
             </FormControl>
           </Card.Body>
           <Card.Footer>
-            <small className="text-muted">Last updated 3 mins ago</small>
+            <small className="text-muted">Student biodata</small>
           </Card.Footer>
         </Card>
       </CardDeck>
