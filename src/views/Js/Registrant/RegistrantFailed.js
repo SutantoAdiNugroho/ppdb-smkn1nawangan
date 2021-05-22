@@ -81,7 +81,7 @@ function StickyHeadTable() {
 
   const handleChangeSearchRegistrant = (event) => {
     axiosReportsUsers()
-      .get(`ppdb/search-fullname/?q=${event.target.value}`)
+      .get(`ppdb-admin/search-fullname/?q=${event.target.value}&type=unverified`)
       .then((res) => setData(res.data.data))
       .catch((error) => {
         Swal.fire({

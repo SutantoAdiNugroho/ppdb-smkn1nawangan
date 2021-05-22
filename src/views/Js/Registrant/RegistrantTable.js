@@ -87,7 +87,7 @@ function StickyHeadTable() {
 
     // setData(valX);
     axiosReportsUsers()
-      .get(`ppdb-admin/search-fullname/?q=${event.target.value}`)
+      .get(`ppdb-admin/search-fullname/?q=${event.target.value}&type=yes`)
       .then((res) => setData(res.data.data))
       .catch((error) => {
         Swal.fire({
